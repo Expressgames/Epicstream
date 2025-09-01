@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Epicstream Server Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Roboto Mono', monospace;
+      background: #121212;
+      color: #f0f0f0;
+    }
+
+    .header {
+      background: #1f1f2f;
+      padding: 20px;
+      text-align: center;
+      font-size: 2em;
+      letter-spacing: 2px;
+      border-bottom: 2px solid #00ff99;
+    }
+
+    .dashboard {
+      display: flex;
+      justify-content: center;
+      margin-top: 50px;
+      gap: 50px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #1a1a2e;
+      border: 2px solid #00ff99;
+      border-radius: 15px;
+      padding: 30px;
+      width: 300px;
+      text-align: center;
+      box-shadow: 0 0 20px #00ff9933;
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .status-icon {
+      font-size: 60px;
+      margin-bottom: 15px;
+    }
+
+    .status-online {
+      color: #00ff99;
+      animation: pulse 2s infinite;
+    }
+
+    .status-offline {
+      color: #ff5555;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .status-text {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .embed-text {
+      font-size: 1em;
+      color: #00ff99;
+    }
+
+    .embed-text.offline {
+      color: #ff5555;
+    }
+
+    .server-graphic {
+      margin-top: 20px;
+      font-size: 2em;
+      color: #00ff99aa;
+    }
+  </style>
+  <script>
+    const binID = "68b57882ae596e708fdeaad0"; // your corrected bin ID
+    const apiKey = "$2a$10$OTqg8LXoDhY1oqy2A4CEeeYjB.CGwlhuoytzr55ofgCpe3cGPvWIi"; // master key
+
+    async function loadStatus() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${binID}/latest`, {
+          method: 'GET',
+          headers: { 'X-Master-Key': apiKey }
+        });
+
+        const data = await res.json();
+        const record = data.record || data.data?.record; // safely access nested record
+        console.log('JSONBin response:', data);
+
+        const statusEl = document.getElementById('status-text');
+        const iconEl = document.getElementById('status-icon');
+        const embedEl = document.getElementById('embed-text');
+        const graphicEl = document.getElementById('server-graphic');
+
+        if (record && record.status && record.status.toLowerCase() === 'online') {
+          statusEl.textContent = 'ONLINE';
+          iconEl.className = 'status-icon status-online';
+          iconEl.textContent = '🟢';
+          embedEl.textContent = 'Embedding Allowed';
+          embedEl.classList.remove('offline');
+          graphicEl.textContent = '🖥️📡⚡';
+        } else {
+          statusEl.textContent = 'OFFLINE';
+          iconEl.className = 'status-icon status-offline';
+          iconEl.textContent = '🔴';
+          embedEl.textContent = 'Embedding Disabled';
+          embedEl.classList.add('offline');
+          graphicEl.textContent = '💤💻❌';
+        }
+      } catch (e) {
+        console.error('Error fetching JSON:', e);
+        const statusEl = document.getElementById('status-text');
+        const iconEl = document.getElementById('status-icon');
+        const embedEl = document.getElementById('embed-text');
+        const graphicEl = document.getElementById('server-graphic');
+
+        statusEl.textContent = 'OFFLINE';
+        iconEl.className = 'status-icon status-offline';
+        iconEl.textContent = '🔴';
+        embedEl.textContent = 'Embedding Disabled';
+        embedEl.classList.add('offline');
+        graphicEl.textContent = '💤💻❌';
+      }
+    }
+
+    window.onload = () => {
+      loadStatus();
+      setInterval(loadStatus, 1000); // refresh every 10 seconds
+    };
+  </script>
+</head>
+<body>
+  <div class="header">EPICSTREAM SERVER DASHBOARD</div>
+  <div class="dashboard">
+    <div class="card">
+      <div id="status-icon" class="status-icon">⏳</div>
+      <div id="status-text" class="status-text">Loading...</div>
+      <div id="embed-text" class="embed-text">Checking...</div>
+      <div id="server-graphic" class="server-graphic">⚙️</div>
+    </div>
+  </div>
+</body>
+</html>

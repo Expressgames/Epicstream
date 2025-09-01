@@ -108,14 +108,14 @@
           statusEl.textContent = 'ONLINE';
           iconEl.className = 'status-icon status-online';
           iconEl.textContent = '🟢';
-          embedEl.textContent = 'Embedding Allowed';
+          embedEl.textContent = 'Server Is Online';
           embedEl.classList.remove('offline');
           graphicEl.textContent = '🖥️📡⚡';
         } else {
           statusEl.textContent = 'OFFLINE';
           iconEl.className = 'status-icon status-offline';
           iconEl.textContent = '🔴';
-          embedEl.textContent = 'Embedding Disabled';
+          embedEl.textContent = 'Server Is Offline';
           embedEl.classList.add('offline');
           graphicEl.textContent = '💤💻❌';
         }
@@ -129,7 +129,7 @@
         statusEl.textContent = 'OFFLINE';
         iconEl.className = 'status-icon status-offline';
         iconEl.textContent = '🔴';
-        embedEl.textContent = 'Embedding Disabled';
+        embedEl.textContent = 'Server Is Offline';
         embedEl.classList.add('offline');
         graphicEl.textContent = '💤💻❌';
       }
@@ -137,7 +137,7 @@
 
     window.onload = () => {
       loadStatus();
-      setInterval(loadStatus, 1000); // refresh every 10 seconds
+      setInterval(loadStatus, 1000); // refresh every 1 seconds
     };
   </script>
 </head>

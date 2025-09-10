@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playcentrix Server Tracker</title>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #0d0d0d;
+        color: #e5e5e5;
+    }
+
+    .tracker-card {
+        background: #1a1a1a;
+        padding: 40px 60px;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        width: 400px;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        font-weight: 500;
+        color: #4facfe;
+    }
+
+    .timeline {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        position: relative;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 9px;
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background: #4facfe;
+        opacity: 0.2;
+        z-index: 0;
+        transition: height 0.5s ease;
+    }
+
+    .timeline li {
+        position: relative;
+        padding-left: 40px;
+        margin-bottom: 30px;
+        font-size: 1.2rem;
+        opacity: 0.4;
+        transition: opacity 0.5s ease;
+        z-index: 1;
+    }
+
+    .timeline li.active {
+        font-weight: 500;
+        color: #00f2fe;
+        opacity: 1;
+    }
+
+    .timeline li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        background: #2c2c2c;
+        border: 2px solid #4facfe;
+        border-radius: 50%;
+        transition: background 0.5s ease, border 0.5s ease;
+    }
+
+    .timeline li.active::before {
+        background: #4facfe;
+        border-color: #00f2fe;
+        box-shadow: 0 0 10px #4facfe;
+    }
+
+</style>
+</head>
+<body>
+    <div class="tracker-card">
+        <h2>Connecting to Playcentrix Servers</h2>
+        <ul class="timeline" id="timeline">
+            <li>Server 1</li>
+            <li>Server 2</li>
+            <li>Server 3</li>
+            <li>Playcentrix Anonymous</li>
+        </ul>
+    </div>
+
+    <script>
+        const steps = document.querySelectorAll('#timeline li');
+        const timelineLine = document.querySelector('.timeline::before'); // cannot select pseudo directly
+        let current = 0;
+
+        function activateNextStep() {
+            if (current < steps.length) {
+                steps[current].classList.add('active');
+                
+                // simulate line progress by changing the pseudo manually using inline element
+                let progressLine = document.createElement('div');
+                progressLine.style.position = 'absolute';
+                progressLine.style.left = '9px';
+                progressLine.style.top = '0';
+                progressLine.style.width = '2px';
+                progressLine.style.height = ((current+1)/steps.length)*100 + '%';
+                progressLine.style.background = '#4facfe';
+                progressLine.style.opacity = '0.5';
+                progressLine.style.transition = 'height 0.5s ease';
+                document.querySelector('.timeline').appendChild(progressLine);
+
+                current++;
+                setTimeout(activateNextStep, 3000); // 3 seconds per step
+            }
+        }
+
+        activateNextStep();
+    </script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!-- Playcentrix Cinematic Overlay with Zoom-Out Disappear -->
+<style>
+  #playcentrixOverlay {
+    position: fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background: radial-gradient(circle at center, #0a0f1b 0%, #000 100%);
+    z-index:99999;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    color:#00ffff;
+    font-family:'Segoe UI', sans-serif;
+    text-align:center;
+    transition: transform 0.6s ease, opacity 0.6s ease;
+  }
+
+  #playcentrixOverlay h1 {
+    font-size:6rem;
+    margin:0;
+    text-shadow: 0 0 40px #00ffff, 0 0 80px #00ffff80;
+  }
+
+  #serverVector {
+    width:280px; height:280px;
+    margin:50px 0;
+  }
+
+  #playcentrixOverlay p {
+    font-size:3rem;
+    margin:0;
+    text-shadow: 0 0 30px #00ffff50;
+  }
+
+  #playcentrixOkBtn {
+    margin-top:50px;
+    padding:25px 70px;
+    font-size:24px;
+    font-weight:bold;
+    border:none;
+    border-radius:30px;
+    cursor:pointer;
+    color:#000;
+    background:#00ffff;
+    box-shadow:0 0 60px #00ffff,0 0 100px #00ffff60 inset;
+    transition: transform 0.2s ease, background 0.2s ease;
+  }
+  #playcentrixOkBtn:hover {
+    transform:scale(1.1);
+    background:#00aaff;
+    color:white;
+  }
+
+  #playcentrixCanvas {
+    position:absolute;
+    top:0; left:0;
+    width:100%;
+    height:100%;
+    z-index:1;
+  }
+
+  @media(max-width:700px){
+    #playcentrixOverlay h1 { font-size:4rem; }
+    #serverVector { width:180px; height:180px; margin:30px 0; }
+    #playcentrixOverlay p { font-size:2rem; }
+    #playcentrixOkBtn { padding:18px 50px; font-size:18px; margin-top:30px;}
+  }
+</style>
+
+<div id="playcentrixOverlay">
+  <canvas id="playcentrixCanvas"></canvas>
+
+  <h1>Playcentrix</h1>
+
+  <!-- Server Vector -->
+  <svg id="serverVector" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <rect x="8" y="12" width="48" height="40" stroke="#00ffff" stroke-width="3" rx="4"/>
+    <rect x="14" y="18" width="36" height="8" fill="#00ffff"/>
+    <rect x="14" y="32" width="36" height="12" fill="#00ffff33"/>
+  </svg>
+
+  <p>Server Connected</p>
+  <button id="playcentrixOkBtn">ENTER</button>
+</div>
+
+<script>
+const canvas = document.getElementById('playcentrixCanvas');
+const ctx = canvas.getContext('2d');
+const overlay = document.getElementById('playcentrixOverlay');
+
+function resizeCanvas(){
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+// Particle system
+const particles = [];
+const particleCount = 120;
+for(let i=0;i<particleCount;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    size:Math.random()*3+1,
+    speedX:(Math.random()-0.5)*2,
+    speedY:(Math.random()-0.5)*2
+  });
+}
+
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,255,255,0.7)';
+    ctx.fill();
+  });
+
+  // Connect particles
+  for(let i=0;i<particles.length;i++){
+    for(let j=i+1;j<particles.length;j++){
+      let dx = particles[i].x - particles[j].x;
+      let dy = particles[i].y - particles[j].y;
+      let dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist<150){
+        ctx.beginPath();
+        ctx.strokeStyle='rgba(0,255,255,'+(1-dist/150)*0.5+')';
+        ctx.lineWidth=1;
+        ctx.moveTo(particles[i].x,particles[i].y);
+        ctx.lineTo(particles[j].x,particles[j].y);
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function updateParticles(){
+  particles.forEach(p=>{
+    p.x += p.speedX;
+    p.y += p.speedY;
+    if(p.x<0 || p.x>canvas.width) p.speedX*=-1;
+    if(p.y<0 || p.y>canvas.height) p.speedY*=-1;
+  });
+}
+
+function animate(){
+  drawParticles();
+  updateParticles();
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ENTER button with zoom-out fade animation
+const btn = document.getElementById('playcentrixOkBtn');
+btn.addEventListener('click', ()=>{
+  overlay.style.transform='scale(0.5)';
+  overlay.style.opacity='0';
+  setTimeout(()=> overlay.remove(), 600);
+});
+</script>

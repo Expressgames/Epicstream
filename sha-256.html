@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SHA-256 Hash Generator</title>
+<style>
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #101010;
+        font-family: 'Segoe UI', sans-serif;
+        color: #fff;
+    }
+
+    .container {
+        width: 90%;
+        max-width: 500px;
+        background: #181818;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 600;
+        color: #fff;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+        border-radius: 8px;
+        border: 1px solid #2c2c2c;
+        background-color: #101010;
+        color: #eee;
+        outline: none;
+        margin-bottom: 15px;
+        text-align: center;
+    }
+
+    input:focus {
+        border-color: #00aaff;
+    }
+
+    button.generate-btn {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 20px;
+        background-color: #2a2a2a;
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    button.generate-btn:hover {
+        background-color: #3a3a3a;
+    }
+
+    .result-box {
+        width: 100%;
+        background-color: #101010;
+        border: 1px solid #2c2c2c;
+        border-radius: 8px;
+        padding: 20px 15px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 60px;
+        text-align: center;
+        font-family: monospace;
+        font-size: 0.95rem;
+        color: #00ffaa;
+        overflow-wrap: anywhere;
+        word-break: break-all;
+    }
+
+    .copy-icon {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+        fill: #00ffaa;
+        transition: transform 0.2s, fill 0.2s;
+    }
+
+    .copy-icon.copied {
+        fill: #ffcc00;
+        transform: scale(1.3);
+    }
+
+    /* Copied notification */
+    .copied-notif {
+        position: fixed;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #000;
+        color: #fff;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        transition: top 0.5s ease;
+        z-index: 1000;
+    }
+    .playcentrix
+    position: bottom-center;
+    }
+    
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>SHA-256 Hash Generator</h1>
+        <input type="text" id="inputText" placeholder="Enter text to hash">
+        <button class="generate-btn" onclick="generateHash()">Generate Hash</button>
+        <div class="result-box" id="hashResult">
+            <svg class="copy-icon" id="copyIcon" onclick="copyHash()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h11v16z"/>
+            </svg>
+            Your hash will appear here
+        </div>
+    </div>
+    <div class="copied-notif" id="copiedNotif">Copied!</div>
+
+    <script>
+        async function generateHash() {
+            const text = document.getElementById("inputText").value;
+            const resultBox = document.getElementById("hashResult");
+            if (!text.trim()) {
+                resultBox.innerHTML = `<svg class="copy-icon" id="copyIcon" onclick="copyHash()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h11v16z"/>
+                </svg>⚠️ Enter text to hash`;
+                return;
+            }
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            const hashHex = hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+            resultBox.innerHTML = `<svg class="copy-icon" id="copyIcon" onclick="copyHash()" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 18H8V7h11v16z"/>
+            </svg>${hashHex}`;
+        }
+
+        function copyHash() {
+            const resultBox = document.getElementById("hashResult");
+            const hashText = resultBox.innerText.replace("Copied!", "").trim();
+            const copyIcon = document.getElementById("copyIcon");
+            if (hashText && !hashText.startsWith("⚠️") && hashText !== "Your hash will appear here") {
+                navigator.clipboard.writeText(hashText);
+
+                // Light up icon
+                copyIcon.classList.add("copied");
+                setTimeout(() => copyIcon.classList.remove("copied"), 800);
+
+                // Show top notification longer (3 seconds)
+                const notif = document.getElementById("copiedNotif");
+                notif.style.top = "20px";
+                setTimeout(() => notif.style.top = "-50px", 3000);
+            }
+        }
+    </script>
+</body>
+</html>

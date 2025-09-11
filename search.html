@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playcentrix Wiki Search</title>
+<style>
+body {
+  margin:0; padding:0; font-family:'Segoe UI', sans-serif;
+  background:#101010; color:#fff; display:flex; justify-content:center; align-items:center; height:100vh;
+}
+.container {
+  width:95%; max-width:500px; background:#181818; border-radius:12px; padding:20px; display:flex; flex-direction:column;
+}
+.header {
+  text-align:center;
+  font-size:1.5rem;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+.subheader {
+  text-align:center;
+  font-size:1rem;
+  font-weight:bold;
+  color:#aaa;
+  margin-bottom:15px;
+}
+input { width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:none; outline:none; background:#101010; color:#fff; font-size:1rem; }
+button { width:100%; padding:12px; border:none; border-radius:8px; background:#2a2a2a; color:#fff; cursor:pointer; margin-bottom:10px; }
+button:hover { background:#3a3a3a; }
+.result { background:#101010; border:1px solid #2c2c2c; border-radius:8px; padding:10px; max-height:400px; overflow-y:auto; word-break:break-word; }
+.result-item { padding:8px; border-bottom:1px solid #2c2c2c; }
+.result-item:last-child { border-bottom:none; }
+.result-title { font-weight:bold; color:#00ffaa; }
+.result-link { font-size:0.85rem; color:#aaa; text-decoration:underline; }
+.result-snippet { margin-top:4px; font-size:0.95rem; }
+.status { font-size:0.85rem; color:#aaa; margin-top:5px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">Playcentrix</div>
+  <div class="subheader">Search</div>
+  <input type="text" id="searchInput" placeholder="Type your query...">
+  <button id="searchBtn">Search</button>
+  <div class="result" id="resultArea">Results will appear here.</div>
+  <div class="status" id="statusArea"></div>
+</div>
+
+<script>
+const searchInput = document.getElementById('searchInput');
+const searchBtn = document.getElementById('searchBtn');
+const resultArea = document.getElementById('resultArea');
+const statusArea = document.getElementById('statusArea');
+
+searchBtn.addEventListener('click', async () => {
+  const query = searchInput.value.trim();
+  if(!query) return alert("Enter a query!");
+
+  resultArea.innerHTML = "";
+  statusArea.textContent = "Searching...";
+
+  try {
+    const apiUrl = `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(query)}&utf8=&format=json&origin=*`;
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+
+    const results = data.query.search;
+
+    if(results.length === 0){
+      resultArea.textContent = "No results found.";
+    } else {
+      resultArea.innerHTML = results.map(r => `
+        <div class="result-item">
+          <div class="result-title">${r.title}</div>
+          <a class="result-link" href="https://en.wikipedia.org/wiki/${encodeURIComponent(r.title)}" target="_blank">View Article</a>
+          <div class="result-snippet">${r.snippet}...</div>
+        </div>
+      `).join('');
+    }
+
+    statusArea.textContent = `${results.length} result(s) found.`;
+  } catch(err){
+    console.error(err);
+    statusArea.textContent = "Error fetching results. Try again.";
+  }
+});
+</script>
+</body>
+</html>

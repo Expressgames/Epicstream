@@ -1,351 +1,96 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EpicStream Servers</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'League Spartan', sans-serif;
-      background: linear-gradient(135deg, #0d0d0d, #1a1a1a);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
-    }
-
-    header {
-      text-align: center;
-      padding: 25px 20px;
-    }
-
-    header h1 {
-      font-size: 2.3em;
-      font-weight: 700;
-      color: #fff;
-      text-shadow: 0 0 12px rgba(0, 255, 204, 0.6);
-    }
-
-    .servers {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-      width: 92%;
-      max-width: 600px;
-    }
-
-    .server {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(12px);
-      border-radius: 14px;
-      padding: 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.3s ease;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-    }
-
-    .server:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .name {
-      font-size: 1.1em;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .name img {
-      width: 26px;
-      height: 26px;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.95em;
-      font-weight: 500;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-    }
-
-    .green { background: #00ff66; box-shadow: 0 0 8px #00ff66; }
-    .red { background: #ff3333; box-shadow: 0 0 8px #ff3333; }
-    .yellow { background: #ffcc00; box-shadow: 0 0 8px #ffcc00; }
-
-    .loading {
-      width: 14px;
-      height: 14px;
-      border: 2px solid #ccc;
-      border-top: 2px solid #00bfff;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .btn {
-      background: linear-gradient(135deg, #00bfff, #0077ff);
-      border: none;
-      color: white;
-      font-size: 1em;
-      font-weight: 600;
-      padding: 12px 22px;
-      border-radius: 12px;
-      cursor: pointer;
-      margin: 25px 0;
-      transition: 0.25s;
-    }
-
-    .btn:hover {
-      background: linear-gradient(135deg, #0099dd, #0055cc);
-    }
-
-    footer {
-      margin-top: auto;
-      padding: 15px;
-      font-size: 0.75em;
-      color: #aaa;
-      text-align: center;
-    }
-
-    /* Popup Modal */
-    .modal {
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.5);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-
-    .modal-content {
-      background: rgba(28,28,28,0.95);
-      border-radius: 18px;
-      padding: 25px;
-      width: 90%;
-      max-width: 420px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      animation: pop 0.25s ease;
-      backdrop-filter: blur(15px);
-    }
-
-    @keyframes pop {
-      from { transform: scale(0.85); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    .modal h2 {
-      margin-top: 0;
-      font-size: 1.4em;
-      font-weight: 700;
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .server-detail {
-      background: rgba(255,255,255,0.06);
-      border-radius: 12px;
-      padding: 12px;
-      margin-bottom: 12px;
-    }
-
-    .server-detail h3 {
-      margin: 0 0 5px;
-      font-size: 1.05em;
-      font-weight: 600;
-    }
-
-    .server-detail p {
-      margin: 3px 0;
-      font-size: 0.9em;
-      color: #ddd;
-    }
-
-    .close-btn {
-      margin-top: 15px;
-      background: #333;
-      color: white;
-      padding: 10px;
-      width: 100%;
-      border: none;
-      border-radius: 10px;
-      font-size: 1em;
-      cursor: pointer;
-    }
-
-    .close-btn:hover {
-      background: #444;
-    }
-       .horizontal-line {
-            border-top: 2px solid #ccc; /* Sets a 2px solid gray top border */
-            width: 80%; /* Sets the width of the line */
-            margin: 20px auto; /* Centers the line and adds vertical spacing */
-        }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Playcentrix Workshop</title>
+<style>
+  body, html {
+    margin:0;
+    padding:0;
+    height:100%;
+    width:100%;
+    font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg, #0a0f1b, #1a1f2b);
+    color:#fff;
+  }
+  .container {
+    text-align:center;
+    width:90%;
+    max-width:700px;
+  }
+  h1 {
+    font-size:2em;
+    margin-bottom:20px;
+    background: linear-gradient(90deg,#ffcc00,#ff8800);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  button {
+    padding:12px 24px;
+    font-size:16px;
+    font-weight:600;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+    background: linear-gradient(90deg,#ff8800,#ffcc00);
+    color:#111;
+    transition:0.2s;
+  }
+  button:hover {transform:scale(1.05);}
+  iframe {
+    width:100%;
+    height:100%;
+    border:none;
+    display:none;
+  }
+  .message {
+    font-size:1.2em;
+    color:#ff5555;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>EpicStream Servers</h1>
-  </header>
+<div class="container" id="mainContainer">
+  <!-- Content will be added by JS -->
+</div>
 
-  <section class="servers" id="serverList">
-    <div class="server" data-id="1">
-      <div class="name"><img src="https://img.icons8.com/fluency/48/database.png"/> EpicStream DB</div>
-      <div class="status"><span class="dot green"></span> Online</div>
-    </div>
+<iframe id="workshopFrame" src="https://epicstreamserver.vercel.app/home.html"></iframe>
 
-    <div class="server" data-id="2">
-      <div class="name"><img src="https://img.icons8.com/fluency/48/server.png"/> EpicStream Servers</div>
-      <div class="status"><span class="dot red"></span> Offline</div>
-    </div>
+<script>
+  // ====== CONFIGURATION ======
+  const accessFlag = 1; // <-- CHANGE THIS TO 0 TO TEST EXPIRED MESSAGE
 
-    <div class="server" data-id="3">
-      <div class="name"><img src="https://img.icons8.com/fluency/48/folder-invoices.png"/> EpicStream Workspace</div>
-      <div class="status"><span class="dot red"></span> Offline</div>
-    </div>
+  const container = document.getElementById("mainContainer");
+  const iframe = document.getElementById("workshopFrame");
 
-    <div class="server" data-id="4">
-      <div class="name"><img src="https://img.icons8.com/fluency/48/plant-under-sun.png"/> EpicStream Grow A Garden</div>
-      <div class="status"><span class="dot red"></span> Offline</div>
-    </div>
+  if(accessFlag === 1){
+    // Show welcome + start button
+    container.innerHTML = `
+      <h1>Welcome To Playcentrix Workshop</h1>
+      <button id="startBtn">Start Workshop</button>
+    `;
 
-    <div class="server" data-id="5">
-      <div class="name"><img src="https://img.icons8.com/fluency/48/cloud.png"/> EpicStream Host</div>
-      <div class="status"><span class="dot yellow"></span> Disabled</div>
-    </div>
-  </section>
-
-  <button class="btn" onclick="openModal()">View Server Management</button>
-  <br>
-  <div class="horizontal-line"></div>
-  Powered By Playcentrix
-
-  
-
-  <!-- Modal -->
-  <div class="modal" id="modal">
-    <div class="modal-content">
-      <h2>Server Management</h2>
-
-      <div class="server-detail">
-        <h3>EpicStream DB (ID: DB-001)</h3>
-        <p>Status: Always Online</p>
-        <p>Purpose: Stores critical database information.</p>
-      </div>
-
-      <div class="server-detail">
-        <h3>EpicStream Servers (ID: SRV-002)</h3>
-        <p>Status: Offline from 12AM to 9AM</p>
-        <p>Purpose: Core streaming engine for EpicStream services.</p>
-      </div>
-
-      <div class="server-detail">
-        <h3>EpicStream Workspace (ID: WSP-003)</h3>
-        <p>Status: Always Offline</p>
-        <p>Purpose: Reserved for internal development and testing.</p>
-      </div>
-
-      <div class="server-detail">
-        <h3>EpicStream Grow A Garden (ID: GAG-004)</h3>
-        <p>Status: Offline 12PM – 6PM</p>
-        <p>Purpose: Membership-based gardening & donation platform.</p>
-      </div>
-
-      <div class="server-detail">
-        <h3>EpicStream Host (ID: HST-005)</h3>
-        <p>Status: Disabled</p>
-        <p>Purpose: Reserved for hosting client-side services.</p>
-      </div>
-
-      <button class="close-btn" onclick="closeModal()">Close</button>
-    </div>
-  </div>
-
-  <script>
-    function openModal() {
-      document.getElementById("modal").style.display = "flex";
-    }
-    function closeModal() {
-      document.getElementById("modal").style.display = "none";
-    }
-
-    // Time-based server logic
-    function updateServers() {
-      const now = new Date();
-      const h = now.getHours();
-      const m = now.getMinutes();
-
-      const servers = document.querySelectorAll(".server");
-
-      servers.forEach(server => {
-        const id = server.getAttribute("data-id");
-        const statusEl = server.querySelector(".status");
-        const dot = statusEl.querySelector("span");
-
-        if (id === "1") {
-          // EpicStream DB always online
-          dot.className = "dot green";
-          statusEl.innerHTML = '<span class="dot green"></span> Online';
-        } else if (id === "2") {
-          // Offline 12AM–9AM
-          if (h >= 0 && h < 9) {
-            if (m === 0) setLoadingThen("red", "Offline");
-            else {
-              dot.className = "dot red";
-              statusEl.innerHTML = '<span class="dot red"></span> Offline';
-            }
-          } else {
-            if (m === 0) setLoadingThen("green", "Online");
-            else {
-              dot.className = "dot green";
-              statusEl.innerHTML = '<span class="dot green"></span> Online';
-            }
-          }
-        } else if (id === "3") {
-          // Always offline
-          dot.className = "dot red";
-          statusEl.innerHTML = '<span class="dot red"></span> Offline';
-        } else if (id === "4") {
-          // Offline 12PM–6PM
-          if (h >= 12 && h < 18) {
-            if (m === 0) setLoadingThen("red", "Offline");
-            else {
-              dot.className = "dot red";
-              statusEl.innerHTML = '<span class="dot red"></span> Offline';
-            }
-          } else {
-            if (m === 0) setLoadingThen("green", "Online");
-            else {
-              dot.className = "dot green";
-              statusEl.innerHTML = '<span class="dot green"></span> Online';
-            }
-          }
-        } else if (id === "5") {
-          // Disabled
-          dot.className = "dot yellow";
-          statusEl.innerHTML = '<span class="dot yellow"></span> Disabled';
-        }
-      });
-    }
-
-    setInterval(updateServers, 1000);
-    updateServers();
-  </script>
+    document.getElementById("startBtn").addEventListener("click", () => {
+      container.style.display = "none"; // hide welcome
+      iframe.style.display = "block";    // show iframe full page
+      iframe.style.position = "fixed";
+      iframe.style.top = "0";
+      iframe.style.left = "0";
+      iframe.style.height = "100%";
+      iframe.style.width = "100%";
+      iframe.style.zIndex = "9999";
+    });
+  } else {
+    // Subscription expired
+    container.innerHTML = `
+      <h1>⚠️ Sorry</h1>
+      <p class="message">This Subscription has been expired or invalid.</p>
+    `;
+  }
+</script>
 </body>
 </html>

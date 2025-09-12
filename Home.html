@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Playcentrix Dashboard</title>
+<style>
+    html, body {
+        margin: 0; padding: 0;
+        height: 100%; width: 100%;
+        overflow: hidden;
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #101010;
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .topbar {
+        background-color: #181818;
+        padding: 15px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-align: center;
+        width: 100%;
+        border-bottom: 1px solid #2c2c2c;
+    }
+
+    .apps-grid {
+        flex: 1;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 25px;
+        padding: 20px;
+        justify-items: center;
+        align-content: start;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .app-icon {
+        width: 65px; height: 65px;
+        background: linear-gradient(145deg, #3a3a3a, #1e1e1e);
+        border-radius: 18px;
+        box-shadow: 0 6px 10px rgba(0,0,0,0.6);
+        display: flex; justify-content: center; align-items: center;
+        cursor: pointer;
+        transition: transform 0.2s;
+    }
+    .app-icon img { width: 40px; height: 40px; }
+    .app-label {
+        font-size: 0.75rem;
+        margin-top: 6px;
+        text-align: center;
+        color: #ddd;
+        max-width: 70px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+    .app-icon:active { transform: scale(0.9); }
+
+    .iframe-modal {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.95);
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        z-index: 100;
+    }
+
+    .iframe-topbar {
+        width: 100%;
+        background-color: #181818;
+        color: #00ffae;
+        text-align: center;
+        padding: 12px;
+        font-weight: bold;
+        font-size: 1rem;
+        border-bottom: 1px solid #2c2c2c;
+        position: relative;
+    }
+
+    .close-btn {
+        position: absolute;
+        right: 30px;
+        top: 7px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #ff4c4c;
+        cursor: pointer;
+        transition: transform 0.2s, color 0.2s;
+    }
+    .close-btn:hover {
+        color: #ff6b6b;
+        transform: scale(1.2);
+    }
+
+    .iframe-container {
+        width: 100%;
+        height: calc(100% - 60px);
+        border: none;
+        display: none;
+    }
+</style>
+</head>
+<body>
+    <div class="topbar">Playcentrix</div>
+
+    <div class="apps-grid">
+        <div onclick="openApp('https://playcentrix.netlify.app','Playcentrix Toolbox')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/code.png"></div>
+            <div class="app-label">Playcentrix</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/sha-256.html','SHA-256')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/lock--v1.png"></div>
+            <div class="app-label">SHA-256</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/notes.html','Notes')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/note.png"></div>
+            <div class="app-label">Notes</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/search.html','Browser')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/internet.png"></div>
+            <div class="app-label">Browser</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/timer.html','Timer')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/time.png"></div>
+            <div class="app-label">Timer</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/calculator.html','Calculator')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/calculator.png"></div>
+            <div class="app-label">Calculator</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/translator.html','Translate')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/translation.png"></div>
+            <div class="app-label">Translate</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/draw.html','Draw')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/paint.png"></div>
+            <div class="app-label">Draw</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/code.html','Code Editor')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/source-code.png"></div>
+            <div class="app-label">Code</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/crypto.html/','Crypto')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/chip.png"></div>
+            <div class="app-label">Crypto</div>
+        </div>
+        <div onclick="openApp('https://epicstreamserver.vercel.app/rewrite.html','Rewrite')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/edit.png"></div>
+            <div class="app-label">Rewrite</div>
+        </div>
+        <div onclick="openApp('https://www.base64decode.org/','Base64')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/key.png"></div>
+            <div class="app-label">Base64</div>
+        </div>
+        <div onclick="openApp('https://www.desmos.com/scientific','Scientific Calc')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/math.png"></div>
+            <div class="app-label">Sci Calc</div>
+        </div>
+        <div onclick="openApp('https://www.photopea.com/','Photo Edit')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/image.png"></div>
+            <div class="app-label">Photo Edit</div>
+        </div>
+        <div onclick="openApp('https://www.markdowntutorial.com/','Markdown')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/markdown.png"></div>
+            <div class="app-label">Markdown</div>
+        </div>
+        <div onclick="openApp('https://jsonlint.com/','JSON Tool')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/braces.png"></div>
+            <div class="app-label">JSON Tool</div>
+        </div>
+        <div onclick="openApp('https://regex101.com/','Regex')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/regex.png"></div>
+            <div class="app-label">Regex</div>
+        </div>
+        <div onclick="openApp('https://pastebin.com/','Pastebin')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/paste.png"></div>
+            <div class="app-label">Pastebin</div>
+        </div>
+        <div onclick="openApp('https://www.diffchecker.com/','Diff Tool')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/diff-files.png"></div>
+            <div class="app-label">Diff Tool</div>
+        </div>
+        <div onclick="openApp('https://convertio.co/','File Convert')" class="app">
+            <div class="app-icon"><img src="https://img.icons8.com/ios-filled/50/ffffff/synchronize.png"></div>
+            <div class="app-label">Convert</div>
+        </div>
+    </div>
+
+    <!-- Iframe modal -->
+    <div class="iframe-modal" id="iframeModal">
+        <div class="iframe-topbar">
+            <span id="iframeTitle">Connecting...</span>
+            <span class="close-btn" onclick="endSession()">×</span>
+        </div>
+        <iframe class="iframe-container" id="iframeEmbed" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
+    <script>
+        const modal = document.getElementById('iframeModal');
+        const iframe = document.getElementById('iframeEmbed');
+        const iframeTitle = document.getElementById('iframeTitle');
+
+        function openApp(url, name) {
+            modal.style.display = "flex";
+            iframe.style.display = "block";
+            iframe.src = url;
+            iframeTitle.textContent = name;
+        }
+
+        function endSession() {
+            iframe.src = "";
+            modal.style.display = "none";
+        }
+    </script>
+</body>
+</html>

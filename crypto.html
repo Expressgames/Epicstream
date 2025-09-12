@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+  <title>Playcentrix Crypto</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0d1117;
+      color: #fff;
+      overflow-x: hidden; /* 🚫 No left/right scroll */
+    }
+    header {
+      padding: 15px;
+      background: #161b22;
+      text-align: center;
+      font-weight: bold;
+      font-size: 20px;
+      color: #ffcc00;
+      flex-shrink: 0;
+      border-bottom: 1px solid #222;
+    }
+    .search-bar {
+      padding: 12px;
+      background: #0d1117;
+      flex-shrink: 0;
+    }
+    .search-bar input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+      background: #161b22;
+      color: #fff;
+    }
+    .crypto-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 10px;
+      -webkit-overflow-scrolling: touch;
+    }
+    .coin {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #161b22;
+      padding: 14px;
+      margin-bottom: 10px;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .coin:active { transform: scale(0.97); }
+    .coin:hover { background: #1f2630; }
+    .coin img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .coin-name {
+      display: flex;
+      align-items: center;
+    }
+    .coin-name span {
+      font-size: 16px;
+      font-weight: 500;
+    }
+    .coin-price {
+      font-size: 14px;
+      color: #00ffcc;
+    }
+    .details {
+      display: none;
+      flex-direction: column;
+      padding: 20px;
+      height: 100%;
+      overflow-y: auto;
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .details img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      margin: 0 auto 15px;
+      display: block;
+    }
+    .details h2 {
+      margin: 0;
+      font-size: 22px;
+      text-align: center;
+    }
+    .details p {
+      margin: 8px 0;
+      font-size: 15px;
+      text-align: center;
+      color: #ccc;
+    }
+    .btn {
+      margin-top: 15px;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      background: #ffcc00;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .btn:active { transform: scale(0.96); }
+    .chart {
+      margin-top: 20px;
+      background: #161b22;
+      border-radius: 12px;
+      padding: 12px;
+      height: 300px;
+    }
+    canvas {
+      width: 100% !important;
+      height: 220px !important;
+    }
+    .range {
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-around;
+    }
+    .range button {
+      flex: 1;
+      margin: 0 3px;
+      padding: 6px;
+      border: none;
+      border-radius: 6px;
+      font-size: 12px;
+      background: #1f2630;
+      color: #fff;
+      cursor: pointer;
+    }
+    .range button.active {
+      background: #ffcc00;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <header>Playcentrix Crypto</header>
+
+  <div class="search-bar">
+    <input type="text" id="search" placeholder="Search crypto...">
+  </div>
+
+  <div class="crypto-list" id="cryptoList"></div>
+
+  <div class="details" id="details">
+    <img id="coinLogo" src="">
+    <h2 id="coinTitle"></h2>
+    <p id="coinPrice"></p>
+    <button class="btn" id="showChart">Show Chart</button>
+    <div class="chart" id="chartBox" style="display:none;">
+      <canvas id="chartCanvas"></canvas>
+      <div class="range" id="rangeBtns">
+        <button data-range="1">1d</button>
+        <button data-range="7">7d</button>
+        <button data-range="30">30d</button>
+        <button data-range="365">1y</button>
+        <button data-range="max">All</button>
+      </div>
+    </div>
+    <button class="btn" onclick="closeDetails()">Back</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const listEl = document.getElementById("cryptoList");
+    const searchEl = document.getElementById("search");
+    const detailsEl = document.getElementById("details");
+    const chartBox = document.getElementById("chartBox");
+    const ctx = document.getElementById("chartCanvas").getContext("2d");
+
+    let top100 = [], chart, refreshInterval;
+
+    // Add 4 custom coins
+    const customCoins = [
+      {id:"custom1", name:"Playcentrix", symbol:"PCX", current_price:1000000.00, image:"https://i.postimg.cc/13KtR3WH/Black-Beige-Bold-Framed-Typography-Planet-Brand-Business-Logo-2.png"},
+    ];
+
+    async function loadTop100() {
+      const res = await fetch("https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false");
+      top100 = await res.json();
+      // Prepend custom coins
+      top100 = customCoins.concat(top100);
+      renderList(top100);
+    }
+
+    function renderList(data) {
+      listEl.innerHTML = "";
+      data.forEach(c => {
+        const div = document.createElement("div");
+        div.className = "coin";
+        div.innerHTML = `
+          <div class="coin-name"><img src="${c.image}"><span>${c.name} (${c.symbol.toUpperCase()})</span></div>
+          <div class="coin-price">$${c.current_price.toFixed(5)}</div>
+        `;
+        div.onclick = () => showDetails(c);
+        listEl.appendChild(div);
+      });
+    }
+
+    function showDetails(c) {
+      listEl.style.display = "none";
+      detailsEl.style.display = "flex";
+      document.getElementById("coinLogo").src = c.image;
+      document.getElementById("coinTitle").textContent = `${c.name} (${c.symbol.toUpperCase()})`;
+      document.getElementById("coinPrice").textContent = `USD: $${c.current_price.toFixed(5)} | INR: ₹${(c.current_price*83).toFixed(2)}`;
+      document.getElementById("showChart").onclick = () => loadChart(c.id);
+    }
+
+    function closeDetails() {
+      detailsEl.style.display = "none";
+      listEl.style.display = "block";
+      chartBox.style.display = "none";
+      if (refreshInterval) clearInterval(refreshInterval);
+    }
+
+    async function loadChart(id, days="7") {
+      chartBox.style.display = "block";
+      // For custom coins, fake chart
+      if(id.startsWith("custom")){
+        const prices = Array.from({length: 10}, ()=>Math.random()*10 + 1);
+        const labels = prices.map((_,i)=>`T${i+1}`);
+        if(chart) chart.destroy();
+        chart = new Chart(ctx,{
+          type:"line",
+          data:{labels,datasets:[{label:"Price (USD)",data:prices,borderColor:"#ffcc00",fill:false}]},
+          options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
+        });
+        return;
+      }
+      // CoinGecko coins
+      const res = await fetch(`https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}`);
+      const data = await res.json();
+      const prices = data.prices.map(p => p[1]);
+      const labels = data.prices.map(p => new Date(p[0]).toLocaleDateString());
+
+      if(chart) chart.destroy();
+      chart = new Chart(ctx,{
+        type:"line",
+        data:{labels,datasets:[{label:"Price (USD)",data:prices,borderColor:"#ffcc00",fill:false}]},
+        options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}}}
+      });
+
+      if(refreshInterval) clearInterval(refreshInterval);
+      refreshInterval = setInterval(()=>loadChart(id,days),10000);
+
+      document.querySelectorAll(".range button").forEach(btn=>{
+        btn.onclick=()=>{
+          document.querySelectorAll(".range button").forEach(b=>b.classList.remove("active"));
+          btn.classList.add("active");
+          loadChart(id,btn.dataset.range);
+        };
+      });
+    }
+
+    searchEl.addEventListener("input", ()=>{
+      const val = searchEl.value.toLowerCase();
+      const filtered = top100.filter(c => c.name.toLowerCase().includes(val) || c.symbol.toLowerCase().includes(val));
+      renderList(filtered);
+    });
+
+    loadTop100();
+  </script>
+</body>
+</html>

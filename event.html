@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Playcentrix Release 8.9</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: radial-gradient(circle at center, #0a0f1b, #000);
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 6vw, 4rem);
+      font-weight: 800;
+      background: linear-gradient(270deg, #4facfe, #00f2fe, #4facfe);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientMove 2s linear infinite;
+      margin: 0 0 15px;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      margin-bottom: 20px;
+      backdrop-filter: blur(8px);
+    }
+
+    #countdown {
+      font-size: clamp(1.2rem, 4vw, 2rem);
+      letter-spacing: 1px;
+      margin-bottom: 25px;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 8px #00f2fe; }
+      to { text-shadow: 0 0 20px #4facfe; }
+    }
+
+    .hosted {
+      font-size: clamp(1rem, 3vw, 1.2rem);
+      margin-top: 15px;
+    }
+
+    .hosted a {
+      color: #1e90ff;
+      text-decoration: none;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .hosted a:hover {
+      text-shadow: 0 0 10px #1e90ff;
+    }
+
+    .help {
+      margin-top: 40px;
+      font-size: 1rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .brands {
+      margin-top: 20px;
+      display: flex;
+      gap: 25px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .brands svg, .brands img {
+      height: 35px;
+      width: auto;
+      opacity: 0.85;
+      transition: 0.3s;
+    }
+
+    .brands svg:hover, .brands img:hover {
+      opacity: 1;
+      transform: scale(1.05);
+    }
+
+    .github {
+      margin-top: 25px;
+      font-size: clamp(0.8rem, 2.5vw, 1rem);
+      opacity: 0.7;
+    }
+
+    #main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    #live {
+      display: none;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    #live iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <div id="main">
+    <h1>Playcentrix Release 8.9</h1>
+    <div class="badge">🚀 20+ Apps</div>
+    <div id="countdown">Goes Live at 9:00 PM</div>
+
+    <div class="hosted">Hosted By 
+      <a href="https://instagram.com/_devesh_here_" target="_blank">Devesh Prasad</a>
+    </div>
+
+    <div class="help">With the help of 🤝</div>
+    <div class="brands">
+      <!-- Vercel inline -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1155 1000" height="35"><path d="M577.3 0L1154.7 1000H0z" fill="white"/></svg>
+      <!-- Netlify -->
+      <img src="https://www.netlify.com/v3/img/components/logomark.png" alt="Netlify">
+      <!-- GitHub inline white -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" height="35" fill="white">
+  <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 
+        6.53 5.47 7.59.4.07.55-.17.55-.38 
+        0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
+        -.01-.53.63-.01 1.08.58 1.23.82.72 
+        1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 
+        0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 
+        0 0 .67-.21 2.2.82a7.65 7.65 0 012.01-.27c.68 
+        0 1.36.09 2 .27 1.53-1.04 2.2-.82 
+        2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 
+        1.27.82 2.15 0 3.07-1.87 3.75-3.65 
+        3.95.29.25.54.73.54 1.48 0 1.07-.01 
+        1.93-.01 2.2 0 .21.15.46.55.38A8.013 
+        8.013 0 0016 8c0-4.42-3.58-8-8-8z" />
+</svg>
+      <!-- HTML5 -->
+      <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5">
+    </div>
+
+    <div class="github">⚡ Hosted on GitHub</div>
+  </div>
+
+  <div id="live">
+    <iframe src="https://playcentrix-workshop.netlify.app"></iframe>
+  </div>
+
+  <script>
+    function checkTime() {
+      const now = new Date();
+      const target = new Date();
+      target.setHours(21, 0, 0, 0); // 9:00 PM local time
+
+      if (now >= target) {
+        document.getElementById("main").style.display = "none";
+        document.getElementById("live").style.display = "block";
+      } else {
+        const diff = target - now;
+        const hrs = Math.floor(diff / (1000*60*60));
+        const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const secs = Math.floor((diff % (1000*60)) / 1000);
+        document.getElementById("countdown").textContent =
+          `Live in ${hrs}h ${mins}m ${secs}s`;
+      }
+    }
+    setInterval(checkTime, 1000);
+    checkTime();
+  </script>
+</body>
+</html>

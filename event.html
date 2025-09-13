@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Playcentrix Release 8.9</title>
+  <title>Playcentrix Release 9.0</title>
   <style>
     body {
       margin: 0;
@@ -149,13 +149,14 @@
 </head>
 <body>
   <div id="main">
-    <h1>Playcentrix Release 8.9</h1>
-    <div class="badge">🚀 20+ Apps</div>
+    <h1>Playcentrix Release 9.0</h1>
+    <div class="badge">🚀 20,000+ Updates</div>
     <div id="countdown">Goes Live at 9:00 PM</div>
 
-    <div class="hosted">Hosted By 
+    <div class="hosted">Partners
       <a href="https://instagram.com/_devesh_here_" target="_blank">Devesh Prasad</a>
     </div>
+    <a href="Vihaan" target="_blank">Vihaan Dhingra</a>
 
     <div class="help">With the help of 🤝</div>
     <div class="brands">
@@ -191,22 +192,17 @@
   </div>
 
   <!-- Waiting box -->
-  <div class="waiting-box">👥 13 people waiting</div>
+  <div class="waiting-box">👥 1 people waiting</div>
 
   <script>
-    function checkTime() {
-      const now = new Date();
-      const target = new Date();
-      target.setHours(21, 0, 0, 0); // 9:00 PM local time
-
+    
       if (now >= target) {
         document.getElementById("main").style.display = "none";
         document.getElementById("live").style.display = "block";
       } else {
         const diff = target - now;
         const hrs = Math.floor(diff / (1000*60*60));
-        const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
-        const secs = Math.floor((diff % (1000*60)) / 1000);
+        const mins = Math. % (1000*60)) / 1000);
         document.getElementById("countdown").textContent =
           `Live in ${hrs}h ${mins}m ${secs}s`;
       }

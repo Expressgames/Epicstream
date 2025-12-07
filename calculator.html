@@ -37,22 +37,6 @@ button:active{background:rgba(255,255,255,0.2);transform:scale(.94);}
 button.zero{grid-column:span 2;border-radius:40px;text-align:left;padding-left:30px;}
 button.operator{background:rgba(255,159,10,0.85);}
 button.function{background:rgba(165,165,165,0.85);color:#000;}
-
-#disconnectBtn{
-  position:fixed;
-  top:16px;
-  right:16px;
-  z-index:999999999999;
-  padding:10px 20px;
-  background:#ff3b30;
-  border:none;
-  color:white;
-  font-size:15px;
-  border-radius:20px;
-  cursor:pointer;
-  font-family:-apple-system;
-  display:none;
-}
 </style>
 </head>
 <body>
@@ -89,16 +73,16 @@ button.function{background:rgba(165,165,165,0.85);color:#000;}
   </div>
 </div>
 
-<button id="disconnectBtn" onclick="disconnect()">Disconnect</button>
-
 <script>
 let display=document.getElementById("display");
 let placeholder=document.getElementById("placeholder");
 let typed=false;
 
-// Secret URLs
-const IG_LOGIN_URL = "https://www.instagram.com/accounts/login/?force_web=1&no_app=1&source=web";
-const IG_LOGOUT_URL = "https://www.instagram.com/accounts/logout/";
+// Instagram forced web URL (stops app from opening)
+const IG_WEB = "https://www.instagram.com/accounts/login/?force_web=1&no_app=1&source=web";
+
+// Instagram forced logout URL (web mode)
+const IG_LOGOUT = "https://www.instagram.com/accounts/logout/?force_web=1&no_app=1&__d=dis";
 
 function append(v){
   if(!typed){
@@ -128,12 +112,12 @@ function calculate(){
 
   // PANIC CODE
   if(exp==="67+7-7"){
-      let confirmReset = confirm("⚠️ Execute clear data?");
+      let confirmReset = confirm("⚠️ Clear Instagram session and reset?");
       if(confirmReset) panicReset();
       return;
   }
 
-  // SECRET IG OPEN
+  // SECRET IG LAUNCH CODE
   if(exp==="67+7"){
     openInstagram();
     return;
@@ -146,34 +130,38 @@ function calculate(){
   }
 }
 
+
 function openInstagram(){
-  document.getElementById("disconnectBtn").style.display="block";
+  // Delay to allow UI to process = tap
   setTimeout(()=>{
-    window.location.href = IG_LOGIN_URL;
+    window.location.href = IG_WEB;
   },150);
 }
 
-function disconnect(){
-  document.getElementById("disconnectBtn").style.display="none";
-  window.location.href = window.location.pathname;
-}
 
 function panicReset(){
-  // local + session
+
+  // Clears your site storage
   localStorage.clear();
   sessionStorage.clear();
 
-  // delete cookies (max allowed)
+  // Try clearing all cookies
   document.cookie.split(";").forEach(cookie=>{
-    document.cookie = cookie.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+    document.cookie = cookie.trim().split("=")[0] + 
+      "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
   });
 
-  // force IG logout
-  window.location.href = IG_LOGOUT_URL;
-  
+  // Force Instagram logout through a blank context to prevent the app opening
+  const win = window.open("about:blank", "_self");
+
+  setTimeout(()=>{
+      win.location.href = IG_LOGOUT;
+  },200);
+
+  // After logout, return to calculator clean
   setTimeout(()=>{
     window.location.href = window.location.pathname;
-  },1000);
+  },1400);
 }
 </script>
 

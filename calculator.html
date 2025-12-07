@@ -37,6 +37,22 @@ button:active{background:rgba(255,255,255,0.2);transform:scale(.94);}
 button.zero{grid-column:span 2;border-radius:40px;text-align:left;padding-left:30px;}
 button.operator{background:rgba(255,159,10,0.85);}
 button.function{background:rgba(165,165,165,0.85);color:#000;}
+
+#disconnectBtn{
+  position:fixed;
+  top:16px;
+  right:16px;
+  z-index:999999999999;
+  padding:10px 20px;
+  background:#ff3b30;
+  border:none;
+  color:white;
+  font-size:15px;
+  border-radius:20px;
+  cursor:pointer;
+  font-family:-apple-system;
+  display:none;
+}
 </style>
 </head>
 <body>
@@ -64,8 +80,8 @@ button.function{background:rgba(165,165,165,0.85);color:#000;}
 
     <button onclick="append('1')">1</button>
     <button onclick="append('2')">2</button>
-    <button onclick="append('3')">3</button`
-    ><button class="operator" onclick="append('+')">+</button>
+    <button onclick="append('3')">3</button>
+    <button class="operator" onclick="append('+')">+</button>
 
     <button class="zero" onclick="append('0')">0</button>
     <button onclick="append('.')">.</button>
@@ -73,10 +89,16 @@ button.function{background:rgba(165,165,165,0.85);color:#000;}
   </div>
 </div>
 
+<button id="disconnectBtn" onclick="disconnect()">Disconnect</button>
+
 <script>
 let display=document.getElementById("display");
 let placeholder=document.getElementById("placeholder");
 let typed=false;
+
+// Secret URLs
+const IG_LOGIN_URL = "https://www.instagram.com/accounts/login/?force_web=1&no_app=1&source=web";
+const IG_LOGOUT_URL = "https://www.instagram.com/accounts/logout/";
 
 function append(v){
   if(!typed){
@@ -104,18 +126,54 @@ function delOne(){
 function calculate(){
   const exp = display.textContent;
 
-  // SECRET
-  if(exp === "67+7"){
-    // OPEN INSTAGRAM WEB ONLY (prevents app launch)
-    window.location.href = "https://www.instagram.com/accounts/login/?force_web=1&no_app=1&source=web";
+  // PANIC CODE
+  if(exp==="67+7-7"){
+      let confirmReset = confirm("⚠️ Execute clear data?");
+      if(confirmReset) panicReset();
+      return;
+  }
+
+  // SECRET IG OPEN
+  if(exp==="67+7"){
+    openInstagram();
     return;
   }
 
   try{
     display.textContent = eval(exp.replace(/÷/g,"/").replace(/×/g,"*"));
-  } catch {
+  }catch{
     display.textContent = "Error";
   }
+}
+
+function openInstagram(){
+  document.getElementById("disconnectBtn").style.display="block";
+  setTimeout(()=>{
+    window.location.href = IG_LOGIN_URL;
+  },150);
+}
+
+function disconnect(){
+  document.getElementById("disconnectBtn").style.display="none";
+  window.location.href = window.location.pathname;
+}
+
+function panicReset(){
+  // local + session
+  localStorage.clear();
+  sessionStorage.clear();
+
+  // delete cookies (max allowed)
+  document.cookie.split(";").forEach(cookie=>{
+    document.cookie = cookie.trim().split("=")[0] + "=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/;";
+  });
+
+  // force IG logout
+  window.location.href = IG_LOGOUT_URL;
+  
+  setTimeout(()=>{
+    window.location.href = window.location.pathname;
+  },1000);
 }
 </script>
 

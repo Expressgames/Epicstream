@@ -1,144 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Playcentrix Note</title>
-<style>
-html, body {
-    margin:0; padding:0;
-    width:100%; height:100%;
-    overflow:hidden;
-    background-color:#101010;
-    font-family:'Segoe UI', sans-serif;
-    color:#fff;
-}
-.container {
-    box-sizing:border-box;
-    width:100%; max-width:500px;
-    height:100%;
-    padding:20px;
-    display:flex;
-    flex-direction:column;
-    justify-content:flex-start;
-    align-items:center;
-    background-color:#181818;
-}
-h1 {
-    margin:0 0 15px 0;
-    font-size:1.5rem;
-    font-weight:600;
-    color:#00ffaa;
-    text-align:center;
-}
-.toolbar {
-    display:flex;
-    justify-content:flex-start;
-    width:100%;
-    gap:15px;
-    margin-bottom:10px;
-}
-.toolbar button {
-    background:#2a2a2a;
-    border:none;
-    border-radius:8px;
-    padding:10px;
-    cursor:pointer;
-    transition:0.2s;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-shrink:0;
-}
-.toolbar button:hover {
-    background:#3a3a3a;
-}
-.toolbar button.active {
-    background:#00aaff;
-}
-textarea {
-    width:100%;
-    flex:1;
-    border-radius:8px;
-    border:1px solid #2c2c2c;
-    background:#101010;
-    color:#eee;
-    padding:12px;
-    font-size:1rem;
-    outline:none;
-    font-family:'Segoe UI', sans-serif;
-    resize:none;
-    overflow-y:auto;
-    box-sizing:border-box;
-}
-textarea:focus {
-    border-color:#00aaff;
-}
-.status-bar {
-    display:flex;
-    justify-content:space-between;
-    margin-top:5px;
-    font-size:0.85rem;
-    color:#aaa;
-    width:100%;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 Reveal - Sequence Lock</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --gold: #d4af37;
+            --gold-grad: linear-gradient(180deg, #ffffff 30%, #d4af37 100%);
+        }
+
+        body {
+            margin: 0; padding: 0; height: 100vh; overflow: hidden;
+            background: #05050a; display: flex; justify-content: center; align-items: center;
+            font-family: 'Montserrat', sans-serif; color: #fff;
+            user-select: none; -webkit-user-select: none;
+        }
+
+        #unlocker {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 1000; display: flex;
+            flex-direction: column; justify-content: center; align-items: center;
+            cursor: pointer; text-align: center;
+        }
+
+        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .container { position: relative; z-index: 10; text-align: center; width: 90%; transition: opacity 0.8s; }
+        
+        .main-label { 
+            font-weight: 700; letter-spacing: 8px; text-transform: uppercase; 
+            font-size: 1.2rem; margin-bottom: 40px; color: #ffffff;
+        }
+
+        .timer-grid { display: flex; justify-content: center; gap: 20px; }
+        .time-card {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px; padding: 40px 10px; min-width: 160px; position: relative; overflow: hidden;
+            cursor: pointer; touch-action: none;
+        }
+
+        .number {
+            font-size: 6.5rem; font-weight: 900; display: block; line-height: 1;
+            background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            pointer-events: none;
+        }
+
+        .unit-label { 
+            display: block; margin-top: 15px; font-size: 0.9rem; 
+            letter-spacing: 4px; text-transform: uppercase; color: #ffffff; font-weight: 900;
+            pointer-events: none;
+        }
+
+        /* --- CELEBRATION --- */
+        .celebration-screen {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 100%; text-align: center; opacity: 0; pointer-events: none; z-index: 100;
+        }
+        .celebration-screen.active { opacity: 1; transition: opacity 1s; }
+        .welcome-text { font-family: 'Great Vibes', cursive; font-size: 6rem; color: #fff; margin-bottom: -10px; }
+        
+        .year-display {
+            font-size: 11rem; font-weight: 900; display: flex; justify-content: center; align-items: center;
+            line-height: 1; position: relative;
+        }
+
+        .digit-static { 
+            background: linear-gradient(to left, var(--gold) 50%, white 50%);
+            background-size: 200% 100%; background-position: 0% 0;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            transition: background-position 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .wash-active { background-position: 100% 0; background-image: var(--gold-grad); }
+
+        .digit-flip-container { display: inline-block; position: relative; height: 11rem; overflow: hidden; width: 1.1ch; }
+        .digit-flipper {
+            position: absolute; width: 100%; top: -11rem;
+            transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+            display: flex; flex-direction: column;
+        }
+        .digit-flipper span { height: 11rem; display: flex; justify-content: center; align-items: center; }
+        .digit-flipper .six { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .flip-now { transform: translateY(11rem); }
+
+        .final-message {
+            font-size: 2.5rem; letter-spacing: 12px; text-transform: uppercase;
+            margin-top: 40px; opacity: 0; transform: translateY(30px);
+            transition: all 2s ease 1s; color: var(--gold); font-weight: 900;
+        }
+        .message-show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .timer-grid { flex-direction: column; align-items: center; }
+            .time-card { min-width: 85%; }
+            .year-display { font-size: 6.5rem; }
+            .digit-flip-container { height: 6.5rem; }
+            .digit-flipper { top: -6.5rem; }
+            .digit-flipper span { height: 6.5rem; }
+            .flip-now { transform: translateY(6.5rem); }
+        }
+    </style>
 </head>
-<body>
-<div class="container">
-    <h1>Playcentrix</h1>
-    <div class="toolbar">
-        <button id="saveBtn" title="Save Note">💾</button>
-        <button id="clearBtn" title="Clear Note">🗑️</button>
+<body onclick="startExperience()">
+
+    <div id="unlocker">
+        <h1 style="font-size: 3rem; color: var(--gold); margin-bottom: 10px;">2026</h1>
+        <p style="letter-spacing: 5px; font-weight: 700;">CLICK TO SYNC TIME</p>
     </div>
-    <textarea id="noteArea" placeholder="Type your note here (max 10,000 chars)"></textarea>
-    <div class="status-bar">
-        <div id="charCount">0 characters</div>
-        <div id="lineCount">0 lines</div>
+
+    <audio id="sndTick" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
+    <audio id="sndExplosion" src="https://actions.google.com/sounds/v1/fireworks/fireworks_explosion_large.ogg"></audio>
+    <audio id="sndTransition" src="https://assets.mixkit.co/active_storage/sfx/614/614-preview.mp3"></audio>
+
+    <canvas id="fireworksCanvas"></canvas>
+
+    <div class="container" id="countdownUI">
+        <div class="main-label">Countdown to 2026</div>
+        <div class="timer-grid">
+            <div class="time-card" id="h-card">
+                <span class="number" id="h">00</span>
+                <span class="unit-label">Hours</span>
+            </div>
+            <div class="time-card">
+                <span class="number" id="m">00</span>
+                <span class="unit-label">Minutes</span>
+            </div>
+            <div class="time-card" id="s-card">
+                <span class="number" id="s">00</span>
+                <span class="unit-label">Seconds</span>
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-const noteArea = document.getElementById('noteArea');
-const charCount = document.getElementById('charCount');
-const lineCount = document.getElementById('lineCount');
-const saveBtn = document.getElementById('saveBtn');
-const clearBtn = document.getElementById('clearBtn');
-const MAX_LENGTH = 10000;
+    <div class="celebration-screen" id="celebrationUI">
+        <p class="welcome-text">Welcome to</p>
+        <div class="year-display">
+            <span class="digit-static" id="prefix">202</span>
+            <div class="digit-flip-container">
+                <div class="digit-flipper" id="flipper">
+                    <span class="six">6</span>
+                    <span>5</span>
+                </div>
+            </div>
+        </div>
+        <div class="final-message" id="finalMsg">Happy New Year</div>
+    </div>
 
-// Load saved note
-noteArea.value = localStorage.getItem('playcentrixNote') || '';
-updateStatus();
+    <script>
+        const targetTime = new Date("January 1, 2026 00:00:00").getTime();
+        let isReady = false;
+        let fastForward = false;
+        let ffEndTime = 0;
+        
+        // Sequence Logic
+        let sHoldStart = 0;
+        let sCompleted = false;
+        let hHoldStart = 0;
 
-// Update counts
-function updateStatus() {
-    const text = noteArea.value;
-    charCount.textContent = text.length + " characters";
-    lineCount.textContent = text.split(/\r\n|\r|\n/).length + " lines";
-}
+        function startExperience() {
+            if(isReady) return;
+            isReady = true;
+            document.getElementById('unlocker').style.opacity = '0';
+            setTimeout(() => document.getElementById('unlocker').remove(), 600);
+            [document.getElementById('sndTick'), document.getElementById('sndExplosion'), document.getElementById('sndTransition')].forEach(a => { a.play(); a.pause(); });
+        }
 
-// Limit max length & update
-noteArea.addEventListener('input', () => {
-    if(noteArea.value.length > MAX_LENGTH) {
-        noteArea.value = noteArea.value.substring(0, MAX_LENGTH);
-    }
-    updateStatus();
-});
+        // --- THE SECRET SEQUENCE ---
+        const sCard = document.getElementById('s-card');
+        const hCard = document.getElementById('h-card');
 
-// Save note
-saveBtn.addEventListener('click', () => {
-    localStorage.setItem('playcentrixNote', noteArea.value);
-    saveBtn.classList.add('active');
-    setTimeout(() => saveBtn.classList.remove('active'), 500);
-});
+        // Phase 1: Hold Seconds for 3s
+        sCard.onpointerdown = () => sHoldStart = Date.now();
+        sCard.onpointerup = () => {
+            if(Date.now() - sHoldStart >= 3000) {
+                sCompleted = true;
+                console.log("Seconds Step Complete");
+            }
+        };
 
-// Clear note (does not auto-save)
-clearBtn.addEventListener('click', () => {
-    noteArea.value = '';
-    updateStatus();
-    clearBtn.classList.add('active');
-    setTimeout(() => clearBtn.classList.remove('active'), 500);
-});
-</script>
+        // Phase 2: Hold Hours for 2s (Only if Phase 1 is done)
+        hCard.onpointerdown = () => hHoldStart = Date.now();
+        hCard.onpointerup = () => {
+            if(sCompleted && (Date.now() - hHoldStart >= 2000)) {
+                fastForward = true;
+                ffEndTime = Date.now() + 5500;
+            }
+        };
+
+        function updateTimer() {
+            const now = Date.now();
+            let diff = fastForward ? (ffEndTime - now) : (targetTime - now);
+
+            if (diff <= 0) {
+                startCelebration();
+                return;
+            }
+
+            const h = Math.floor(diff / 3600000);
+            const m = Math.floor((diff % 3600000) / 60000);
+            const s = Math.floor((diff % 60000) / 1000);
+
+            if (diff < 10500 && isReady && s != parseInt(document.getElementById('s').innerText)) {
+                const t = document.getElementById('sndTick'); t.currentTime = 0; t.play();
+            }
+
+            document.getElementById('h').innerText = h.toString().padStart(2, '0');
+            document.getElementById('m').innerText = m.toString().padStart(2, '0');
+            document.getElementById('s').innerText = s.toString().padStart(2, '0');
+
+            requestAnimationFrame(updateTimer);
+        }
+        requestAnimationFrame(updateTimer);
+
+        function startCelebration() {
+            if(window.celebrating) return; window.celebrating = true;
+            document.getElementById('sndTransition').play();
+            document.getElementById('countdownUI').style.opacity = '0';
+            
+            setTimeout(() => {
+                document.getElementById('countdownUI').style.display = 'none';
+                document.getElementById('celebrationUI').classList.add('active');
+                
+                setTimeout(() => {
+                    document.getElementById('flipper').classList.add('flip-now');
+                    setTimeout(() => {
+                        document.getElementById('sndExplosion').play();
+                        initFireworks();
+                        setTimeout(() => {
+                            document.getElementById('prefix').classList.add('wash-active');
+                            document.getElementById('finalMsg').classList.add('message-show');
+                        }, 800);
+                    }, 400);
+                }, 1200);
+            }, 800);
+        }
+
+        const canvas = document.getElementById('fireworksCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+        window.onresize = resize; resize();
+
+        function initFireworks() {
+            function render() {
+                ctx.fillStyle = 'rgba(5, 5, 10, 0.2)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                if(Math.random() < 0.15) {
+                    const x = Math.random() * canvas.width, y = Math.random() * canvas.height * 0.4;
+                    for(let i=0; i<60; i++) {
+                        particles.push({
+                            x, y, 
+                            vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10,
+                            size: Math.random() * 2 + 1,
+                            color: Math.random() < 0.7 ? '#d4af37' : '#ffffff',
+                            a: 1
+                        });
+                    }
+                }
+                particles.forEach((p, i) => {
+                    p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.a -= 0.012;
+                    ctx.globalAlpha = p.a; ctx.fillStyle = p.color;
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+                    if(p.a <= 0) particles.splice(i, 1);
+                });
+                requestAnimationFrame(render);
+            }
+            render();
+        }
+    </script>
 </body>
 </html>

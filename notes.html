@@ -1,273 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 Reveal - Sequence Lock</title>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --gold: #d4af37;
-            --gold-grad: linear-gradient(180deg, #ffffff 30%, #d4af37 100%);
-        }
-
-        body {
-            margin: 0; padding: 0; height: 100vh; overflow: hidden;
-            background: #05050a; display: flex; justify-content: center; align-items: center;
-            font-family: 'Montserrat', sans-serif; color: #fff;
-            user-select: none; -webkit-user-select: none;
-        }
-
-        #unlocker {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 1000; display: flex;
-            flex-direction: column; justify-content: center; align-items: center;
-            cursor: pointer; text-align: center;
-        }
-
-        canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .container { position: relative; z-index: 10; text-align: center; width: 90%; transition: opacity 0.8s; }
-        
-        .main-label { 
-            font-weight: 700; letter-spacing: 8px; text-transform: uppercase; 
-            font-size: 1.2rem; margin-bottom: 40px; color: #ffffff;
-        }
-
-        .timer-grid { display: flex; justify-content: center; gap: 20px; }
-        .time-card {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px; padding: 40px 10px; min-width: 160px; position: relative; overflow: hidden;
-            cursor: pointer; touch-action: none;
-        }
-
-        .number {
-            font-size: 6.5rem; font-weight: 900; display: block; line-height: 1;
-            background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            pointer-events: none;
-        }
-
-        .unit-label { 
-            display: block; margin-top: 15px; font-size: 0.9rem; 
-            letter-spacing: 4px; text-transform: uppercase; color: #ffffff; font-weight: 900;
-            pointer-events: none;
-        }
-
-        /* --- CELEBRATION --- */
-        .celebration-screen {
-            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            width: 100%; text-align: center; opacity: 0; pointer-events: none; z-index: 100;
-        }
-        .celebration-screen.active { opacity: 1; transition: opacity 1s; }
-        .welcome-text { font-family: 'Great Vibes', cursive; font-size: 6rem; color: #fff; margin-bottom: -10px; }
-        
-        .year-display {
-            font-size: 11rem; font-weight: 900; display: flex; justify-content: center; align-items: center;
-            line-height: 1; position: relative;
-        }
-
-        .digit-static { 
-            background: linear-gradient(to left, var(--gold) 50%, white 50%);
-            background-size: 200% 100%; background-position: 0% 0;
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            transition: background-position 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .wash-active { background-position: 100% 0; background-image: var(--gold-grad); }
-
-        .digit-flip-container { display: inline-block; position: relative; height: 11rem; overflow: hidden; width: 1.1ch; }
-        .digit-flipper {
-            position: absolute; width: 100%; top: -11rem;
-            transition: transform 0.8s cubic-bezier(0.6, -0.28, 0.735, 0.045);
-            display: flex; flex-direction: column;
-        }
-        .digit-flipper span { height: 11rem; display: flex; justify-content: center; align-items: center; }
-        .digit-flipper .six { background: var(--gold-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .flip-now { transform: translateY(11rem); }
-
-        .final-message {
-            font-size: 2.5rem; letter-spacing: 12px; text-transform: uppercase;
-            margin-top: 40px; opacity: 0; transform: translateY(30px);
-            transition: all 2s ease 1s; color: var(--gold); font-weight: 900;
-        }
-        .message-show { opacity: 1; transform: translateY(0); }
-
-        @media (max-width: 768px) {
-            .timer-grid { flex-direction: column; align-items: center; }
-            .time-card { min-width: 85%; }
-            .year-display { font-size: 6.5rem; }
-            .digit-flip-container { height: 6.5rem; }
-            .digit-flipper { top: -6.5rem; }
-            .digit-flipper span { height: 6.5rem; }
-            .flip-now { transform: translateY(6.5rem); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Playcentrix</title>
+<style>
+body {
+  margin:0;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg,#ff7e5f,#feb47b);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.container {
+  background:rgba(255,255,255,0.96);
+  border-radius:28px;
+  padding:28px 20px;
+  width:90%;
+  max-width:400px;
+  text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,0.15);
+}
+h1 {
+  margin:0;
+  font-size:26px;
+  font-weight:800;
+  color:#2b7cff;
+  letter-spacing:0.5px;
+}
+.header-line {
+  width:50%;
+  height:3px;
+  background:linear-gradient(90deg,#2b7cff,#4e9eff);
+  border-radius:3px;
+  margin:8px auto 18px;
+}
+.subtext {
+  font-size:16px;
+  font-weight:500;
+  color:#444;
+  margin-bottom:16px;
+}
+textarea {
+  width:100%;
+  height:130px;
+  border-radius:20px;
+  border:1px solid #ddd;
+  padding:14px;
+  font-size:16px;
+  resize:none;
+  box-sizing:border-box;
+  background:#fff;
+  transition:box-shadow 0.3s;
+}
+textarea:focus {
+  outline:none;
+  box-shadow:0 0 0 3px rgba(43,124,255,0.25);
+}
+#limitNote {
+  display:none;
+  color:#b32d2d;
+  font-size:15px;
+  margin-top:6px;
+}
+button {
+  margin-top:20px;
+  background:#2b7cff;
+  color:#fff;
+  border:none;
+  padding:14px 22px;
+  font-size:17px;
+  font-weight:600;
+  border-radius:30px;
+  cursor:pointer;
+  width:100%;
+  transition:background 0.3s, transform 0.1s;
+}
+button:active {
+  transform:scale(0.97);
+}
+button:disabled {
+  opacity:.6;
+  cursor:default;
+}
+#status {
+  margin-top:12px;
+  font-size:15px;
+  color:#333;
+  min-height:18px;
+}
+</style>
 </head>
-<body onclick="startExperience()">
+<body>
+<div class="container">
+  <h1>Playcentrix</h1>
+  <div class="header-line"></div>
+  <p class="subtext">Sending message to <strong>@Devesh</strong></p>
+  <textarea id="msg" maxlength="250" placeholder="Type your message..."></textarea>
+  <div id="limitNote">Max text limit reached</div>
+  <button id="sendBtn" disabled>Loading...</button>
+  <div id="status"></div>
+</div>
 
-    <div id="unlocker">
-        <h1 style="font-size: 3rem; color: var(--gold); margin-bottom: 10px;">PLAYCENTRIX</h1>
-        <p style="letter-spacing: 5px; font-weight: 700;">CLICK TO SYNC TIME</p>
-    </div>
+<!-- FingerprintJS -->
+<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
 
-    <audio id="sndTick" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3"></audio>
-    <audio id="sndExplosion" src="https://actions.google.com/sounds/v1/fireworks/fireworks_explosion_large.ogg"></audio>
-    <audio id="sndTransition" src="https://assets.mixkit.co/active_storage/sfx/614/614-preview.mp3"></audio>
+<script>
+const BOT_TOKEN = '8257298860:AAH83fFDC21dfacr2vWUxVGc577xawaNDvk'; 
+const CHAT_ID = '1561851616';
+const COOLDOWN = 60;
+const NETLIFY_LINK = 'https://messagefetchinsta.netlify.app/';
 
-    <canvas id="fireworksCanvas"></canvas>
+const msg = document.getElementById('msg');
+const sendBtn = document.getElementById('sendBtn');
+const limitNote = document.getElementById('limitNote');
+const statusEl = document.getElementById('status');
 
-    <div class="container" id="countdownUI">
-        <div class="main-label">Countdown to 2026</div>
-        <div class="timer-grid">
-            <div class="time-card" id="h-card">
-                <span class="number" id="h">00</span>
-                <span class="unit-label">Hours</span>
-            </div>
-            <div class="time-card">
-                <span class="number" id="m">00</span>
-                <span class="unit-label">Minutes</span>
-            </div>
-            <div class="time-card" id="s-card">
-                <span class="number" id="s">00</span>
-                <span class="unit-label">Seconds</span>
-            </div>
-        </div>
-    </div>
+const TIME_KEY = 'pc_last_sent';
+let deviceId = '';
 
-    <div class="celebration-screen" id="celebrationUI">
-        <p class="welcome-text">Welcome to</p>
-        <div class="year-display">
-            <span class="digit-static" id="prefix">202</span>
-            <div class="digit-flip-container">
-                <div class="digit-flipper" id="flipper">
-                    <span class="six">6</span>
-                    <span>5</span>
-                </div>
-            </div>
-        </div>
-        <div class="final-message" id="finalMsg">Happy New Year</div>
-    </div>
+// Show limit note
+msg.addEventListener('input',()=>{
+  limitNote.style.display = msg.value.length>=250 ? 'block':'none';
+});
 
-    <script>
-        const targetTime = new Date("January 1, 2026 00:00:00").getTime();
-        let isReady = false;
-        let fastForward = false;
-        let ffEndTime = 0;
-        
-        // Sequence Logic
-        let sHoldStart = 0;
-        let sCompleted = false;
-        let hHoldStart = 0;
+// Cooldown functions
+function setCooldown(){ localStorage.setItem(TIME_KEY,Date.now()); }
+function getRemaining(){
+  const t = localStorage.getItem(TIME_KEY);
+  if(!t) return 0;
+  const diff = (Date.now()-t)/1000;
+  return diff<COOLDOWN ? Math.ceil(COOLDOWN-diff) : 0;
+}
+function startCooldown(rem){
+  sendBtn.disabled = true;
+  let remaining = rem;
+  statusEl.textContent = `Wait ${remaining}s`;
+  const iv = setInterval(()=>{
+    remaining--;
+    if(remaining<=0){
+      clearInterval(iv);
+      localStorage.removeItem(TIME_KEY);
+      sendBtn.disabled = false;
+      sendBtn.textContent = 'Send Message';
+      sendBtn.style.background = '#2b7cff';
+      statusEl.textContent = '';
+    } else {
+      statusEl.textContent = `Wait ${remaining}s`;
+    }
+  },1000);
+}
 
-        function startExperience() {
-            if(isReady) return;
-            isReady = true;
-            document.getElementById('unlocker').style.opacity = '0';
-            setTimeout(() => document.getElementById('unlocker').remove(), 600);
-            [document.getElementById('sndTick'), document.getElementById('sndExplosion'), document.getElementById('sndTransition')].forEach(a => { a.play(); a.pause(); });
-        }
+const remaining = getRemaining();
+if(remaining>0){
+  sendBtn.disabled = true;
+  sendBtn.textContent = '⏳';
+  startCooldown(remaining);
+}
 
-        // --- THE SECRET SEQUENCE ---
-        const sCard = document.getElementById('s-card');
-        const hCard = document.getElementById('h-card');
+// Initialize FingerprintJS and generate 5-digit device ID
+(async () => {
+  const fp = await FingerprintJS.load();
+  const result = await fp.get();
+  const fullId = result.visitorId; // long hash
 
-        // Phase 1: Hold Seconds for 3s
-        sCard.onpointerdown = () => sHoldStart = Date.now();
-        sCard.onpointerup = () => {
-            if(Date.now() - sHoldStart >= 3000) {
-                sCompleted = true;
-                console.log("Seconds Step Complete");
-            }
-        };
+  // Convert hash to 5-digit number
+  let num = 0;
+  for(let i=0;i<fullId.length;i++){
+    num += fullId.charCodeAt(i);
+  }
+  deviceId = 10000 + (num % 90000);
 
-        // Phase 2: Hold Hours for 2s (Only if Phase 1 is done)
-        hCard.onpointerdown = () => hHoldStart = Date.now();
-        hCard.onpointerup = () => {
-            if(sCompleted && (Date.now() - hHoldStart >= 2000)) {
-                fastForward = true;
-                ffEndTime = Date.now() + 5500;
-            }
-        };
+  console.log('Device ID (5-digit):', deviceId);
 
-        function updateTimer() {
-            const now = Date.now();
-            let diff = fastForward ? (ffEndTime - now) : (targetTime - now);
+  // Enable the send button once deviceId is ready
+  sendBtn.disabled = false;
+  sendBtn.textContent = 'Send Message';
+})();
 
-            if (diff <= 0) {
-                startCelebration();
-                return;
-            }
+// Send message to Telegram
+async function sendToTelegram(text){
+  const encodedMsg = encodeURIComponent(text.trim().slice(0, 250));
+  const messageLink = `${NETLIFY_LINK}${encodedMsg}`;
 
-            const h = Math.floor(diff / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const s = Math.floor((diff % 60000) / 1000);
+  const payload = {
+    chat_id: CHAT_ID,
+    text: `Anonymous message to @Devesh:\n\nMessage: "${text}"\n\nDevice ID: ${deviceId}\nTime: ${new Date().toISOString()}`,
+    reply_markup: {
+      inline_keyboard: [[
+        { text: "Open on Instagram Story", url: messageLink }
+      ]]
+    }
+  };
 
-            if (diff < 10500 && isReady && s != parseInt(document.getElementById('s').innerText)) {
-                const t = document.getElementById('sndTick'); t.currentTime = 0; t.play();
-            }
+  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+  const res = await fetch(url,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(payload)
+  });
+  return await res.json();
+}
 
-            document.getElementById('h').innerText = h.toString().padStart(2, '0');
-            document.getElementById('m').innerText = m.toString().padStart(2, '0');
-            document.getElementById('s').innerText = s.toString().padStart(2, '0');
+// Button click
+sendBtn.onclick = async ()=>{
+  const text = msg.value.trim();
+  if(!text){ alert('Type a message first'); return; }
 
-            requestAnimationFrame(updateTimer);
-        }
-        requestAnimationFrame(updateTimer);
+  sendBtn.disabled = true;
+  sendBtn.textContent = '⏳ Sending...';
+  statusEl.textContent = '';
 
-        function startCelebration() {
-            if(window.celebrating) return; window.celebrating = true;
-            document.getElementById('sndTransition').play();
-            document.getElementById('countdownUI').style.opacity = '0';
-            
-            setTimeout(() => {
-                document.getElementById('countdownUI').style.display = 'none';
-                document.getElementById('celebrationUI').classList.add('active');
-                
-                setTimeout(() => {
-                    document.getElementById('flipper').classList.add('flip-now');
-                    setTimeout(() => {
-                        document.getElementById('sndExplosion').play();
-                        initFireworks();
-                        setTimeout(() => {
-                            document.getElementById('prefix').classList.add('wash-active');
-                            document.getElementById('finalMsg').classList.add('message-show');
-                        }, 800);
-                    }, 400);
-                }, 1200);
-            }, 800);
-        }
-
-        const canvas = document.getElementById('fireworksCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-        window.onresize = resize; resize();
-
-        function initFireworks() {
-            function render() {
-                ctx.fillStyle = 'rgba(5, 5, 10, 0.2)';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                if(Math.random() < 0.15) {
-                    const x = Math.random() * canvas.width, y = Math.random() * canvas.height * 0.4;
-                    for(let i=0; i<60; i++) {
-                        particles.push({
-                            x, y, 
-                            vx: (Math.random() - 0.5) * 10, vy: (Math.random() - 0.5) * 10,
-                            size: Math.random() * 2 + 1,
-                            color: Math.random() < 0.7 ? '#d4af37' : '#ffffff',
-                            a: 1
-                        });
-                    }
-                }
-                particles.forEach((p, i) => {
-                    p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.a -= 0.012;
-                    ctx.globalAlpha = p.a; ctx.fillStyle = p.color;
-                    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
-                    if(p.a <= 0) particles.splice(i, 1);
-                });
-                requestAnimationFrame(render);
-            }
-            render();
-        }
-    </script>
+  try{
+    const result = await sendToTelegram(text);
+    if(result.ok){
+      msg.value = '';
+      setCooldown();
+      sendBtn.textContent = 'Sent ✓';
+      sendBtn.style.background = '#2ecc71';
+      statusEl.textContent = 'Message sent successfully!';
+      startCooldown(COOLDOWN);
+    } else {
+      throw new Error('API Error');
+    }
+  }catch(e){
+    console.error(e);
+    statusEl.textContent = 'Failed to send. Please Try Again';
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Send Message';
+  }
+};
+</script>
 </body>
 </html>

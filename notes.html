@@ -1,237 +1,391 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Playcentrix</title>
-<style>
-body {
-  margin:0;
-  font-family: "Poppins", sans-serif;
-  background: linear-gradient(135deg,#ff7e5f,#feb47b);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  min-height:100vh;
-}
-.container {
-  background:rgba(255,255,255,0.96);
-  border-radius:28px;
-  padding:28px 20px;
-  width:90%;
-  max-width:400px;
-  text-align:center;
-  box-shadow:0 12px 30px rgba(0,0,0,0.15);
-}
-h1 {
-  margin:0;
-  font-size:26px;
-  font-weight:800;
-  color:#2b7cff;
-  letter-spacing:0.5px;
-}
-.header-line {
-  width:50%;
-  height:3px;
-  background:linear-gradient(90deg,#2b7cff,#4e9eff);
-  border-radius:3px;
-  margin:8px auto 18px;
-}
-.subtext {
-  font-size:16px;
-  font-weight:500;
-  color:#444;
-  margin-bottom:16px;
-}
-textarea {
-  width:100%;
-  height:130px;
-  border-radius:20px;
-  border:1px solid #ddd;
-  padding:14px;
-  font-size:16px;
-  resize:none;
-  box-sizing:border-box;
-  background:#fff;
-  transition:box-shadow 0.3s;
-}
-textarea:focus {
-  outline:none;
-  box-shadow:0 0 0 3px rgba(43,124,255,0.25);
-}
-#limitNote {
-  display:none;
-  color:#b32d2d;
-  font-size:15px;
-  margin-top:6px;
-}
-button {
-  margin-top:20px;
-  background:#2b7cff;
-  color:#fff;
-  border:none;
-  padding:14px 22px;
-  font-size:17px;
-  font-weight:600;
-  border-radius:30px;
-  cursor:pointer;
-  width:100%;
-  transition:background 0.3s, transform 0.1s;
-}
-button:active {
-  transform:scale(0.97);
-}
-button:disabled {
-  opacity:.6;
-  cursor:default;
-}
-#status {
-  margin-top:12px;
-  font-size:15px;
-  color:#333;
-  min-height:18px;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cloud Redeem | Secure Access</title>
+    <style>
+        /* --- CSS VARIABLES --- */
+        :root {
+            /* DARK THEME (Default) */
+            --bg-color: #020617;
+            --card-bg: rgba(15, 23, 42, 0.8);
+            --primary-accent: #3b82f6;
+            --primary-hover: #2563eb;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            --input-fill: rgba(0, 0, 0, 0.4);
+            --modal-bg: #0f172a;
+        }
+
+        body.light-mode {
+            /* LIGHT THEME */
+            --bg-color: #f8fafc;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --primary-accent: #2563eb;
+            --primary-hover: #1d4ed8;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --input-fill: #ffffff;
+            --modal-bg: #ffffff;
+        }
+
+        /* --- GLOBAL REFINEMENTS --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow: hidden; 
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: radial-gradient(at 0% 0%, hsla(250, 20%, 10%, 1) 0, transparent 50%),
+                              radial-gradient(at 100% 100%, hsla(220, 30%, 15%, 1) 0, transparent 50%);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        body.light-mode {
+            background-image: radial-gradient(at 0% 0%, #e2e8f0 0, transparent 50%),
+                              radial-gradient(at 100% 100%, #f1f5f9 0, transparent 50%);
+        }
+
+        /* --- MAIN CONTAINER --- */
+        .container {
+            width: 100%;
+            max-width: 440px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 45px 35px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -1px;
+            background: linear-gradient(135deg, #60a5fa, #c084fc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+
+        /* --- INPUT --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 12px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 18px;
+            border-radius: 14px;
+            border: 2px solid var(--border-color);
+            background: var(--input-fill);
+            color: var(--text-main);
+            font-size: 1.2rem;
+            font-weight: 500;
+            text-align: center;
+            letter-spacing: 1.25px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        input[type="text"]:focus {
+            border-color: var(--primary-accent);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        /* --- INFO BOX --- */
+        .info-box {
+            text-align: left;
+            margin-bottom: 20px;
+            padding: 12px 16px;
+            background: rgba(125, 125, 125, 0.05);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .info-box p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* --- REDEEM BUTTON --- */
+        .btn-redeem {
+            width: 100%;
+            height: 58px;
+            border-radius: 14px;
+            border: none;
+            background: var(--primary-accent);
+            color: #fff;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+            overflow: hidden;
+        }
+
+        .btn-redeem:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-redeem:disabled {
+            background: #475569;
+            cursor: default;
+            box-shadow: none;
+        }
+
+        /* --- SPINNER REFINEMENT --- */
+        .spinner {
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 0.8s linear infinite;
+            display: none; /* Controlled by JS */
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+            z-index: 999;
+        }
+
+        /* --- STATUS MSG --- */
+        .status-msg {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            min-height: 18px;
+        }
+        .status-msg.error { color: #f87171; }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; visibility: hidden; transition: 0.3s; z-index: 2000; padding: 15px;
+        }
+
+        .modal-overlay.active { opacity: 1; visibility: visible; }
+
+        .modal-content {
+            background: var(--modal-bg);
+            width: 100%; max-width: 650px; border-radius: 24px;
+            border: 1px solid var(--border-color); overflow: hidden;
+            display: flex; flex-direction: column; max-height: 90vh;
+            transform: scale(0.95); transition: 0.3s;
+        }
+
+        .modal-overlay.active .modal-content { transform: scale(1); }
+
+        .modal-header {
+            padding: 18px 24px; border-bottom: 1px solid var(--border-color);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .modal-body { 
+            padding: 24px; 
+            overflow-y: auto;
+        }
+
+        .modal-close {
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; font-size: 1.8rem;
+        }
+
+        .iframe-wrapper { width: 100%; height: 500px; border: none; border-radius: 12px; }
+
+        /* --- ANIMATIONS --- */
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-  <h1>Playcentrix</h1>
-  <div class="header-line"></div>
-  <p class="subtext">Sending message to <strong>@Devesh</strong></p>
-  <textarea id="msg" maxlength="250" placeholder="Type your message..."></textarea>
-  <div id="limitNote">Max text limit reached</div>
-  <button id="sendBtn" disabled>Loading...</button>
-  <div id="status"></div>
-</div>
 
-<!-- FingerprintJS -->
-<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+    <button class="theme-toggle" id="themeToggle">🌙</button>
 
-<script>
-const BOT_TOKEN = '8257298860:AAH83fFDC21dfacr2vWUxVGc577xawaNDvk'; 
-const CHAT_ID = '1561851616';
-const COOLDOWN = 60;
-const NETLIFY_LINK = 'https://messagefetchinsta.netlify.app/';
+    <div class="container" id="mainCard">
+        <div class="logo">Cloud Redeem</div>
+        <div class="subtitle">Redeem a Code!</div>
 
-const msg = document.getElementById('msg');
-const sendBtn = document.getElementById('sendBtn');
-const limitNote = document.getElementById('limitNote');
-const statusEl = document.getElementById('status');
+        <div class="input-group">
+            <input type="text" id="codeInput" placeholder="Enter Your Code" maxlength="20" autocomplete="off">
+        </div>
 
-const TIME_KEY = 'pc_last_sent';
-let deviceId = '';
+        <div class="info-box">
+            <p>Redeem codes can be obtained via official vouchers or gift cards. All redemptions are processed instantly upon validation.</p>
+        </div>
 
-// Show limit note
-msg.addEventListener('input',()=>{
-  limitNote.style.display = msg.value.length>=250 ? 'block':'none';
-});
+        <button id="redeemBtn" class="btn-redeem">
+            <span id="btnText">Redeem Code</span>
+            <div class="spinner" id="btnSpinner"></div>
+        </button>
+        
+        <div id="statusMsg" class="status-msg"></div>
+    </div>
 
-// Cooldown functions
-function setCooldown(){ localStorage.setItem(TIME_KEY,Date.now()); }
-function getRemaining(){
-  const t = localStorage.getItem(TIME_KEY);
-  if(!t) return 0;
-  const diff = (Date.now()-t)/1000;
-  return diff<COOLDOWN ? Math.ceil(COOLDOWN-diff) : 0;
-}
-function startCooldown(rem){
-  sendBtn.disabled = true;
-  let remaining = rem;
-  statusEl.textContent = `Wait ${remaining}s`;
-  const iv = setInterval(()=>{
-    remaining--;
-    if(remaining<=0){
-      clearInterval(iv);
-      localStorage.removeItem(TIME_KEY);
-      sendBtn.disabled = false;
-      sendBtn.textContent = 'Send Message';
-      sendBtn.style.background = '#2b7cff';
-      statusEl.textContent = '';
-    } else {
-      statusEl.textContent = `Wait ${remaining}s`;
-    }
-  },1000);
-}
+    <div id="modalOverlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="modalTitle" style="font-weight:700">Content Unlocked</span>
+                <button id="modalClose" class="modal-close">&times;</button>
+            </div>
+            <div id="modalBody" class="modal-body"></div>
+        </div>
+    </div>
 
-const remaining = getRemaining();
-if(remaining>0){
-  sendBtn.disabled = true;
-  sendBtn.textContent = '⏳';
-  startCooldown(remaining);
-}
+    <script>
+        const DATABASE = {
+            "TESTINGTEXT": { type: "text", title: "Cloud Redeem", content: "The Text Type Function Is Working Properly!" },
+            "WIKIPEDIA": { type: "iframe", title: "Live Dashboard", content: "https://www.wikipedia.org/" }
+        };
 
-// Initialize FingerprintJS and generate 5-digit device ID
-(async () => {
-  const fp = await FingerprintJS.load();
-  const result = await fp.get();
-  const fullId = result.visitorId; // long hash
+        const body = document.body;
+        const codeInput = document.getElementById('codeInput');
+        const redeemBtn = document.getElementById('redeemBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+        const statusMsg = document.getElementById('statusMsg');
+        const themeToggle = document.getElementById('themeToggle');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalBody = document.getElementById('modalBody');
+        const mainCard = document.getElementById('mainCard');
 
-  // Convert hash to 5-digit number
-  let num = 0;
-  for(let i=0;i<fullId.length;i++){
-    num += fullId.charCodeAt(i);
-  }
-  deviceId = 10000 + (num % 90000);
+        /* --- THEME PERSISTENCE --- */
+        const savedTheme = localStorage.getItem('redeem-theme');
+        if (savedTheme === 'light') {
+            body.classList.add('light-mode');
+            themeToggle.innerText = '☀️';
+        }
 
-  console.log('Device ID (5-digit):', deviceId);
+        themeToggle.addEventListener('click', () => {
+            const isLight = body.classList.toggle('light-mode');
+            themeToggle.innerText = isLight ? '☀️' : '🌙';
+            localStorage.setItem('redeem-theme', isLight ? 'light' : 'dark');
+        });
 
-  // Enable the send button once deviceId is ready
-  sendBtn.disabled = false;
-  sendBtn.textContent = 'Send Message';
-})();
+        /* --- INPUT HANDLING --- */
+        codeInput.addEventListener('input', (e) => {
+            const cleaned = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            e.target.value = cleaned;
+            statusMsg.innerText = '';
+        });
 
-// Send message to Telegram
-async function sendToTelegram(text){
-  const encodedMsg = encodeURIComponent(text.trim().slice(0, 250));
-  const messageLink = `${NETLIFY_LINK}${encodedMsg}`;
+        /* --- REDEMPTION CORE --- */
+        redeemBtn.addEventListener('click', () => {
+            const val = codeInput.value.trim();
 
-  const payload = {
-    chat_id: CHAT_ID,
-    text: `Anonymous message to @Devesh:\n\nMessage: "${text}"\n\nDevice ID: ${deviceId}\nTime: ${new Date().toISOString()}`,
-    reply_markup: {
-      inline_keyboard: [[
-        { text: "Open on Instagram Story", url: messageLink }
-      ]]
-    }
-  };
+            if (val.length < 8) {
+                showError("Minimum key length is 8 characters");
+                return;
+            }
 
-  const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-  const res = await fetch(url,{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(payload)
-  });
-  return await res.json();
-}
+            // Start Loading State
+            redeemBtn.disabled = true;
+            
+            // FIX: Use display none so the spinner is the only item flexbox sees
+            btnText.style.display = 'none'; 
+            btnSpinner.style.display = 'block';
 
-// Button click
-sendBtn.onclick = async ()=>{
-  const text = msg.value.trim();
-  if(!text){ alert('Type a message first'); return; }
+            // Fixed 2 Second Processing
+            setTimeout(() => {
+                btnSpinner.style.display = 'none';
+                btnText.style.display = 'block'; // Restore text
+                redeemBtn.disabled = false;
 
-  sendBtn.disabled = true;
-  sendBtn.textContent = '⏳ Sending...';
-  statusEl.textContent = '';
+                if (DATABASE[val]) {
+                    showSuccess(DATABASE[val]);
+                } else {
+                    showError("Invalid or expired key");
+                }
+            }, 5000);
+        });
 
-  try{
-    const result = await sendToTelegram(text);
-    if(result.ok){
-      msg.value = '';
-      setCooldown();
-      sendBtn.textContent = 'Sent ✓';
-      sendBtn.style.background = '#2ecc71';
-      statusEl.textContent = 'Message sent successfully!';
-      startCooldown(COOLDOWN);
-    } else {
-      throw new Error('API Error');
-    }
-  }catch(e){
-    console.error(e);
-    statusEl.textContent = 'Failed to send. Please Try Again';
-    sendBtn.disabled = false;
-    sendBtn.textContent = 'Send Message';
-  }
-};
-</script>
+        function showError(msg) {
+            statusMsg.innerText = msg;
+            statusMsg.className = 'status-msg error';
+            mainCard.style.animation = 'none';
+            void mainCard.offsetWidth; 
+            mainCard.style.animation = 'shake 0.4s ease-in-out';
+        }
+
+        function showSuccess(data) {
+            document.getElementById('modalTitle').innerText = data.title;
+            if (data.type === 'text') {
+                modalBody.innerHTML = `<p style="font-size: 1.1rem; color: var(--text-main);">${data.content}</p>`;
+            } else {
+                modalBody.innerHTML = `<iframe src="${data.content}" class="iframe-wrapper"></iframe>`;
+            }
+            modalOverlay.classList.add('active');
+        }
+
+        /* --- MODAL CONTROL --- */
+        const closeModal = () => {
+            modalOverlay.classList.remove('active');
+            setTimeout(() => { modalBody.innerHTML = ''; }, 300);
+        };
+
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        modalOverlay.addEventListener('click', (e) => { if(e.target === modalOverlay) closeModal(); });
+        codeInput.addEventListener('keypress', (e) => { if(e.key === 'Enter') redeemBtn.click(); });
+
+    </script>
 </body>
 </html>

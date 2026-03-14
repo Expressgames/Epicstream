@@ -649,7 +649,7 @@ function attemptLogin(){
         x.password === p);
 
         if(user){
-            localStorage.setItem("activeUser", u.toLowerCase());
+            localStorage.setItem("activeUser", user.username);
             toggleLoader(false);
             setupPin("login");
         }else{

@@ -11,7 +11,6 @@
  --bg:#f6f5fb;--card:#fff;--ink:#191827;--muted:#858397;
  --line:#eceaf4;--purple:#7255ed;--green:#15996a;--red:#e24d65;
  --shadow:0 8px 30px #27204408;--radius:23px;
- --robux-url:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10");
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{scroll-behavior:smooth}
@@ -145,8 +144,6 @@ p{line-height:1.5}
 .game-stat{padding:12px 7px;text-align:center;background:#faf9ff;border:1px solid var(--line);border-radius:15px}
 .game-stat strong{display:block;font-size:19px}
 .game-stat small{font-size:10px;color:var(--muted)}
-
-/* The supplied Robux logo */
 .robux-icon{width:30px;height:30px;object-fit:contain;vertical-align:middle;flex-shrink:0}
 .robux-purchase-logo{display:block;width:86px;height:86px;object-fit:contain;margin:0 auto 12px;animation:robuxPurchase 1s cubic-bezier(.2,.9,.3,1.3) both;filter:drop-shadow(0 8px 14px #7255ed30)}
 @keyframes robuxPurchase{
@@ -155,51 +152,38 @@ p{line-height:1.5}
  75%{transform:scale(.92) rotate(-4deg)}
  100%{opacity:1;transform:scale(1) rotate(0)}
 }
-
-/* Full-screen gaming overlay */
 #gameArea.game-popup{
- position:fixed;inset:0;z-index:90;
- display:flex;align-items:center;justify-content:center;
+ position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;
  padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));
- background:#151326f2;backdrop-filter:blur(22px);
- overflow-y:auto;overscroll-behavior:contain;
+ background:#151326f2;backdrop-filter:blur(22px);overflow-y:auto;overscroll-behavior:contain;
  animation:gamePopupIn .22s ease both;
 }
 @keyframes gamePopupIn{from{opacity:0}to{opacity:1}}
 #gameArea.game-popup .card{
- position:relative;width:min(720px,100%);
- max-height:calc(100dvh - 30px);overflow-y:auto;overscroll-behavior:contain;
- margin:auto;padding:24px;border-radius:28px;
- border:1px solid #ffffff;background:#fff;
- box-shadow:0 30px 100px #0005;
+ position:relative;width:min(720px,100%);max-height:calc(100dvh - 30px);
+ overflow-y:auto;overscroll-behavior:contain;margin:auto;padding:24px;border-radius:28px;
+ border:1px solid white;background:white;box-shadow:0 30px 100px #0005;
  animation:gameCardIn .3s cubic-bezier(.2,.8,.2,1) both;
 }
 @keyframes gameCardIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
 .game-close{
- position:sticky;top:0;float:right;z-index:8;
- width:45px;height:45px;margin:-10px -10px 8px 12px;
- border:0;border-radius:16px;background:#fff0f2;color:#df3f5d;
- font-size:24px;font-weight:850;display:grid;place-items:center;
- box-shadow:0 4px 14px #24133a0c;
- transition:transform .18s,background .18s;
+ position:sticky;top:0;float:right;z-index:8;width:45px;height:45px;margin:-10px -10px 8px 12px;
+ border:0;border-radius:16px;background:#fff0f2;color:#df3f5d;font-size:24px;font-weight:850;
+ display:grid;place-items:center;box-shadow:0 4px 14px #24133a0c;transition:transform .18s,background .18s;
 }
 .game-close:active{transform:scale(.86) rotate(-10deg);background:#ffdfe5}
 .game-close .close-x{display:block;transition:transform .2s}
 .game-close:hover .close-x{transform:rotate(90deg)}
 #gameArea.game-popup .question{font-size:clamp(35px,8vw,54px);margin:28px 0}
-#gameArea.game-popup .answer{min-height:64px;border-radius:17px;font-size:19px;transition:background .15s,transform .15s}
-#gameArea.game-popup .answer:active{background:#eee8ff;transform:scale(.97)}
+#gameArea.game-popup .answer{min-height:64px;border-radius:17px;font-size:19px}
 #gameArea.game-popup .memorygrid{gap:11px}
 #gameArea.game-popup .memorycard{border-radius:17px;font-size:clamp(23px,5vw,32px)}
 #gameArea.game-popup .gamechoices{gap:13px}
 #gameArea.game-popup .gamechoice{height:115px;border-radius:21px;font-size:38px}
 #gameArea.game-popup .gamestatus{font-size:14px;padding:7px}
-#gameArea.game-popup .game-tag{font-size:11px}
-.game-popup .game-exit-note{color:var(--muted);font-size:11px;text-align:center;margin:12px 0 0}
 body.game-open{overflow:hidden}
 body.game-open .top,body.game-open .nav{pointer-events:none}
 body.game-open .nav{opacity:0}
-
 .login{position:fixed;inset:0;z-index:150;background:var(--bg);display:none;overflow:auto;padding:25px 20px calc(30px + env(safe-area-inset-bottom))}
 .login.show{display:block}
 .loginwrap{max-width:430px;margin:8vh auto 0}
@@ -249,7 +233,7 @@ body.game-open .nav{opacity:0}
  <div class="head"><h2>Quick actions</h2></div>
  <div class="grid2">
   <button class="actioncard" data-go="earn"><div class="actionicon">⛏️</div><strong>PCX Miner</strong><small>Earn 10 PCX/min while active.</small></button>
-  <button class="actioncard" data-go="games"><div class="actionicon">🎮</div><strong>Game zone</strong><small>50 PCX entry. Game-specific rewards.</small></button>
+  <button class="actioncard" data-go="games"><div class="actionicon">🎮</div><strong>Game zone</strong><small>Game-specific entry fees and rewards.</small></button>
   <button class="actioncard" data-go="withdraw"><div class="actionicon">🎟️</div><strong>Redeem Robux</strong><small>Review every fee before confirming.</small></button>
   <button class="actioncard" data-go="activity"><div class="actionicon">↗️</div><strong>Activity</strong><small>Review your wallet history.</small></button>
  </div>
@@ -260,13 +244,13 @@ body.game-open .nav{opacity:0}
 
 <section class="page" id="page-games">
  <div class="muted small">PLAY & EARN</div><h1>Game zone 🎮</h1><p class="muted">Quick challenges. Clear rules. Different rewards.</p>
- <div class="hero"><div class="herotop"><span class="herolabel">ENTRY FEE</span><span class="pill">PCX</span></div><div class="balance">50 PCX</div><div class="balancesub">Charged before each attempt.</div></div>
- <div class="notice">Every game opens in a large gaming window. You can exit using the ✕ button, but leaving an active attempt forfeits the entry fee.</div>
+ <div class="hero"><div class="herotop"><span class="herolabel">GAME ENTRY FEES</span><span class="pill">PCX</span></div><div class="balance" style="font-size:25px">50–250 PCX</div><div class="balancesub">The entry fee depends on the game you select.</div></div>
+ <div class="notice">Games open in a large gaming window. Use the ✕ button to exit. Exiting forfeits the entry fee and gives no reward.</div>
  <div class="head"><h2>Choose your challenge</h2></div>
- <button class="option" data-game="rps"><div class="optionicon">✊</div><div class="optioninfo"><strong>Rock Paper Scissors</strong><small>Best of 3 · First to 2 wins.</small></div><div class="optionend"><strong>+500</strong><small>PCX reward</small></div></button>
- <button class="option" data-game="math"><div class="optionicon">🧠</div><div class="optioninfo"><strong>Math Challenge</strong><small>5 questions · 10 seconds each.</small></div><div class="optionend"><strong>+250</strong><small>PCX reward</small></div></button>
- <button class="option" data-game="rush"><div class="optionicon">⚡</div><div class="optioninfo"><strong>Number Rush</strong><small>5 rounds · 5 seconds per round.</small></div><div class="optionend"><strong>+100</strong><small>PCX reward</small></div></button>
- <button class="option" data-game="memory"><div class="optionicon">🧩</div><div class="optioninfo"><strong>Memory Match</strong><small>8 pairs · Maximum 25 moves.</small></div><div class="optionend"><strong>+500</strong><small>PCX reward</small></div></button>
+ <button class="option" data-game="rps"><div class="optionicon">✊</div><div class="optioninfo"><strong>Rock Paper Scissors</strong><small>250 PCX entry · Best of 3.</small></div><div class="optionend"><strong>+500</strong><small>PCX reward</small></div></button>
+ <button class="option" data-game="math"><div class="optionicon">🧠</div><div class="optioninfo"><strong>Math Challenge</strong><small>50 PCX entry · 5 questions, 10 seconds each.</small></div><div class="optionend"><strong>+250</strong><small>PCX reward</small></div></button>
+ <button class="option" data-game="rush"><div class="optionicon">⚡</div><div class="optioninfo"><strong>Number Rush</strong><small>250 PCX entry · 5 rounds, 5 seconds each.</small></div><div class="optionend"><strong>+100</strong><small>PCX reward</small></div></button>
+ <button class="option" data-game="memory"><div class="optionicon">🧩</div><div class="optioninfo"><strong>Memory Match</strong><small>100 PCX entry · 8 pairs, maximum 20 moves.</small></div><div class="optionend"><strong>+500</strong><small>PCX reward</small></div></button>
  <div id="gameArea"></div>
 </section>
 
@@ -287,19 +271,9 @@ body.game-open .nav{opacity:0}
  <button class="option plan-admin" data-plan="Admin"><div class="optionicon">🛡️</div><div class="optioninfo"><strong>Admin</strong><small>Admin membership</small></div><div class="optionend"><strong>100,000</strong><small>PCX</small></div></button>
  <div class="head"><h2>Redeem for Robux</h2></div>
  <div class="notice orange">Fee breakdown: 15% transaction fee + 30% Roblox Fee + 15% Playcentrix commission. You receive 40% of the gross amount.</div>
-
- <button class="option" data-robux="10000">
-  <div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div>
-  <div class="optioninfo"><strong>Starter redemption</strong><small>10,000 PCX</small></div><div class="optionend"><strong>100 Robux</strong><small>40 net Robux</small></div>
- </button>
- <button class="option" data-robux="100000">
-  <div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div>
-  <div class="optioninfo"><strong>Plus redemption</strong><small>100,000 PCX</small></div><div class="optionend"><strong>1,000 Robux</strong><small>400 net Robux</small></div>
- </button>
- <button class="option" data-robux="1000000">
-  <div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div>
-  <div class="optioninfo"><strong>Max redemption</strong><small>1,000,000 PCX</small></div><div class="optionend"><strong>10,000 Robux</strong><small>4,000 net Robux</small></div>
- </button>
+ <button class="option" data-robux="10000"><div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div><div class="optioninfo"><strong>Starter redemption</strong><small>10,000 PCX</small></div><div class="optionend"><strong>100 Robux</strong><small>40 net Robux</small></div></button>
+ <button class="option" data-robux="100000"><div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div><div class="optioninfo"><strong>Plus redemption</strong><small>100,000 PCX</small></div><div class="optionend"><strong>1,000 Robux</strong><small>400 net Robux</small></div></button>
+ <button class="option" data-robux="1000000"><div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div><div class="optioninfo"><strong>Max redemption</strong><small>1,000,000 PCX</small></div><div class="optionend"><strong>10,000 Robux</strong><small>4,000 net Robux</small></div></button>
  <div class="card"><h3>Robux account</h3><div class="statrow"><div class="stat"><strong id="robuxBalance">0</strong><small>Requested Robux*</small></div><div class="stat"><strong id="ownedPlans">Basic</strong><small>Owned memberships</small></div></div><p class="muted small">*This is app-side tracking, not an official Roblox account balance.</p></div>
 </section>
 
@@ -335,9 +309,11 @@ body.game-open .nav{opacity:0}
 "use strict";
 
 const API="https://wallet-database.playcentrix.workers.dev/db";
-const ENTRY=50,MINER_RATE=10,MINER_STEP=2;
+const MINER_RATE=10,MINER_STEP=2;
+const GAME_ENTRY_FEES={rps:250,math:50,rush:250,memory:100};
 const GAME_REWARDS={rps:500,math:250,rush:100,memory:500};
 const GAME_NAMES={rps:"Rock Paper Scissors",math:"Math Challenge",rush:"Number Rush",memory:"Memory Match"};
+const MEMORY_MAX_MOVES=20;
 const $=id=>document.getElementById(id);
 const fmt=n=>Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});
 const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -378,12 +354,11 @@ function renderActivity(){
  $("homeActivity").innerHTML=activity.length?activity.slice(0,3).map(row).join(""):`<div class="empty">Your latest activity will appear here.</div>`;
 }
 
-/* Navigation */
 async function setPage(p){
  if(navigationPending)return;
  if(gameState&&!gameState.finished&&gameState.phase==="playing"&&p!=="games"){
   navigationPending=true;
-  const ok=await confirmModal("Leave your active game?","Your 50 PCX entry fee has already been charged. Leaving ends the attempt without a reward.","Leave game");
+  const ok=await confirmModal("Leave your active game?","Your entry fee has already been charged. Leaving ends the attempt without a reward.","Leave game");
   navigationPending=false;
   if(!ok)return;
   abandonGame();
@@ -490,12 +465,8 @@ function closeModal(){
  $("backdrop").classList.remove("show");
  if(modalResolver){const r=modalResolver;modalResolver=null;r(null)}
 }
-$("backdrop").addEventListener("click",e=>{
- if(e.target===$("backdrop"))closeModal();
-});
-document.addEventListener("keydown",e=>{
- if(e.key==="Escape"&&$("backdrop").classList.contains("show"))closeModal();
-});
+$("backdrop").addEventListener("click",e=>{if(e.target===$("backdrop"))closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("backdrop").classList.contains("show"))closeModal()});
 function confirmModal(title,desc,yes="Confirm"){
  return new Promise(resolve=>{
   modalResolver=resolve;
@@ -514,9 +485,7 @@ function askPin(title="Enter your 4-digit PIN"){
    if(done)return;done=true;document.removeEventListener("keydown",physicalPinKey,true);
    $("backdrop").classList.remove("show");resolve(value);
   };
-  const draw=()=>{
-   const dots=$("pinDots");if(dots)for(let i=0;i<4;i++)dots.children[i]?.classList.toggle("filled",i<pin.length);
-  };
+  const draw=()=>{const dots=$("pinDots");if(dots)for(let i=0;i<4;i++)dots.children[i]?.classList.toggle("filled",i<pin.length)};
   const updateError=t=>{const e=$("pinError");if(e)e.textContent=t};
   const addDigit=d=>{
    if(done||pin.length>=4)return;
@@ -555,10 +524,7 @@ $("withdrawReveal").addEventListener("click",revealBalance);
 /* Miner */
 function minerState(){return getLocal(localKey()+"_miner",{pending:0,total:0,credited:0})}
 function saveMiner(s){setLocal(localKey()+"_miner",s)}
-function stopMiner(){
- if(minerTimer)clearInterval(minerTimer);
- minerTimer=null;minerLast=0;updateMinerUI();
-}
+function stopMiner(){if(minerTimer)clearInterval(minerTimer);minerTimer=null;minerLast=0;updateMinerUI()}
 function startMiner(){
  stopMiner();
  if(!user||activePage!=="earn"||document.visibilityState!=="visible")return;
@@ -574,10 +540,8 @@ async function tickMiner(){
  if(credit){
   minerWorking=true;
   try{await changeBalance(credit,"PCX Miner reward")}
-  catch(e){
-   const retry=minerState();retry.pending=Number(retry.pending||0)+credit;
-   retry.credited=Math.max(0,Number(retry.credited||0)-credit);saveMiner(retry);toast("Miner credit failed: "+e.message);
-  }finally{minerWorking=false;updateMinerUI()}
+  catch(e){const retry=minerState();retry.pending=Number(retry.pending||0)+credit;retry.credited=Math.max(0,Number(retry.credited||0)-credit);saveMiner(retry);toast("Miner credit failed: "+e.message)}
+  finally{minerWorking=false;updateMinerUI()}
  }
 }
 function updateMinerUI(){
@@ -592,10 +556,7 @@ function updateMinerUI(){
  if($("minerToggle"))$("minerToggle").textContent=minerTimer?"● Mining is active":"▶ Start mining";
 }
 $("minerToggle").addEventListener("click",()=>{if(activePage!=="earn")setPage("earn");else{startMiner();toast("Mining is active while this page stays visible.")}});
-document.addEventListener("visibilitychange",()=>{
- if(document.visibilityState!=="visible")stopMiner();
- else if(activePage==="earn")startMiner();
-});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")stopMiner();else if(activePage==="earn")startMiner()});
 
 /* Membership plans */
 const PLAN_COST={Premium:10000,Elite:50000,Admin:100000};
@@ -643,39 +604,30 @@ function showReceipt(r){
  <div class="receiptLine"><strong>Net Robux</strong><strong>${fmt(r.net)}</strong></div>
  <p class="muted small">Receipt ID: ${esc(r.id)}</p>
  <button class="btn primary" id="confirmRedemption">Confirm redemption</button><button class="btn outline" id="cancelRedemption">Cancel</button>`);
- $("cancelRedemption").onclick=closeModal;
- $("confirmRedemption").onclick=submitRedemption;
+ $("cancelRedemption").onclick=closeModal;$("confirmRedemption").onclick=submitRedemption;
 }
 async function submitRedemption(){
  const r=activeReceipt;if(!r)return;
  const b=$("confirmRedemption");b.disabled=true;b.textContent="Processing…";
  try{
-  await refreshWallet();
-  if(balance()<r.pcx)throw Error("Insufficient balance. No redemption was submitted.");
+  await refreshWallet();if(balance()<r.pcx)throw Error("Insufficient balance. No redemption was submitted.");
   await changeBalance(-r.pcx,"Robux redemption · "+r.id);
   robuxRequested+=r.net;
   const record={...r,status:"Processing",submittedAt:Date.now(),deadline:nextMidnight().getTime()};
   redemptions.unshift(record);saveLocal();closeModal();showTransfer(record);render();
- }catch(e){
-  if($("confirmRedemption")){$("confirmRedemption").disabled=false;$("confirmRedemption").textContent="Confirm redemption"}
-  toast(e.message);
- }
+ }catch(e){if($("confirmRedemption")){$("confirmRedemption").disabled=false;$("confirmRedemption").textContent="Confirm redemption"}toast(e.message)}
 }
 function nextMidnight(){const d=new Date();d.setHours(24,0,0,0);return d}
 function showTransfer(r){
  openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Redemption submitted</div>
  <p class="moddesc" style="text-align:center">Your request is recorded in this app. Actual Robux delivery requires a real, connected transfer service.</p>
- <div class="receiptTotal">
-  <img class="robux-purchase-logo" src="${ROBUX_IMAGE}" alt="Robux" onerror="this.style.display='none'">
-  <strong>${fmt(r.net)} Robux</strong><small>Redemption request submitted</small>
- </div>
+ <div class="receiptTotal"><img class="robux-purchase-logo" src="${ROBUX_IMAGE}" alt="Robux" onerror="this.style.display='none'"><strong>${fmt(r.net)} Robux</strong><small>Redemption request submitted</small></div>
  <div class="receiptLine"><span>Status</span><strong style="color:#b57919">Processing</strong></div>
  <div class="receiptLine"><span>Receipt ID</span><strong>${esc(r.id)}</strong></div>
  <div class="timerbox"><div class="muted small">COUNTDOWN TO MIDNIGHT</div><div class="timer" id="countdown">--:--:--</div><div class="muted small" id="deadlineText">Until midnight</div></div>
  <div class="notice orange">This countdown is informational only. This app cannot transfer Robux or enforce a deadline without a connected backend service.</div>
  <button class="btn primary" id="transferDone">Got it</button>`);
- $("transferDone").onclick=closeModal;
- clearInterval(window.pcxCountdown);
+ $("transferDone").onclick=closeModal;clearInterval(window.pcxCountdown);
  const update=()=>{
   const el=$("countdown");if(!el){clearInterval(window.pcxCountdown);return}
   const ms=Math.max(0,r.deadline-Date.now()),h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),s=Math.floor(ms%60000/1000);
@@ -685,65 +637,52 @@ function showTransfer(r){
  update();window.pcxCountdown=setInterval(update,1000);
 }
 
-/* Full-screen game window controls */
-function stopGameTimer(){
- if(gameTimer){clearInterval(gameTimer);clearTimeout(gameTimer)}
- gameTimer=null;
-}
+/* Full-screen game popup */
+function stopGameTimer(){if(gameTimer){clearInterval(gameTimer);clearTimeout(gameTimer)}gameTimer=null}
 function decorateGamePopup(){
- const area=$("gameArea");
- if(!area.querySelector(".card"))return;
+ const area=$("gameArea");if(!area.querySelector(".card"))return;
  area.classList.add("game-popup");document.body.classList.add("game-open");
  const card=area.querySelector(".card");
  if(!card.querySelector(".game-close")){
-  const close=document.createElement("button");
-  close.className="game-close";close.type="button";close.setAttribute("aria-label","Exit game");
-  close.innerHTML='<span class="close-x">×</span>';
-  close.addEventListener("click",requestGameExit);
-  card.prepend(close);
+  const close=document.createElement("button");close.className="game-close";close.type="button";close.setAttribute("aria-label","Exit game");
+  close.innerHTML='<span class="close-x">×</span>';close.addEventListener("click",requestGameExit);card.prepend(close);
  }
 }
-function closeGamePopup(){
- $("gameArea").classList.remove("game-popup");document.body.classList.remove("game-open");
-}
+function closeGamePopup(){$("gameArea").classList.remove("game-popup");document.body.classList.remove("game-open")}
 async function requestGameExit(){
  if(exitPending)return;exitPending=true;
  try{
   if(gameState&&!gameState.finished){
-   const ok=await confirmModal("Exit this game?","Your 50 PCX entry fee has already been charged. Leaving now ends the attempt without a reward.","Exit game");
-   if(!ok)return;
-   abandonGame();
-  }else{
-   stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup();
-  }
+   const ok=await confirmModal("Exit this game?","Your entry fee has already been charged. Leaving now ends the attempt without a reward.","Exit game");
+   if(!ok)return;abandonGame();
+  }else{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()}
  }finally{exitPending=false}
 }
 function activateGamePopup(){decorateGamePopup()}
 function abandonGame(){
  if(!gameState||gameState.finished){closeGamePopup();return}
  gameState.finished=true;gameState.phase="abandoned";stopGameTimer();
- $("gameArea").innerHTML=`<div class="card" style="text-align:center"><div class="success" style="background:linear-gradient(145deg,#b4b6c7,#7b7f92)">↩</div><h2>Game exited</h2><p class="muted">Your 50 PCX entry fee was not refunded. No reward was issued.</p><button class="btn primary" id="exitBack">Back to games</button></div>`;
- activateGamePopup();
- $("exitBack").onclick=()=>{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()};
+ $("gameArea").innerHTML=`<div class="card" style="text-align:center"><div class="success" style="background:linear-gradient(145deg,#b4b6c7,#7b7f92)">↩</div><h2>Game exited</h2><p class="muted">Your ${fmt(gameState.entryFee)} PCX entry fee was not refunded. No reward was issued.</p><button class="btn primary" id="exitBack">Back to games</button></div>`;
+ activateGamePopup();$("exitBack").onclick=()=>{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()};
  toast("Game exited. Entry fee forfeited.");
 }
 
-/* Game entry and launch */
+/* Game entry */
 async function startGame(type){
  if(!GAME_NAMES[type])return;
  if(gameState&&!gameState.finished){
   const ok=await confirmModal("Leave current game?","Your entry fee has already been charged. Leaving forfeits this attempt.","Leave game");
   if(!ok)return;abandonGame();
  }
+ const entryFee=GAME_ENTRY_FEES[type],reward=GAME_REWARDS[type];
  try{await refreshWallet()}catch(e){toast(e.message);return}
- if(balance()<ENTRY){toast("You need at least 50 PCX to enter.");return}
- const reward=GAME_REWARDS[type];
- if(!(await confirmModal(GAME_NAMES[type],`Entry fee: 50 PCX\nPotential reward: ${fmt(reward)} PCX\n\nBalance before entry: ${fmt(balance())} PCX\nBalance after entry: ${fmt(balance()-ENTRY)} PCX\n\n${gameRule(type)}`,"Continue to PIN")))return;
- if(!(await authorize("Confirm 50 PCX entry")))return;
+ if(balance()<entryFee){toast("You need at least "+fmt(entryFee)+" PCX to enter.");return}
+ if(!(await confirmModal(GAME_NAMES[type],`Entry fee: ${fmt(entryFee)} PCX\nPotential reward: ${fmt(reward)} PCX\n\nBalance before entry: ${fmt(balance())} PCX\nBalance after entry: ${fmt(balance()-entryFee)} PCX\n\n${gameRule(type)}`,"Continue to PIN")))return;
+ if(!(await authorize("Confirm "+fmt(entryFee)+" PCX entry")))return;
  try{
-  await refreshWallet();if(balance()<ENTRY)throw Error("Insufficient PCX.");
-  await changeBalance(-ENTRY,GAME_NAMES[type]+" entry fee");
-  gameState={type,finished:false,paid:true,phase:"ready",reward};
+  await refreshWallet();if(balance()<entryFee)throw Error("Insufficient PCX.");
+  await changeBalance(-entryFee,GAME_NAMES[type]+" entry fee");
+  gameState={type,finished:false,paid:true,phase:"ready",reward,entryFee};
   renderGameIntro(type);
  }catch(e){toast(e.message)}
 }
@@ -752,14 +691,14 @@ function gameRule(type){
   rps:"Best of 3 rounds. Win two rounds before your opponent.",
   math:"Answer all 5 questions correctly. Each question has a 10-second timer.",
   rush:"Answer 5 questions correctly. Each round gives you only 5 seconds.",
-  memory:"Match all 8 pairs in 25 moves or fewer. Two flips count as one move."
+  memory:"Match all 8 pairs in 20 moves or fewer. Two flips count as one move."
  })[type]||"Complete the challenge to win.";
 }
 function renderGameIntro(type){
- const reward=GAME_REWARDS[type];
+ const reward=GAME_REWARDS[type],entryFee=GAME_ENTRY_FEES[type];
  openModal(`<div class="game-top"><span class="game-tag">ENTRY CONFIRMED</span><button class="close" id="introExit">×</button></div>
  <div class="game-banner"><div class="big">${({rps:"✊",math:"🧠",rush:"⚡",memory:"🧩"})[type]}</div><strong>${esc(GAME_NAMES[type])}</strong><p class="muted small">${esc(gameRule(type))}</p></div>
- <div class="game-stats"><div class="game-stat"><strong>50</strong><small>PCX entry fee</small></div><div class="game-stat"><strong>${fmt(reward)}</strong><small>PCX reward</small></div><div class="game-stat"><strong>${fmt(balance())}</strong><small>Balance now</small></div></div>
+ <div class="game-stats"><div class="game-stat"><strong>${fmt(entryFee)}</strong><small>PCX entry fee</small></div><div class="game-stat"><strong>${fmt(reward)}</strong><small>PCX reward</small></div><div class="game-stat"><strong>${fmt(balance())}</strong><small>Balance now</small></div></div>
  <div class="notice green">Your entry fee is paid. Tap Start Challenge when ready. Leaving before completion forfeits this attempt.</div>
  <button class="btn primary" id="beginGame" style="margin-top:15px">🚀 Start challenge</button><button class="btn outline" id="leaveGame">Exit game</button>`,false);
  $("beginGame").onclick=()=>{
@@ -771,7 +710,7 @@ function renderGameIntro(type){
  $("leaveGame").onclick=()=>abandonGame();
  $("introExit").onclick=async()=>{
   if(await confirmModal("Exit this game?","Your entry fee has already been charged. No reward will be issued.","Exit game"))abandonGame();
- } ;
+ };
 }
 async function finishGame(won,msg){
  if(!gameState||gameState.finished)return;
@@ -789,10 +728,8 @@ async function finishGame(won,msg){
  $("gameArea").scrollIntoView({behavior:"smooth",block:"start"});
 }
 
-/* Rock Paper Scissors: best of three */
-function playRPS(){
- const s=gameState;s.round=0;s.playerWins=0;s.cpuWins=0;s.finished=false;drawRPS();
-}
+/* Rock Paper Scissors */
+function playRPS(){const s=gameState;s.round=0;s.playerWins=0;s.cpuWins=0;s.finished=false;drawRPS()}
 function drawRPS(){
  const s=gameState;if(!s||s.finished)return;
  $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">ROUND ${Math.min(s.round+1,3)} / 3</span><span class="game-tag">🏆 +500 PCX</span></div><h2 style="margin-top:12px">Rock Paper Scissors</h2><p class="muted small">First player to win two rounds takes the match.</p><div class="statrow"><div class="stat"><strong>${s.playerWins}</strong><small>Your wins</small></div><div class="stat"><strong>${s.cpuWins}</strong><small>Rival wins</small></div></div><div class="gamechoices"><button class="gamechoice" data-rps="rock">✊<small>Rock</small></button><button class="gamechoice" data-rps="paper">✋<small>Paper</small></button><button class="gamechoice" data-rps="scissors">✌️<small>Scissors</small></button></div><div class="gamestatus" id="rpsStatus">Choose your move.</div></div>`;
@@ -811,7 +748,7 @@ function drawRPS(){
  });
 }
 
-/* Math Challenge: five questions, ten seconds each */
+/* Math Challenge */
 function mathQuestion(){
  const type=Math.floor(Math.random()*4);let a,b,op,ans;
  if(type===0){a=12+Math.floor(Math.random()*39);b=8+Math.floor(Math.random()*29);op="+";ans=a+b}
@@ -847,7 +784,7 @@ function drawMath(){
  },1000);
 }
 
-/* Number Rush: five rounds, five seconds each */
+/* Number Rush */
 function rushQuestion(){
  const type=Math.floor(Math.random()*4);let a,b,op,ans;
  if(type===0){a=10+Math.floor(Math.random()*70);b=5+Math.floor(Math.random()*35);op="+";ans=a+b}
@@ -883,12 +820,12 @@ function drawRush(){
  },1000);
 }
 
-/* Memory Match: eight pairs, maximum 25 moves */
+/* Memory Match: 8 pairs, 20 moves maximum */
 function playMemory(){
  gameState.finished=false;
  const symbols=["🍎","🌙","⚡","🎧","⭐","🍀","🎮","💎"],deck=[...symbols,...symbols].sort(()=>Math.random()-.5);
  let opened=[],matched=new Set(),locked=false,moves=0;
- $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">🧩 MEMORY MATCH</span><span class="game-tag">🏆 +500 PCX</span></div><h2 style="margin-top:12px">Find all 8 pairs</h2><p class="muted">Match every pair in 25 moves or fewer. Two flips count as one move.</p><div class="statrow"><div class="stat"><strong id="memoryPairs">0 / 8</strong><small>Pairs matched</small></div><div class="stat"><strong id="memoryMoves">0 / 25</strong><small>Moves used</small></div></div><div class="progress"><span id="memoryProgress" style="width:0%"></span></div><div class="memorygrid" id="memoryGrid">${deck.map((x,i)=>`<button class="memorycard" data-memory="${i}" aria-label="Hidden card">✦</button>`).join("")}</div><div class="gamestatus" id="memoryStatus">Find your first pair!</div></div>`;
+ $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">🧩 MEMORY MATCH</span><span class="game-tag">🏆 +500 PCX</span></div><h2 style="margin-top:12px">Find all 8 pairs</h2><p class="muted">Match every pair in ${MEMORY_MAX_MOVES} moves or fewer. Two flips count as one move.</p><div class="statrow"><div class="stat"><strong id="memoryPairs">0 / 8</strong><small>Pairs matched</small></div><div class="stat"><strong id="memoryMoves">0 / ${MEMORY_MAX_MOVES}</strong><small>Moves used</small></div></div><div class="progress"><span id="memoryProgress" style="width:0%"></span></div><div class="memorygrid" id="memoryGrid">${deck.map((x,i)=>`<button class="memorycard" data-memory="${i}" aria-label="Hidden card">✦</button>`).join("")}</div><div class="gamestatus" id="memoryStatus">Find your first pair!</div></div>`;
  activateGamePopup();
  const paint=()=>{
   $("gameArea").querySelectorAll("[data-memory]").forEach(b=>{
@@ -898,25 +835,25 @@ function playMemory(){
    b.setAttribute("aria-label",visible?deck[i]:"Hidden card");
   });
   $("memoryPairs").textContent=`${matched.size/2} / 8`;
-  $("memoryMoves").textContent=`${moves} / 25`;
+  $("memoryMoves").textContent=`${moves} / ${MEMORY_MAX_MOVES}`;
   $("memoryProgress").style.width=(matched.size/16)*100+"%";
  };
  $("gameArea").querySelectorAll("[data-memory]").forEach(b=>b.onclick=()=>{
   const i=Number(b.dataset.memory);if(locked||matched.has(i)||opened.includes(i)||gameState.finished)return;
   opened.push(i);paint();
   if(opened.length!==2)return;
-  moves++;$("memoryMoves").textContent=`${moves} / 25`;
+  moves++;$("memoryMoves").textContent=`${moves} / ${MEMORY_MAX_MOVES}`;
   if(deck[opened[0]]===deck[opened[1]]){
    opened.forEach(n=>matched.add(n));opened=[];paint();
    $("memoryStatus").textContent="✨ Match found!";
    if(matched.size===deck.length){finishGame(true,`All eight pairs matched in ${moves} moves!`);return}
-   if(moves>=25){finishGame(false,"You reached the 25-move limit before finding every pair.");return}
+   if(moves>=MEMORY_MAX_MOVES){finishGame(false,`You reached the ${MEMORY_MAX_MOVES}-move limit before finding every pair.`);return}
   }else{
    locked=true;$("memoryStatus").textContent="Not a match — remember those cards!";
    gameTimer=setTimeout(()=>{
     if(gameState.finished)return;
     opened=[];locked=false;paint();
-    if(moves>=25){finishGame(false,"You reached the 25-move limit before finding every pair.");return}
+    if(moves>=MEMORY_MAX_MOVES){finishGame(false,`You reached the ${MEMORY_MAX_MOVES}-move limit before finding every pair.`);return}
     $("memoryStatus").textContent="Keep going. You can do it!";
    },700);
   }
@@ -946,7 +883,7 @@ $("accountBtn").onclick=()=>{
  };
 };
 
-/* Navigation bindings */
+/* Event bindings */
 document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>setPage(b.dataset.page));
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>setPage(b.dataset.go));
 document.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>startGame(b.dataset.game));

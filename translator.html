@@ -8,9 +8,9 @@
 
 <style>
 :root{
-  --bg:#f6f5fb;--card:#fff;--ink:#191827;--muted:#858397;
-  --line:#eceaf4;--purple:#7255ed;--green:#15996a;--red:#e24d65;
-  --shadow:0 8px 30px #27204408;--radius:23px;
+ --bg:#f6f5fb;--card:#fff;--ink:#191827;--muted:#858397;
+ --line:#eceaf4;--purple:#7255ed;--green:#15996a;--red:#e24d65;
+ --shadow:0 8px 30px #27204408;--radius:23px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overscroll-behavior-y:contain}
@@ -77,6 +77,7 @@ p{line-height:1.5}
 .notice{padding:13px 14px;background:#f2efff;color:#5d49bd;border-radius:15px;font-size:12px;line-height:1.6;margin-top:12px}
 .notice.green{background:#e8f8f0;color:#187a54}
 .notice.orange{background:#fff4e7;color:#98621e}
+.notice.red{background:#fff0f2;color:#b62945}
 .progress{height:7px;border-radius:20px;background:#eeebf8;overflow:hidden;margin:12px 0 7px}
 .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ac98ff,#6445e6);border-radius:20px;transition:width .2s}
 .listitem{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
@@ -138,7 +139,7 @@ p{line-height:1.5}
 .game-stat{padding:12px 7px;text-align:center;background:#faf9ff;border:1px solid var(--line);border-radius:15px}
 .game-stat strong{display:block;font-size:19px}
 .game-stat small{font-size:10px;color:var(--muted)}
-.robux-icon{width:30px;height:30px;object-fit:contain;vertical-align:middle;flex-shrink:0}
+.robux-icon{width:30px;height:30px;object-fit:contain;vertical-align:middle}
 .robux-purchase-logo{display:block;width:86px;height:86px;object-fit:contain;margin:0 auto 12px;animation:pop .5s}
 #gameArea.game-popup{position:fixed;inset:0;z-index:90;display:flex;align-items:center;justify-content:center;padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));background:#151326f2;backdrop-filter:blur(22px);overflow-y:auto;overscroll-behavior:contain}
 #gameArea.game-popup .card{position:relative;width:min(720px,100%);max-height:calc(100dvh - 30px);overflow-y:auto;margin:auto;padding:24px;border-radius:28px;border:1px solid white;background:white;box-shadow:0 30px 100px #0005}
@@ -199,7 +200,7 @@ body.game-open .top,body.game-open .nav{pointer-events:none;opacity:0}
  <div class="grid2">
   <button class="actioncard" data-go="earn"><div class="actionicon">⛏️</div><strong>PCX Miner</strong><small>Earn 10 PCX/min while active.</small></button>
   <button class="actioncard" data-go="games"><div class="actionicon">🎮</div><strong>Game zone</strong><small>Play challenges and earn PCX.</small></button>
-  <button class="actioncard" data-go="captcha"><div class="actionicon">🧩</div><strong>Captcha Worker</strong><small>Verify images and collect Captcha Coins.</small></button>
+  <button class="actioncard" data-go="captcha"><div class="actionicon">🧩</div><strong>Captcha Worker</strong><small>10 checks per session. Wrong answer costs 10 PCX.</small></button>
   <button class="actioncard" data-go="withdraw"><div class="actionicon">🎟️</div><strong>Redeem Robux</strong><small>Review every fee before confirming.</small></button>
   <button class="actioncard" data-go="activity"><div class="actionicon">↗️</div><strong>Activity</strong><small>Review your wallet history.</small></button>
  </div>
@@ -223,29 +224,30 @@ body.game-open .top,body.game-open .nav{pointer-events:none;opacity:0}
 <section class="page" id="page-captcha">
  <div class="muted small">IMAGE VERIFICATION EXPERIENCE</div>
  <h1>Captcha Worker 🧩</h1>
- <p class="muted">Complete image checks to collect Captcha Coins.</p>
+ <p class="muted">Complete 10 image checks per session. One incorrect answer ends the session immediately.</p>
  <div class="coin-card">
   <small>YOUR CAPTCHA COINS</small>
   <strong><span id="captchaCoins">0</span> 🪙</strong>
-  <small>5 Captcha Coins = 100 PCX</small>
+  <small>10 Captcha Coins = 100 PCX</small>
  </div>
  <div class="statrow">
   <div class="stat"><strong id="captchaCompleted">0</strong><small>Correct checks</small></div>
-  <div class="stat"><strong>100 PCX</strong><small>Conversion reward</small></div>
+  <div class="stat"><strong>10 PCX</strong><small>Penalty per wrong answer</small></div>
  </div>
  <div class="card">
   <h2>Start working</h2>
-  <p class="muted small">Identify the object in each illustrated image. Choose Yes or No for the question. Each correct verification earns 1 Captcha Coin.</p>
-  <button class="btn primary" id="startCaptcha">🧩 Start verification</button>
-  <button class="btn soft" id="convertCaptcha" style="margin-top:9px">Convert 5 Coins → 100 PCX</button>
-  <div class="notice">This is a simulated verification game using illustrated objects. It is not connected to a third-party CAPTCHA provider.</div>
+  <p class="muted small">Each session contains 10 questions. Correct answers earn one Captcha Coin. A wrong answer deducts 10 PCX and immediately terminates the session.</p>
+  <button class="btn primary" id="startCaptcha">🧩 Start 10-question session</button>
+  <button class="btn soft" id="convertCaptcha" style="margin-top:9px">Convert 10 Coins → 100 PCX</button>
+  <div class="notice red">Warning: an incorrect answer costs 10 PCX. The session ends immediately, and unanswered questions are cancelled.</div>
+  <div class="notice">This is a simulated image-verification game using illustrated objects. It is not connected to a third-party CAPTCHA provider.</div>
  </div>
  <div class="head"><h2>How it works</h2></div>
  <div class="card">
-  <div class="listitem"><div class="listicon">1️⃣</div><div class="listinfo"><strong>View the image</strong><small>An object appears on the screen.</small></div></div>
-  <div class="listitem"><div class="listicon">2️⃣</div><div class="listinfo"><strong>Answer the question</strong><small>Decide whether the displayed object matches the question.</small></div></div>
-  <div class="listitem"><div class="listicon">3️⃣</div><div class="listinfo"><strong>Collect coins</strong><small>Each correct answer earns one Captcha Coin.</small></div></div>
-  <div class="listitem"><div class="listicon">4️⃣</div><div class="listinfo"><strong>Convert your coins</strong><small>Exchange 5 Captcha Coins for 100 PCX after PIN verification.</small></div></div>
+  <div class="listitem"><div class="listicon">1️⃣</div><div class="listinfo"><strong>Answer 10 questions</strong><small>Each session begins with 10 image checks.</small></div></div>
+  <div class="listitem"><div class="listicon">2️⃣</div><div class="listinfo"><strong>Be accurate</strong><small>A wrong answer immediately ends the session and deducts 10 PCX.</small></div></div>
+  <div class="listitem"><div class="listicon">3️⃣</div><div class="listinfo"><strong>Collect Captcha Coins</strong><small>Every correct answer earns 1 coin.</small></div></div>
+  <div class="listitem"><div class="listicon">4️⃣</div><div class="listinfo"><strong>Convert your coins</strong><small>Exchange 10 coins for 100 PCX after PIN verification.</small></div></div>
  </div>
 </section>
 
@@ -305,8 +307,7 @@ body.game-open .top,body.game-open .nav{pointer-events:none;opacity:0}
 <script>
 "use strict";
 
-/* ================= CONFIGURATION ================= */
-
+/* CONFIGURATION */
 const API="https://wallet-database.playcentrix.workers.dev/db";
 const MINER_RATE=10,MINER_STEP=2;
 const GAME_ENTRY_FEES={rps:250,math:50,rush:250,memory:100};
@@ -314,7 +315,9 @@ const GAME_REWARDS={rps:500,math:250,rush:350,memory:500};
 const GAME_NAMES={rps:"Rock Paper Scissors",math:"Math Challenge",rush:"Number Rush",memory:"Memory Match"};
 const PLAN_COST={Premium:10000,Elite:50000,Admin:100000};
 const MEMORY_MAX_MOVES=20;
-const CAPTCHA_CONVERSION_COINS=5;
+const CAPTCHA_SESSION_QUESTIONS=10;
+const CAPTCHA_WRONG_PENALTY=10;
+const CAPTCHA_CONVERSION_COINS=10;
 const CAPTCHA_CONVERSION_PCX=100;
 const ROBUX_IMAGE="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10";
 
@@ -326,12 +329,12 @@ const setLocal=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
 
 let database=null,user=null,walletVisible=true,activePage="home";
 let activity=[],owned=["Basic"],robuxRequested=0,redemptions=[];
-let modalResolver=null,minerTimer=null,minerLast=0,minerWorking=false;
+let minerTimer=null,minerLast=0,minerWorking=false;
 let gameState=null,gameTimer=null,toastTimer=null,activeReceipt=null,syncTimer=null,syncing=false;
-let navigationPending=false,exitPending=false,captchaState=null;
+let navigationPending=false,exitPending=false,captchaState=null,captchaQuestion=null;
+let modalResolver=null,modalCanDismiss=true;
 
-/* ================= LOCAL DATA ================= */
-
+/* LOCAL DATA */
 function localKey(){return "pcx_rewards_"+user?.walletId}
 function readLocal(){
  const s=getLocal(localKey(),{});
@@ -344,15 +347,12 @@ function readLocal(){
 function saveLocal(){setLocal(localKey(),{owned,robuxRequested,activity,redemptions})}
 function balance(){return Number(user?.balance||0)}
 function plan(){return user?.plan||"Basic"}
-function captchaData(){
- return getLocal(localKey()+"_captcha",{coins:0,completed:0});
-}
+function captchaData(){return getLocal(localKey()+"_captcha",{coins:0,completed:0})}
 function saveCaptcha(s){setLocal(localKey()+"_captcha",s)}
 function minerState(){return getLocal(localKey()+"_miner",{pending:0,total:0,credited:0})}
 function saveMiner(s){setLocal(localKey()+"_miner",s)}
 
-/* ================= FEEDBACK & ACTIVITY ================= */
-
+/* FEEDBACK & ACTIVITY */
 function toast(msg){
  document.querySelector(".toast")?.remove();
  const e=document.createElement("div");e.className="toast";e.textContent=msg;document.body.append(e);
@@ -368,15 +368,14 @@ function renderActivity(){
  $("homeActivity").innerHTML=activity.length?activity.slice(0,3).map(row).join(""):`<div class="empty">Your latest activity will appear here.</div>`;
 }
 
-/* ================= WALLET API ================= */
-
+/* WALLET API */
 async function apiGet(){
  const r=await fetch(API,{method:"GET",cache:"no-store"});
  if(!r.ok)throw Error("API request failed: HTTP "+r.status);
  const db=await r.json();
- if(Array.isArray(db))return {users:db,transactions:[],redeemCodes:[]};
- if(db&&typeof db==="object"&&Array.isArray(db.users))return {...db,users:db.users,transactions:Array.isArray(db.transactions)?db.transactions:[],redeemCodes:Array.isArray(db.redeemCodes)?db.redeemCodes:[]};
- throw Error("Invalid API response. Expected an object containing users[].");
+ if(Array.isArray(db))return {users:db};
+ if(db&&typeof db==="object"&&Array.isArray(db.users))return {...db,users:db.users};
+ throw Error("Invalid API response. Expected users[].");
 }
 async function apiPut(db){
  const r=await fetch(API,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(db)});
@@ -385,9 +384,7 @@ async function apiPut(db){
  if(result&&result.success===false)throw Error(result.message||"Wallet update rejected.");
  return result;
 }
-function findWallet(db,target){
- return db.users.find(w=>String(w.walletId)===String(target.walletId));
-}
+function findWallet(db,target){return db.users.find(w=>String(w.walletId)===String(target.walletId))}
 async function refreshWallet(){
  const db=await apiGet(),fresh=findWallet(db,user);
  if(!fresh)throw Error("Wallet not found in database.");
@@ -429,39 +426,29 @@ async function restoreSession(){
   $("loginScreen").classList.add("show");$("loginError").style.display="block";$("loginError").textContent="Unable to connect: "+e.message;
  }
 }
-
-/* Sync wallet from database every 5 seconds while visible. */
 function startAutoSync(){
  clearInterval(syncTimer);
  syncTimer=setInterval(async()=>{
   if(!user||document.visibilityState!=="visible"||syncing)return;
-  syncing=true;
-  try{await refreshWallet()}
-  catch(e){console.warn("Wallet sync:",e.message)}
-  finally{syncing=false}
+  syncing=true;try{await refreshWallet()}catch(e){console.warn("Wallet sync:",e.message)}finally{syncing=false}
  },5000);
 }
 async function syncNow(){
  if(!user||syncing)return false;
  syncing=true;
- try{await refreshWallet();return true}
- catch(e){toast("Wallet sync failed: "+e.message);return false}
- finally{syncing=false}
+ try{await refreshWallet();return true}catch(e){toast("Wallet sync failed: "+e.message);return false}finally{syncing=false}
 }
 document.addEventListener("visibilitychange",()=>{
  if(document.visibilityState==="visible"&&user)syncNow();
 });
 
-/* ================= PAGE NAVIGATION ================= */
-
+/* NAVIGATION */
 async function setPage(p){
  if(navigationPending)return;
  if(gameState&&!gameState.finished&&p!=="games"){
   navigationPending=true;
   const ok=await confirmModal("Leave your active game?","Your entry fee has already been charged. Leaving ends the attempt without a reward.","Leave game");
-  navigationPending=false;
-  if(!ok)return;
-  abandonGame();
+  navigationPending=false;if(!ok)return;abandonGame();
  }
  stopMiner();activePage=p;
  document.querySelectorAll(".page").forEach(e=>e.classList.toggle("active",e.id==="page-"+p));
@@ -470,8 +457,7 @@ async function setPage(p){
  render();window.scrollTo({top:0,behavior:"auto"});
 }
 
-/* ================= RENDER ================= */
-
+/* RENDER */
 function render(){
  if(!user)return;
  $("welcomeName").textContent=user.displayName?", "+user.displayName.split(" ")[0]:"";
@@ -481,8 +467,7 @@ function render(){
  $("revealBtn").textContent=walletVisible?"◉ Hide balance":"◎ Show balance";
  $("withdrawBalance").textContent=walletVisible?fmt(balance())+" PCX":"••••••";
  $("withdrawReveal").textContent=walletVisible?"◉ Hide balance":"◎ Show balance";
- $("robuxStat").textContent=fmt(robuxRequested);
- $("robuxBalance").textContent=fmt(robuxRequested);
+ $("robuxStat").textContent=fmt(robuxRequested);$("robuxBalance").textContent=fmt(robuxRequested);
  $("ownedPlans").textContent=owned.join(", ");
  $("minedStat").textContent=Number(minerState().total||0).toFixed(1);
  const cd=captchaData();
@@ -490,30 +475,24 @@ function render(){
  $("captchaCompleted").textContent=fmt(cd.completed);
  renderActivity();updateMinerUI();
 }
-function toggleBalance(){
- walletVisible=!walletVisible;render();
- if(walletVisible)syncNow();
-}
+function toggleBalance(){walletVisible=!walletVisible;render();if(walletVisible)syncNow()}
 $("revealBtn").addEventListener("click",toggleBalance);
 $("withdrawReveal").addEventListener("click",toggleBalance);
 
-/* ================= MODALS ================= */
-
+/* MODALS */
 function openModal(html,close=true){
+ modalCanDismiss=close;
  $("modal").innerHTML=`<div class="handle"></div>${html}`;
  $("backdrop").classList.add("show");
  if(close)$("modal").querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeModal));
 }
 function closeModal(){
+ if(!modalCanDismiss)return;
  $("backdrop").classList.remove("show");
  if(modalResolver){const r=modalResolver;modalResolver=null;r(null)}
 }
-$("backdrop").addEventListener("click",e=>{
- if(e.target===$("backdrop"))closeModal();
-});
-document.addEventListener("keydown",e=>{
- if(e.key==="Escape"&&$("backdrop").classList.contains("show"))closeModal();
-});
+$("backdrop").addEventListener("click",e=>{if(e.target===$("backdrop")&&modalCanDismiss)closeModal()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&$("backdrop").classList.contains("show")&&modalCanDismiss)closeModal()});
 function confirmModal(title,desc,yes="Confirm"){
  return new Promise(resolve=>{
   modalResolver=resolve;
@@ -524,19 +503,15 @@ function confirmModal(title,desc,yes="Confirm"){
  });
 }
 
-/* ================= PIN KEYPAD ================= */
-
+/* PIN KEYPAD */
 function askPin(title="Enter your 4-digit PIN"){
  return new Promise(resolve=>{
   let pin="",done=false;
   const finish=value=>{
    if(done)return;done=true;document.removeEventListener("keydown",physicalPinKey,true);
-   $("backdrop").classList.remove("show");resolve(value);
+   $("backdrop").classList.remove("show");modalCanDismiss=true;resolve(value);
   };
-  const draw=()=>{
-   const dots=$("pinDots");
-   if(dots)for(let i=0;i<4;i++)dots.children[i]?.classList.toggle("filled",i<pin.length);
-  };
+  const draw=()=>{const dots=$("pinDots");if(dots)for(let i=0;i<4;i++)dots.children[i]?.classList.toggle("filled",i<pin.length)};
   const updateError=t=>{const e=$("pinError");if(e)e.textContent=t};
   const addDigit=d=>{
    if(done||pin.length>=4)return;
@@ -553,6 +528,7 @@ function askPin(title="Enter your 4-digit PIN"){
    else if(e.key==="Escape"){e.preventDefault();finish(null)}
   };
   openModal(`<button class="close" id="pinCancel">×</button><div class="modtitle">${esc(title)}</div><p class="moddesc">Enter your wallet PIN to authorise this transaction.</p><div class="pinDots" id="pinDots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="muted small" style="text-align:center;min-height:18px" id="pinError"></div><div class="keypad" id="pinKeypad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button type="button" class="key" data-key="${n}">${n}</button>`).join("")}<button type="button" class="key clear" data-key="clear">Clear</button><button type="button" class="key" data-key="0">0</button><button type="button" class="key" data-key="back">⌫</button></div>`,false);
+  modalCanDismiss=false;
   $("pinCancel").addEventListener("click",()=>finish(null));
   $("pinKeypad").addEventListener("pointerdown",e=>{
    const b=e.target.closest("[data-key]");if(!b)return;e.preventDefault();
@@ -566,12 +542,8 @@ function askPin(title="Enter your 4-digit PIN"){
 }
 async function authorize(title){return (await askPin(title))!==null}
 
-/* ================= PCX MINER ================= */
-
-function stopMiner(){
- if(minerTimer)clearInterval(minerTimer);
- minerTimer=null;minerLast=0;updateMinerUI();
-}
+/* PCX MINER */
+function stopMiner(){if(minerTimer)clearInterval(minerTimer);minerTimer=null;minerLast=0;updateMinerUI()}
 function startMiner(){
  stopMiner();
  if(!user||activePage!=="earn"||document.visibilityState!=="visible")return;
@@ -592,8 +564,7 @@ async function tickMiner(){
  }
 }
 function updateMinerUI(){
- if(!user)return;
- const s=minerState();
+ if(!user)return;const s=minerState();
  if($("pendingMiner"))$("pendingMiner").textContent=Number(s.pending||0).toFixed(1);
  if($("minerTotal"))$("minerTotal").textContent=Number(s.total||0).toFixed(1);
  if($("minerCredited"))$("minerCredited").textContent=fmt(s.credited||0);
@@ -602,23 +573,15 @@ function updateMinerUI(){
  if($("minerProgressText"))$("minerProgressText").textContent=`Next 2 PCX credit in about ${Math.ceil((MINER_STEP-(Number(s.pending||0)%MINER_STEP))/MINER_RATE*60)} seconds.`;
  if($("minerToggle"))$("minerToggle").textContent=minerTimer?"● Mining is active":"▶ Start mining";
 }
-$("minerToggle").addEventListener("click",()=>{
- if(activePage!=="earn")setPage("earn");
- else{startMiner();toast("Mining is active while this page stays visible.")}
-});
-document.addEventListener("visibilitychange",()=>{
- if(document.visibilityState!=="visible")stopMiner();
- else if(activePage==="earn")startMiner();
-});
+$("minerToggle").addEventListener("click",()=>{if(activePage!=="earn")setPage("earn");else{startMiner();toast("Mining is active while this page stays visible.")}});
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState!=="visible")stopMiner();else if(activePage==="earn")startMiner()});
 
-/* ================= MEMBERSHIPS ================= */
-
+/* MEMBERSHIPS */
 async function handlePlan(p){
  if(owned.includes(p)){
   if(!(await confirmModal("Select "+p+"?","This membership is already owned. Make it your active plan?","Select plan")))return;
   if(!(await authorize("Confirm plan selection")))return;
-  try{await changeBalance(0,"",{plan:p});toast(p+" is now active")}
-  catch(e){toast(e.message)}
+  try{await changeBalance(0,"",{plan:p});toast(p+" is now active")}catch(e){toast(e.message)}
   return;
  }
  const cost=PLAN_COST[p];
@@ -635,13 +598,8 @@ async function handlePlan(p){
  }catch(e){toast(e.message)}
 }
 
-/* ================= ROBUX REDEMPTION ================= */
-
-const REDEMPTIONS={
- 10000:{pcx:10000,gross:100},
- 100000:{pcx:100000,gross:1000},
- 1000000:{pcx:1000000,gross:10000}
-};
+/* ROBUX REDEMPTION */
+const REDEMPTIONS={10000:{pcx:10000,gross:100},100000:{pcx:100000,gross:1000},1000000:{pcx:1000000,gross:10000}};
 async function handleRobux(pcx){
  const o=REDEMPTIONS[pcx];if(!o)return;
  try{await refreshWallet()}catch(e){toast(e.message);return}
@@ -661,19 +619,16 @@ function showReceipt(r){
  <div class="receiptLine"><span>Transaction fee (15%)</span><strong>−${fmt(r.transactionFee)}</strong></div>
  <div class="receiptLine"><span>Roblox fee (30%)</span><strong>−${fmt(r.robloxFee)}</strong></div>
  <div class="receiptLine"><span>Playcentrix commission (15%)</span><strong>−${fmt(r.commission)}</strong></div>
- <div class="receiptLine"><strong>Net Robux</strong><strong>${fmt(r.net)}</strong></div>
- <p class="muted small">Receipt ID: ${esc(r.id)}</p>
+ <div class="receiptLine"><strong>Net Robux</strong><strong>${fmt(r.net)}</strong></div><p class="muted small">Receipt ID: ${esc(r.id)}</p>
  <button class="btn primary" id="confirmRedemption">Confirm redemption</button><button class="btn outline" id="cancelRedemption">Cancel</button>`);
- $("cancelRedemption").onclick=closeModal;
- $("confirmRedemption").onclick=submitRedemption;
+ $("cancelRedemption").onclick=closeModal;$("confirmRedemption").onclick=submitRedemption;
 }
 async function submitRedemption(){
  const r=activeReceipt;if(!r)return;
  if(!(await authorize("Confirm Robux redemption PIN")))return;
  const b=$("confirmRedemption");if(b){b.disabled=true;b.textContent="Processing…"}
  try{
-  await refreshWallet();
-  if(balance()<r.pcx)throw Error("Insufficient balance. No redemption was submitted.");
+  await refreshWallet();if(balance()<r.pcx)throw Error("Insufficient balance.");
   await changeBalance(-r.pcx,"Robux redemption · "+r.id);
   robuxRequested+=r.net;
   const record={...r,status:"Processing",submittedAt:Date.now(),deadline:nextMidnight().getTime()};
@@ -682,16 +637,12 @@ async function submitRedemption(){
 }
 function nextMidnight(){const d=new Date();d.setHours(24,0,0,0);return d}
 function showTransfer(r){
- openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Redemption recorded</div>
- <p class="moddesc" style="text-align:center">This app records the request. Actual Robux delivery requires a connected transfer service.</p>
+ openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Redemption recorded</div><p class="moddesc" style="text-align:center">This app records the request. Actual Robux delivery requires a connected transfer service.</p>
  <div class="receiptTotal"><img class="robux-purchase-logo" src="${ROBUX_IMAGE}" alt="Robux" onerror="this.style.display='none'"><strong>${fmt(r.net)} Robux</strong><small>Redemption request</small></div>
- <div class="receiptLine"><span>Status</span><strong style="color:#b57919">Processing</strong></div>
- <div class="receiptLine"><span>Receipt ID</span><strong>${esc(r.id)}</strong></div>
+ <div class="receiptLine"><span>Status</span><strong style="color:#b57919">Processing</strong></div><div class="receiptLine"><span>Receipt ID</span><strong>${esc(r.id)}</strong></div>
  <div class="timerbox"><div class="muted small">COUNTDOWN TO MIDNIGHT</div><div class="timer" id="countdown">--:--:--</div><div class="muted small" id="deadlineText">Until midnight</div></div>
- <div class="notice orange">This countdown is informational only. The app cannot transfer Robux without a connected backend service.</div>
- <button class="btn primary" id="transferDone">Got it</button>`);
- $("transferDone").onclick=closeModal;
- clearInterval(window.pcxCountdown);
+ <div class="notice orange">This countdown is informational only. The app cannot transfer Robux without a connected backend service.</div><button class="btn primary" id="transferDone">Got it</button>`);
+ $("transferDone").onclick=closeModal;clearInterval(window.pcxCountdown);
  const update=()=>{
   const el=$("countdown");if(!el){clearInterval(window.pcxCountdown);return}
   const ms=Math.max(0,r.deadline-Date.now()),h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),s=Math.floor(ms%60000/1000);
@@ -701,19 +652,14 @@ function showTransfer(r){
  update();window.pcxCountdown=setInterval(update,1000);
 }
 
-/* ================= FULL-SCREEN GAME SYSTEM ================= */
-
-function stopGameTimer(){
- if(gameTimer){clearInterval(gameTimer);clearTimeout(gameTimer)}
- gameTimer=null;
-}
+/* FULL-SCREEN GAME SYSTEM */
+function stopGameTimer(){if(gameTimer){clearInterval(gameTimer);clearTimeout(gameTimer)}gameTimer=null}
 function decorateGamePopup(){
  const area=$("gameArea");if(!area.querySelector(".card"))return;
  area.classList.add("game-popup");document.body.classList.add("game-open");
  const card=area.querySelector(".card");
  if(!card.querySelector(".game-close")){
-  const close=document.createElement("button");close.className="game-close";close.type="button";close.setAttribute("aria-label","Exit game");close.textContent="×";
-  close.addEventListener("click",requestGameExit);card.prepend(close);
+  const close=document.createElement("button");close.className="game-close";close.type="button";close.setAttribute("aria-label","Exit game");close.textContent="×";close.addEventListener("click",requestGameExit);card.prepend(close);
  }
 }
 function closeGamePopup(){$("gameArea").classList.remove("game-popup");document.body.classList.remove("game-open")}
@@ -723,8 +669,7 @@ async function requestGameExit(){
  try{
   if(gameState&&!gameState.finished){
    const ok=await confirmModal("Exit this game?","Your entry fee has already been charged. Leaving now ends the attempt without a reward.","Exit game");
-   if(!ok)return;
-   abandonGame();
+   if(!ok)return;abandonGame();
   }else{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()}
  }finally{exitPending=false}
 }
@@ -732,24 +677,15 @@ function abandonGame(){
  if(!gameState||gameState.finished){closeGamePopup();return}
  gameState.finished=true;gameState.phase="abandoned";stopGameTimer();
  $("gameArea").innerHTML=`<div class="card" style="text-align:center"><div class="success" style="background:linear-gradient(145deg,#b4b6c7,#7b7f92)">↩</div><h2>Game exited</h2><p class="muted">Your ${fmt(gameState.entryFee)} PCX entry fee was not refunded. No reward was issued.</p><button class="btn primary" id="exitBack">Back to games</button></div>`;
- activateGamePopup();
- $("exitBack").onclick=()=>{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()};
+ activateGamePopup();$("exitBack").onclick=()=>{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()};
  toast("Game exited. Entry fee forfeited.");
 }
-function gameRule(type){
- return ({
-  rps:"Best of 3 rounds. Win two rounds before your opponent.",
-  math:"Answer all 5 questions correctly. Each question has a 10-second timer.",
-  rush:"Answer 5 questions correctly. Each round gives you 5 seconds.",
-  memory:"Match all 8 pairs in 20 moves or fewer."
- })[type]||"Complete the challenge to win.";
-}
+function gameRule(type){return ({rps:"Best of 3 rounds. Win two rounds before your opponent.",math:"Answer all 5 questions correctly. Each question has a 10-second timer.",rush:"Answer 5 questions correctly. Each round gives you 5 seconds.",memory:"Match all 8 pairs in 20 moves or fewer."})[type]||"Complete the challenge to win."}
 async function startGame(type){
  if(!GAME_NAMES[type])return;
  if(gameState&&!gameState.finished){
   const ok=await confirmModal("Leave current game?","Your entry fee has already been charged. Leaving forfeits this attempt.","Leave game");
-  if(!ok)return;
-  abandonGame();
+  if(!ok)return;abandonGame();
  }
  try{await refreshWallet()}catch(e){toast(e.message);return}
  const entryFee=GAME_ENTRY_FEES[type],reward=GAME_REWARDS[type];
@@ -757,48 +693,30 @@ async function startGame(type){
  if(!(await confirmModal(GAME_NAMES[type],`Entry fee: ${fmt(entryFee)} PCX\nPotential reward: ${fmt(reward)} PCX\n\nBalance before entry: ${fmt(balance())} PCX\nBalance after entry: ${fmt(balance()-entryFee)} PCX\n\n${gameRule(type)}`,"Continue to PIN")))return;
  if(!(await authorize("Confirm "+fmt(entryFee)+" PCX entry")))return;
  try{
-  await refreshWallet();
-  if(balance()<entryFee)throw Error("Insufficient PCX.");
+  await refreshWallet();if(balance()<entryFee)throw Error("Insufficient PCX.");
   await changeBalance(-entryFee,GAME_NAMES[type]+" entry fee");
-  gameState={type,finished:false,paid:true,phase:"ready",reward,entryFee};
-  renderGameIntro(type);
+  gameState={type,finished:false,paid:true,phase:"ready",reward,entryFee};renderGameIntro(type);
  }catch(e){toast(e.message)}
 }
 function renderGameIntro(type){
  const reward=GAME_REWARDS[type],entryFee=GAME_ENTRY_FEES[type];
- openModal(`<div class="game-top"><span class="game-tag">ENTRY CONFIRMED</span><button class="close" id="introExit">×</button></div>
- <div class="game-banner"><div class="big">${({rps:"✊",math:"🧠",rush:"⚡",memory:"🧩"})[type]}</div><strong>${esc(GAME_NAMES[type])}</strong><p class="muted small">${esc(gameRule(type))}</p></div>
- <div class="game-stats"><div class="game-stat"><strong>${fmt(entryFee)}</strong><small>PCX entry fee</small></div><div class="game-stat"><strong>${fmt(reward)}</strong><small>PCX reward</small></div><div class="game-stat"><strong>${fmt(balance())}</strong><small>Balance now</small></div></div>
- <div class="notice green">Your entry fee is paid. Tap Start Challenge when ready. Leaving forfeits this attempt.</div>
- <button class="btn primary" id="beginGame" style="margin-top:15px">🚀 Start challenge</button><button class="btn outline" id="leaveGame">Exit game</button>`,false);
- $("beginGame").onclick=()=>{
-  $("backdrop").classList.remove("show");
-  if(!gameState||gameState.finished)return;
-  gameState.phase="playing";
-  ({rps:playRPS,math:playMath,rush:playRush,memory:playMemory}[type])();
- };
- $("leaveGame").onclick=requestGameExit;
- $("introExit").onclick=requestGameExit;
+ openModal(`<div class="game-top"><span class="game-tag">ENTRY CONFIRMED</span><button class="close" id="introExit">×</button></div><div class="game-banner"><div class="big">${({rps:"✊",math:"🧠",rush:"⚡",memory:"🧩"})[type]}</div><strong>${esc(GAME_NAMES[type])}</strong><p class="muted small">${esc(gameRule(type))}</p></div><div class="game-stats"><div class="game-stat"><strong>${fmt(entryFee)}</strong><small>PCX entry fee</small></div><div class="game-stat"><strong>${fmt(reward)}</strong><small>PCX reward</small></div><div class="game-stat"><strong>${fmt(balance())}</strong><small>Balance now</small></div></div><div class="notice green">Your entry fee is paid. Tap Start Challenge when ready. Leaving forfeits this attempt.</div><button class="btn primary" id="beginGame" style="margin-top:15px">🚀 Start challenge</button><button class="btn outline" id="leaveGame">Exit game</button>`,false);
+ $("beginGame").onclick=()=>{$("backdrop").classList.remove("show");if(!gameState||gameState.finished)return;gameState.phase="playing";({rps:playRPS,math:playMath,rush:playRush,memory:playMemory}[type])()};
+ $("leaveGame").onclick=requestGameExit;$("introExit").onclick=requestGameExit;
 }
 async function finishGame(won,msg){
  if(!gameState||gameState.finished)return;
- const type=gameState.type,reward=GAME_REWARDS[type];
- gameState.finished=true;gameState.phase="finished";stopGameTimer();
+ const type=gameState.type,reward=GAME_REWARDS[type];gameState.finished=true;gameState.phase="finished";stopGameTimer();
  let rewardMessage="No reward this time.";
- if(won){
-  try{await changeBalance(reward,GAME_NAMES[type]+" victory reward");rewardMessage="+"+fmt(reward)+" PCX credited to your wallet!"}
-  catch(e){rewardMessage="Reward credit failed: "+e.message}
- }
+ if(won){try{await changeBalance(reward,GAME_NAMES[type]+" victory reward");rewardMessage="+"+fmt(reward)+" PCX credited to your wallet!"}catch(e){rewardMessage="Reward credit failed: "+e.message}}
  $("gameArea").innerHTML=`<div class="card" style="text-align:center"><div class="success" style="${won?"":"background:linear-gradient(145deg,#b4b6c7,#7b7f92)"}">${won?"✓":"↻"}</div><h2>${won?"Challenge complete!":"Challenge over"}</h2><p class="muted">${esc(msg||"")}</p><div class="notice ${won?"green":""}">${esc(rewardMessage)}</div><button class="btn primary" id="playAgain">Play again</button><button class="btn outline" id="backGames">Back to games</button></div>`;
  activateGamePopup();
  $("playAgain").onclick=()=>{closeGamePopup();gameState=null;startGame(type)};
  $("backGames").onclick=()=>{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()};
 }
 
-/* Rock Paper Scissors */
-function playRPS(){
- gameState.round=0;gameState.playerWins=0;gameState.cpuWins=0;gameState.finished=false;drawRPS();
-}
+/* ROCK PAPER SCISSORS */
+function playRPS(){gameState.round=0;gameState.playerWins=0;gameState.cpuWins=0;gameState.finished=false;drawRPS()}
 function drawRPS(){
  const s=gameState;if(!s||s.finished)return;
  $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">ROUND ${Math.min(s.round+1,3)} / 3</span><span class="game-tag">🏆 +500 PCX</span></div><h2 style="margin-top:12px">Rock Paper Scissors</h2><p class="muted small">First player to win two rounds takes the match.</p><div class="statrow"><div class="stat"><strong>${s.playerWins}</strong><small>Your wins</small></div><div class="stat"><strong>${s.cpuWins}</strong><small>Rival wins</small></div></div><div class="gamechoices"><button class="gamechoice" data-rps="rock">✊<small>Rock</small></button><button class="gamechoice" data-rps="paper">✋<small>Paper</small></button><button class="gamechoice" data-rps="scissors">✌️<small>Scissors</small></button></div><div class="gamestatus" id="rpsStatus">Choose your move.</div></div>`;
@@ -811,13 +729,12 @@ function drawRPS(){
   const result=p===cpu?"Tie round.":won?"You win this round!":"Rival wins this round.";
   if(won)s.playerWins++;else if(p!==cpu)s.cpuWins++;
   s.round++;$("rpsStatus").textContent=`You: ${p} · Rival: ${cpu} — ${result}`;
-  if(s.playerWins>=2||s.cpuWins>=2||s.round>=3){
-   setTimeout(()=>finishGame(s.playerWins>s.cpuWins,s.playerWins===s.cpuWins?"The match ended in a tie.":`${s.playerWins}–${s.cpuWins} final score.`),500);
-  }else setTimeout(()=>{if(!s.finished)drawRPS()},650);
+  if(s.playerWins>=2||s.cpuWins>=2||s.round>=3)setTimeout(()=>finishGame(s.playerWins>s.cpuWins,s.playerWins===s.cpuWins?"The match ended in a tie.":`${s.playerWins}–${s.cpuWins} final score.`),500);
+  else setTimeout(()=>{if(!s.finished)drawRPS()},650);
  });
 }
 
-/* Math and Number Rush question generators */
+/* MATH QUESTIONS */
 function mathQuestion(rush=false){
  const type=Math.floor(Math.random()*4);let a,b,op,ans;
  if(type===0){a=12+Math.floor(Math.random()*39);b=8+Math.floor(Math.random()*29);op="+";ans=a+b}
@@ -825,16 +742,12 @@ function mathQuestion(rush=false){
  else if(type===2){a=3+Math.floor(Math.random()*17);b=3+Math.floor(Math.random()*12);op="×";ans=a*b}
  else{b=2+Math.floor(Math.random()*12);ans=3+Math.floor(Math.random()*15);a=b*ans;op="÷";ans=a/b}
  const choices=new Set([ans]);
- while(choices.size<4){
-  const offset=1+Math.floor(Math.random()*Math.max(rush?10:8,Math.ceil(ans*.25)));
-  choices.add(Math.max(0,ans+(Math.random()<.5?-offset:offset)));
- }
+ while(choices.size<4){const offset=1+Math.floor(Math.random()*Math.max(rush?10:8,Math.ceil(ans*.25)));choices.add(Math.max(0,ans+(Math.random()<.5?-offset:offset)))}
  return{text:`${a} ${op} ${b}`,answer:ans,choices:[...choices].sort(()=>Math.random()-.5)};
 }
 function playMath(){gameState.round=0;gameState.finished=false;gameState.score=0;drawMath()}
 function drawMath(){
- const s=gameState;if(!s||s.finished)return;
- s.question=mathQuestion();s.seconds=10;s.answerLocked=false;
+ const s=gameState;if(!s||s.finished)return;s.question=mathQuestion();s.seconds=10;s.answerLocked=false;
  $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">QUESTION ${s.round+1} / 5</span><span class="game-tag">🏆 +250 PCX</span></div><div class="progress"><span id="mathProgress" style="width:100%"></span></div><div class="question">${s.question.text} = ?</div><div class="answergrid" id="mathAnswers">${s.question.choices.map(n=>`<button class="answer" data-answer="${n}">${n}</button>`).join("")}</div><div class="gamestatus" id="mathStatus">⏱ 10 seconds left</div></div>`;
  activateGamePopup();
  const answer=correct=>{
@@ -843,22 +756,14 @@ function drawMath(){
   if(!correct){finishGame(false,"An answer was incorrect or time ran out. All five answers must be correct.");return}
   s.score++;s.round++;
   if(s.round===5){finishGame(true,"Perfect score: 5 out of 5. Excellent work!");return}
-  $("mathStatus").textContent="✓ Correct! Loading next question…";
-  gameTimer=setTimeout(()=>{if(!s.finished)drawMath()},450);
+  $("mathStatus").textContent="✓ Correct! Loading next question…";gameTimer=setTimeout(()=>{if(!s.finished)drawMath()},450);
  };
  $("mathAnswers").querySelectorAll("button").forEach(b=>b.onclick=()=>answer(Number(b.dataset.answer)===s.question.answer));
- gameTimer=setInterval(()=>{
-  if(s.answerLocked||s.finished)return;
-  s.seconds--;
-  if($("mathStatus"))$("mathStatus").textContent="⏱ "+Math.max(0,s.seconds)+" seconds left";
-  if($("mathProgress"))$("mathProgress").style.width=Math.max(0,s.seconds)*10+"%";
-  if(s.seconds<=0)answer(false);
- },1000);
+ gameTimer=setInterval(()=>{if(s.answerLocked||s.finished)return;s.seconds--;if($("mathStatus"))$("mathStatus").textContent="⏱ "+Math.max(0,s.seconds)+" seconds left";if($("mathProgress"))$("mathProgress").style.width=Math.max(0,s.seconds)*10+"%";if(s.seconds<=0)answer(false)},1000);
 }
 function playRush(){gameState.finished=false;gameState.round=0;gameState.score=0;drawRush()}
 function drawRush(){
- const s=gameState;if(!s||s.finished)return;
- s.question=mathQuestion(true);s.seconds=5;s.answerLocked=false;
+ const s=gameState;if(!s||s.finished)return;s.question=mathQuestion(true);s.seconds=5;s.answerLocked=false;
  $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">ROUND ${s.round+1} / 5</span><span class="game-tag">🏆 +350 PCX</span></div><div class="progress"><span id="rushProgress" style="width:100%"></span></div><div class="question">${s.question.text} = ?</div><p class="muted" style="text-align:center">Five seconds. Answer correctly to advance.</p><div class="answergrid" id="rushAnswers">${s.question.choices.map(n=>`<button class="answer" data-rush="${n}">${n}</button>`).join("")}</div><div class="gamestatus" id="rushStatus">⚡ 5 seconds left</div></div>`;
  activateGamePopup();
  const answer=correct=>{
@@ -867,20 +772,13 @@ function drawRush(){
   if(!correct){finishGame(false,"Incorrect answer or timeout. Number Rush requires five consecutive correct answers.");return}
   s.score++;s.round++;
   if(s.round===5){finishGame(true,"Lightning fast! You completed all five rounds.");return}
-  $("rushStatus").textContent="✓ Correct! Next round…";
-  gameTimer=setTimeout(()=>{if(!s.finished)drawRush()},350);
+  $("rushStatus").textContent="✓ Correct! Next round…";gameTimer=setTimeout(()=>{if(!s.finished)drawRush()},350);
  };
  $("gameArea").querySelectorAll("[data-rush]").forEach(b=>b.onclick=()=>answer(Number(b.dataset.rush)===s.question.answer));
- gameTimer=setInterval(()=>{
-  if(s.answerLocked||s.finished)return;
-  s.seconds--;
-  if($("rushStatus"))$("rushStatus").textContent="⚡ "+Math.max(0,s.seconds)+" seconds left";
-  if($("rushProgress"))$("rushProgress").style.width=Math.max(0,s.seconds)*20+"%";
-  if(s.seconds<=0)answer(false);
- },1000);
+ gameTimer=setInterval(()=>{if(s.answerLocked||s.finished)return;s.seconds--;if($("rushStatus"))$("rushStatus").textContent="⚡ "+Math.max(0,s.seconds)+" seconds left";if($("rushProgress"))$("rushProgress").style.width=Math.max(0,s.seconds)*20+"%";if(s.seconds<=0)answer(false)},1000);
 }
 
-/* Memory Match */
+/* MEMORY MATCH */
 function playMemory(){
  gameState.finished=false;
  const symbols=["🍎","🌙","⚡","🎧","⭐","🍀","🎮","💎"],deck=[...symbols,...symbols].sort(()=>Math.random()-.5);
@@ -899,19 +797,16 @@ function playMemory(){
  };
  $("gameArea").querySelectorAll("[data-memory]").forEach(b=>b.onclick=()=>{
   const i=Number(b.dataset.memory);if(locked||matched.has(i)||opened.includes(i)||gameState.finished)return;
-  opened.push(i);paint();
-  if(opened.length!==2)return;
+  opened.push(i);paint();if(opened.length!==2)return;
   moves++;$("memoryMoves").textContent=`${moves} / ${MEMORY_MAX_MOVES}`;
   if(deck[opened[0]]===deck[opened[1]]){
-   opened.forEach(n=>matched.add(n));opened=[];paint();
-   $("memoryStatus").textContent="✨ Match found!";
+   opened.forEach(n=>matched.add(n));opened=[];paint();$("memoryStatus").textContent="✨ Match found!";
    if(matched.size===deck.length){finishGame(true,`All eight pairs matched in ${moves} moves!`);return}
    if(moves>=MEMORY_MAX_MOVES){finishGame(false,"You reached the move limit.");return}
   }else{
    locked=true;$("memoryStatus").textContent="Not a match — remember those cards!";
    gameTimer=setTimeout(()=>{
-    if(gameState.finished)return;
-    opened=[];locked=false;paint();
+    if(gameState.finished)return;opened=[];locked=false;paint();
     if(moves>=MEMORY_MAX_MOVES){finishGame(false,"You reached the move limit.");return}
     $("memoryStatus").textContent="Keep going. You can do it!";
    },700);
@@ -919,13 +814,7 @@ function playMemory(){
  });
 }
 
-/* ================= CAPTCHA WORKER ================= */
-
-/*
-  This is a simulated object-recognition mini-game, not a real CAPTCHA service.
-  Each challenge uses an illustrated object and a yes/no question.
-*/
-
+/* CAPTCHA WORKER */
 const CAPTCHA_OBJECTS=[
  {name:"car",emoji:"🚗",bg:"linear-gradient(145deg,#dce8ff,#e8e2ff)"},
  {name:"bus",emoji:"🚌",bg:"linear-gradient(145deg,#fff0c7,#ffe0b4)"},
@@ -944,11 +833,12 @@ const CAPTCHA_OBJECTS=[
  {name:"book",emoji:"📚",bg:"linear-gradient(145deg,#e3e0ff,#f6e3ff)"},
  {name:"camera",emoji:"📷",bg:"linear-gradient(145deg,#dce8ff,#e5e5f8)"}
 ];
-let captchaQuestion=null;
 
 function startCaptcha(){
  if(!user)return;
- captchaState={round:0,correct:0,total:8,finished:false};
+ if(captchaState&&!captchaState.finished){toast("A CAPTCHA session is already running.");return}
+ if(balance()<CAPTCHA_WRONG_PENALTY){toast("You need at least 10 PCX to start a session.");return}
+ captchaState={round:0,correct:0,total:CAPTCHA_SESSION_QUESTIONS,finished:false,answering:false};
  nextCaptchaQuestion();
 }
 function nextCaptchaQuestion(){
@@ -962,86 +852,113 @@ function nextCaptchaQuestion(){
 }
 function renderCaptchaQuestion(){
  const s=captchaState,q=captchaQuestion;
- openModal(`<div class="game-top"><span class="game-tag">CAPTCHA WORKER</span><span class="game-tag">CHECK ${s.round+1} / ${s.total}</span></div>
+ openModal(`<div class="game-top"><span class="game-tag">CAPTCHA WORKER</span><span class="game-tag">QUESTION ${s.round+1} / ${s.total}</span></div>
  <h2 style="margin-top:14px">Image verification</h2>
- <p class="moddesc">Look at the illustrated object and answer the question below.</p>
- <div class="captcha-image" style="background:${q.imageObj.bg}">
-  <div class="captcha-emoji">${q.imageObj.emoji}</div>
-  <div class="captcha-label">IMAGE CHECK · ${s.round+1}</div>
- </div>
+ <p class="moddesc">Look at the image and answer accurately. One wrong answer deducts 10 PCX and ends this session immediately.</p>
+ <div class="captcha-image" style="background:${q.imageObj.bg}"><div class="captcha-emoji">${q.imageObj.emoji}</div><div class="captcha-label">IMAGE CHECK · ${s.round+1}</div></div>
  <div class="captcha-question">Does this image show a ${esc(q.target.name)}?</div>
- <div class="captcha-buttons">
-  <button class="captcha-answer yes" id="captchaYes">✓ Yes</button>
-  <button class="captcha-answer no" id="captchaNo">✕ No</button>
- </div>
+ <div class="captcha-buttons"><button class="captcha-answer yes" id="captchaYes">✓ Yes</button><button class="captcha-answer no" id="captchaNo">✕ No</button></div>
  <div class="progress"><span style="width:${s.round/s.total*100}%"></span></div>
- <p class="muted small" style="text-align:center">Correct verification: +1 Captcha Coin</p>
+ <p class="muted small" style="text-align:center">Correct: +1 Captcha Coin · Incorrect: −10 PCX and session ends</p>
  <button class="btn outline" id="captchaQuit">Exit worker</button>`,false);
+ modalCanDismiss=false;
  $("captchaYes").onclick=()=>answerCaptcha(true);
  $("captchaNo").onclick=()=>answerCaptcha(false);
  $("captchaQuit").onclick=async()=>{
-  const ok=await confirmModal("Exit Captcha Worker?","Coins already earned in this session are saved. You can return later.","Exit");
-  if(ok){closeModal();captchaState=null;render()}
+  if(!captchaState||captchaState.answering)return;
+  const ok=await confirmModal("Exit Captcha Worker?","Coins already earned in this session are saved. The current session will end.","Exit");
+  if(ok){captchaState=null;closeModal();render()}
  };
 }
-function answerCaptcha(answer){
- if(!captchaState||captchaState.finished)return;
+async function answerCaptcha(answer){
+ const s=captchaState;
+ if(!s||s.finished||s.answering||!captchaQuestion)return;
+ s.answering=true;
+ $("captchaYes").disabled=true;$("captchaNo").disabled=true;$("captchaQuit").disabled=true;
  const correct=answer===captchaQuestion.answer;
- captchaState.round++;
+ s.round++;
  if(correct){
-  captchaState.correct++;
+  s.correct++;
   const cd=captchaData();cd.coins=Number(cd.coins||0)+1;cd.completed=Number(cd.completed||0)+1;saveCaptcha(cd);
   addActivity("Captcha Coin earned","Correct image verification",1,"plus","Coin");
+  render();
   toast("+1 Captcha Coin!");
- }else{
-  toast("Incorrect answer. No coin awarded.");
- }
- render();
- if(captchaState.round>=captchaState.total){
-  finishCaptchaSession();
- }else{
+  s.answering=false;
+  if(s.round>=s.total){finishCaptchaSession();return}
   nextCaptchaQuestion();
+  return;
  }
+
+ /*
+  * Incorrect answer:
+  * 1. Deduct 10 PCX from the wallet database.
+  * 2. End the session immediately.
+  * 3. Do not ask the remaining questions.
+  */
+ s.finished=true;
+ captchaQuestion=null;
+ try{
+  await changeBalance(-CAPTCHA_WRONG_PENALTY,"Captcha Worker penalty");
+  addActivity("Incorrect CAPTCHA penalty","Session ended after an incorrect answer",CAPTCHA_WRONG_PENALTY,"minus","PCX");
+  showCaptchaFailure(s,true,"10 PCX has been deducted from your wallet.");
+ }catch(e){
+  showCaptchaFailure(s,false,"The penalty could not be recorded: "+e.message+". The session has still ended.");
+ }
+}
+function showCaptchaFailure(s,deducted,message){
+ openModal(`<div class="success" style="background:linear-gradient(145deg,#ff8396,#d72f50)">✕</div>
+ <div class="modtitle" style="text-align:center">Session terminated</div>
+ <p class="moddesc" style="text-align:center">Your answer was incorrect. As required, the CAPTCHA session has ended immediately. The remaining questions are cancelled.</p>
+ <div class="receiptTotal"><strong style="color:var(--red)">−${CAPTCHA_WRONG_PENALTY} PCX</strong><small>${esc(message)}</small></div>
+ <div class="receiptLine"><span>Questions attempted</span><strong>${s.round} / ${s.total}</strong></div>
+ <div class="receiptLine"><span>Correct answers</span><strong>${s.correct}</strong></div>
+ <div class="receiptLine"><span>Coins earned this session</span><strong>${s.correct}</strong></div>
+ <button class="btn primary" id="captchaFailureDone">Return to Captcha Home</button>
+ <button class="btn outline" id="captchaFailureAgain">Start a new session</button>`,false);
+ modalCanDismiss=false;
+ $("captchaFailureDone").onclick=()=>{captchaState=null;captchaQuestion=null;modalCanDismiss=true;$("backdrop").classList.remove("show");setPage("captcha")};
+ $("captchaFailureAgain").onclick=async()=>{
+  captchaState=null;captchaQuestion=null;modalCanDismiss=true;$("backdrop").classList.remove("show");
+  try{await refreshWallet()}catch(e){toast(e.message);return}
+  startCaptcha();
+ };
 }
 function finishCaptchaSession(){
  if(!captchaState)return;
  captchaState.finished=true;
  const s=captchaState;
- openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Verification session complete!</div>
- <p class="moddesc" style="text-align:center">You answered ${s.correct} out of ${s.total} checks correctly.</p>
+ openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Session completed!</div>
+ <p class="moddesc" style="text-align:center">Excellent work! You answered all ${s.total} questions without a wrong answer.</p>
  <div class="receiptTotal"><strong>+${s.correct} Captcha Coins</strong><small>Earned during this session</small></div>
+ <div class="receiptLine"><span>Questions completed</span><strong>${s.round} / ${s.total}</strong></div>
+ <div class="receiptLine"><span>Correct answers</span><strong>${s.correct}</strong></div>
  <button class="btn primary" id="captchaDone">Return to Captcha Home</button>
  <button class="btn outline" id="captchaAgain">Start another session</button>`,false);
- $("captchaDone").onclick=()=>{closeModal();captchaState=null;setPage("captcha")};
- $("captchaAgain").onclick=()=>{closeModal();startCaptcha()};
+ modalCanDismiss=false;
+ $("captchaDone").onclick=()=>{captchaState=null;captchaQuestion=null;modalCanDismiss=true;$("backdrop").classList.remove("show");setPage("captcha")};
+ $("captchaAgain").onclick=()=>{captchaState=null;captchaQuestion=null;modalCanDismiss=true;$("backdrop").classList.remove("show");startCaptcha()};
 }
 async function convertCaptchaCoins(){
  if(!user)return;
  const cd=captchaData();
- if(Number(cd.coins||0)<CAPTCHA_CONVERSION_COINS){
-  toast("You need at least 5 Captcha Coins to convert.");
-  return;
- }
+ if(Number(cd.coins||0)<CAPTCHA_CONVERSION_COINS){toast("You need at least 10 Captcha Coins to convert.");return}
  if(!(await confirmModal("Convert Captcha Coins?",`Convert ${CAPTCHA_CONVERSION_COINS} Captcha Coins into ${CAPTCHA_CONVERSION_PCX} PCX? This conversion requires your wallet PIN.`,"Continue")))return;
  if(!(await authorize("Authorise Captcha Coin conversion")))return;
  try{
-  const fresh=await refreshWallet();
+  await refreshWallet();
   if(Number(captchaData().coins||0)<CAPTCHA_CONVERSION_COINS)throw Error("You no longer have enough Captcha Coins.");
   await changeBalance(CAPTCHA_CONVERSION_PCX,"Captcha Coin conversion");
-  const latest=captchaData();
-  latest.coins=Number(latest.coins||0)-CAPTCHA_CONVERSION_COINS;
-  saveCaptcha(latest);
+  const latest=captchaData();latest.coins=Number(latest.coins||0)-CAPTCHA_CONVERSION_COINS;saveCaptcha(latest);
   addActivity("Captcha Coins converted",`${CAPTCHA_CONVERSION_COINS} coins exchanged for ${CAPTCHA_CONVERSION_PCX} PCX`,CAPTCHA_CONVERSION_PCX,"plus","PCX");
   render();
-  openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Conversion successful!</div><p class="moddesc" style="text-align:center">100 PCX has been credited to your wallet database.</p><div class="receiptTotal"><strong>+100 PCX</strong><small>5 Captcha Coins converted</small></div><button class="btn primary" id="conversionDone">Done</button>`);
+  openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Conversion successful!</div><p class="moddesc" style="text-align:center">100 PCX has been credited to your wallet.</p><div class="receiptTotal"><strong>+100 PCX</strong><small>10 Captcha Coins converted</small></div><button class="btn primary" id="conversionDone">Done</button>`);
   $("conversionDone").onclick=closeModal;
  }catch(e){toast("Conversion failed: "+e.message)}
 }
 $("startCaptcha").addEventListener("click",startCaptcha);
 $("convertCaptcha").addEventListener("click",convertCaptchaCoins);
 
-/* ================= ACCOUNT ================= */
-
+/* ACCOUNT */
 $("accountBtn").onclick=()=>{
  if(!user)return;
  openModal(`<button class="close" data-close>×</button><div class="modtitle">Your account</div><p class="moddesc">Manage your wallet profile and membership.</p>
@@ -1053,21 +970,19 @@ $("accountBtn").onclick=()=>{
  <div>${owned.map(p=>`<button class="option" data-switch="${esc(p)}"><div class="optioninfo"><strong>${p==="Premium"?"👑 ":p==="Elite"?"💎 ":p==="Admin"?"🛡️ ":""}${esc(p)}</strong><small>${p===plan()?"Current plan":"Tap to activate"}</small></div><div>${p===plan()?"✓":"→"}</div></button>`).join("")}</div>
  <button class="btn outline" id="logout" style="margin-top:15px">Sign out</button>`);
  $("modal").querySelectorAll("[data-switch]").forEach(b=>b.onclick=async()=>{
-  const p=b.dataset.switch;
-  if(!(await authorize("Confirm plan change")))return;
-  try{await changeBalance(0,"",{plan:p});closeModal();toast("Active plan changed to "+p)}
-  catch(e){toast(e.message)}
+  const p=b.dataset.switch;if(!(await authorize("Confirm plan change")))return;
+  try{await changeBalance(0,"",{plan:p});closeModal();toast("Active plan changed to "+p)}catch(e){toast(e.message)}
  });
  $("logout").onclick=()=>{
   closeModal();stopMiner();stopGameTimer();clearInterval(syncTimer);
   sessionStorage.removeItem("pcx_wallet_id");user=null;walletVisible=true;
   if(gameState&&!gameState.finished)gameState.finished=true;
-  gameState=null;$("gameArea").innerHTML="";closeGamePopup();$("loginScreen").classList.add("show");
+  gameState=null;captchaState=null;captchaQuestion=null;
+  $("gameArea").innerHTML="";closeGamePopup();$("loginScreen").classList.add("show");
  };
 };
 
-/* ================= EVENT BINDINGS ================= */
-
+/* EVENT BINDINGS */
 document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>setPage(b.dataset.page));
 document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>setPage(b.dataset.go));
 document.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>startGame(b.dataset.game));

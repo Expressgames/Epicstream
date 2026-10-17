@@ -1,32 +1,973 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Language Translator</title>
-    <style>
-        /* Reset margin and padding for all elements */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f5fb">
+<title>Playcentrix Rewards</title>
 
-        /* Set the body and html to take up the full height */
-        html, body {
-            height: 100%;
-            width: 100%;
-        }
+<style>
+:root{
+ --bg:#f6f5fb;--card:#fff;--ink:#191827;--muted:#858397;
+ --line:#eceaf4;--purple:#7255ed;--green:#15996a;--red:#e24d65;
+ --shadow:0 8px 30px #27204408;--radius:23px;
+ --robux-url:url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10");
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;overscroll-behavior-y:contain}
+button,input{font:inherit}
+button{cursor:pointer;touch-action:manipulation}
+button:disabled{opacity:.55;cursor:not-allowed}
+.app{max-width:520px;min-height:100dvh;margin:auto;padding-bottom:105px}
+.top{position:sticky;top:0;z-index:20;display:flex;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top) + 12px) 18px 12px;background:#f6f5fbeb;backdrop-filter:blur(20px)}
+.brand{display:flex;align-items:center;gap:10px}
+.logo{width:43px;height:43px;border-radius:15px;display:grid;place-items:center;color:white;font-size:22px;font-weight:950;background:linear-gradient(145deg,#a58fff,#6746e9);box-shadow:0 7px 18px #7255ed35;position:relative;overflow:hidden}
+.logo:after{content:"";position:absolute;width:28px;height:28px;border:1px solid #ffffff65;border-radius:9px;transform:rotate(35deg)}
+.brand strong{font-size:16px;letter-spacing:-.4px}
+.brand small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
+.iconbtn{width:43px;height:43px;border:1px solid var(--line);border-radius:15px;background:white;font-size:20px}
+main{padding:10px 17px}
+.page{display:none;animation:fade .2s ease}
+.page.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:28px;letter-spacing:-1px;margin:12px 0 6px}
+h2{font-size:19px;letter-spacing:-.5px;margin:0}
+h3{font-size:15px;margin:0}
+p{line-height:1.5}
+.muted{color:var(--muted)}
+.small{font-size:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin-top:14px;box-shadow:var(--shadow)}
+.hero{margin-top:17px;padding:22px 20px;color:white;border-radius:27px;background:linear-gradient(140deg,#8066f8,#5e40d8 68%,#4330ac);box-shadow:0 15px 34px #7255ed2a;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;width:180px;height:180px;border:1px solid #ffffff20;border-radius:50%;right:-65px;top:-82px;box-shadow:0 0 0 23px #ffffff09,0 0 0 48px #ffffff06}
+.hero:after{content:"✦";position:absolute;right:24px;bottom:25px;font-size:33px;color:#ffffff30}
+.herotop{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+.herolabel{font-size:11px;color:#e8e1ff;letter-spacing:.6px}
+.pill{font-size:11px;font-weight:800;padding:7px 10px;background:#ffffff22;border-radius:30px}
+.balance{font-size:37px;font-weight:850;letter-spacing:-1.6px;margin:19px 0 5px;overflow-wrap:anywhere;position:relative;z-index:1}
+.balancesub{font-size:12px;color:#e7e0ff;position:relative;z-index:1}
+.actions{display:flex;gap:9px;margin-top:20px;position:relative;z-index:1}
+.herobtn{flex:1;border:0;border-radius:13px;padding:12px 10px;background:white;color:#5e46d8;font-size:12px;font-weight:800}
+.herobtn.alt{background:#ffffff1c;color:white;border:1px solid #ffffff40}
+.head{display:flex;align-items:center;justify-content:space-between;margin:25px 2px 10px}
+.head button{border:0;background:none;color:var(--purple);font-size:12px;font-weight:800}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.statrow{display:flex;gap:10px;margin-top:12px}
+.stat{flex:1;min-width:0;background:#faf9ff;border:1px solid var(--line);border-radius:17px;padding:13px}
+.stat strong{display:block;font-size:19px;overflow-wrap:anywhere}
+.stat small{color:var(--muted);font-size:11px}
+.actioncard{border:1px solid var(--line);background:white;border-radius:20px;padding:15px;text-align:left;min-height:136px;box-shadow:var(--shadow)}
+.actionicon{width:43px;height:43px;border-radius:15px;background:#f0edff;display:grid;place-items:center;font-size:22px;margin-bottom:13px}
+.actioncard strong{display:block;font-size:14px}
+.actioncard small{display:block;color:var(--muted);font-size:11px;line-height:1.45;margin-top:5px}
+.btn{width:100%;padding:14px 16px;border:0;border-radius:14px;font-weight:800;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .12s}
+.btn:active{transform:scale(.985)}
+.primary{background:var(--purple);color:white;box-shadow:0 6px 16px #7255ed25}
+.soft{background:#f0edff;color:#6147dc}
+.outline{background:white;border:1px solid var(--line);color:var(--ink)}
+.dark{background:#202033;color:white}
+.btn+.btn{margin-top:9px}
+.option{width:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:14px;margin-top:10px;border:1px solid var(--line);border-radius:19px;background:white;transition:border-color .15s,background .15s}
+.option:active{background:#f8f6ff}
+.optionicon{width:47px;height:47px;flex-shrink:0;border-radius:16px;display:grid;place-items:center;font-size:23px;background:#f0edff}
+.optioninfo{flex:1;min-width:0}
+.optioninfo strong{display:block;font-size:14px}
+.optioninfo small{display:block;color:var(--muted);font-size:11px;line-height:1.45;margin-top:5px}
+.optionend{text-align:right}
+.optionend strong{display:block;font-size:14px}
+.optionend small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.plan-premium .optionicon{background:linear-gradient(140deg,#fff2c7,#ffe39b)}
+.plan-elite .optionicon{background:linear-gradient(140deg,#eee7ff,#c8b6ff)}
+.plan-admin .optionicon{background:linear-gradient(140deg,#e4e7f1,#adb4ca)}
+.notice{padding:13px 14px;background:#f2efff;color:#5d49bd;border-radius:15px;font-size:12px;line-height:1.6;margin-top:12px}
+.notice.green{background:#e8f8f0;color:#187a54}
+.notice.orange{background:#fff4e7;color:#98621e}
+.progress{height:7px;border-radius:20px;background:#eeebf8;overflow:hidden;margin:12px 0 7px}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#ac98ff,#6445e6);border-radius:20px;transition:width .2s}
+.listitem{display:flex;align-items:center;gap:11px;padding:13px 0;border-bottom:1px solid var(--line)}
+.listitem:last-child{border-bottom:0}
+.listicon{width:41px;height:41px;display:grid;place-items:center;border-radius:14px;background:#f0edff;font-size:19px;flex-shrink:0}
+.listinfo{flex:1;min-width:0}
+.listinfo strong{display:block;font-size:13px}
+.listinfo small{display:block;color:var(--muted);font-size:11px;margin-top:4px;overflow-wrap:anywhere}
+.amount{font-size:12px;font-weight:800;text-align:right}
+.plus{color:var(--green)}
+.minus{color:var(--red)}
+.empty{text-align:center;color:var(--muted);padding:25px 8px;font-size:12px}
+.nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);z-index:30;width:min(520px,100%);display:grid;grid-template-columns:repeat(5,1fr);padding:9px 7px calc(env(safe-area-inset-bottom) + 8px);background:#ffffffed;backdrop-filter:blur(20px);border-top:1px solid #e9e7f0}
+.nav button{border:0;background:none;color:#9693a6;font-size:10px;font-weight:750;display:flex;flex-direction:column;align-items:center;gap:5px;padding:5px 0}
+.nav .ni{font-size:20px}
+.nav button.active{color:var(--purple)}
+.backdrop{position:fixed;inset:0;z-index:100;background:#1716277c;backdrop-filter:blur(7px);display:none;align-items:flex-end;justify-content:center;padding:12px}
+.backdrop.show{display:flex;animation:fade .15s}
+.modal{width:min(480px,100%);max-height:91dvh;overflow:auto;background:white;border-radius:27px;padding:21px 19px calc(20px + env(safe-area-inset-bottom));box-shadow:0 25px 90px #0002;animation:up .2s}
+@keyframes up{from{transform:translateY(20px);opacity:.7}to{transform:translateY(0);opacity:1}}
+.handle{width:42px;height:4px;background:#e5e4ee;border-radius:8px;margin:-7px auto 18px}
+.modtitle{font-size:21px;font-weight:850;letter-spacing:-.7px;margin-bottom:7px}
+.moddesc{font-size:12px;line-height:1.6;color:var(--muted);margin:0 0 15px}
+.close{float:right;border:0;background:#f1f0f7;width:35px;height:35px;border-radius:12px;font-size:19px}
+.pinDots{display:flex;justify-content:center;gap:13px;margin:22px 0}
+.dot{width:12px;height:12px;background:#e4e3ed;border-radius:50%}
+.dot.filled{background:var(--purple)}
+.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;touch-action:manipulation}
+.key{height:54px;border:0;border-radius:15px;background:#f4f3fa;font-size:21px;font-weight:750;user-select:none;-webkit-user-select:none}
+.key:active{background:#e6e0ff}
+.key.clear{font-size:12px}
+.receiptTotal{text-align:center;padding:17px;background:#f6f4ff;border-radius:17px;margin:14px 0}
+.receiptTotal strong{display:block;font-size:31px;letter-spacing:-1px}
+.receiptTotal small{color:var(--muted);font-size:11px}
+.receiptLine{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:12px}
+.receiptLine span:first-child{color:var(--muted)}
+.receiptLine strong{text-align:right}
+.success{width:68px;height:68px;margin:5px auto 17px;border-radius:50%;display:grid;place-items:center;color:white;font-size:32px;background:linear-gradient(145deg,#43d69a,#129866);box-shadow:0 8px 24px #159b6833;animation:pop .35s}
+@keyframes pop{0%{transform:scale(.6)}75%{transform:scale(1.08)}100%{transform:scale(1)}}
+.timerbox{text-align:center;background:#f5f3ff;border:1px solid #e9e3ff;border-radius:17px;padding:14px;margin:14px 0}
+.timer{font-size:25px;font-weight:850;color:#6249de;margin-top:5px}
+.gamechoices{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:18px}
+.gamechoice{height:94px;background:white;border:1px solid var(--line);border-radius:18px;font-size:30px;transition:transform .12s,border-color .12s}
+.gamechoice:active{transform:scale(.96);border-color:var(--purple)}
+.gamechoice small{display:block;color:var(--muted);font-size:10px;margin-top:6px}
+.question{font-size:32px;font-weight:850;letter-spacing:-1px;text-align:center;margin:23px 0}
+.answergrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
+.answer{border:1px solid var(--line);border-radius:15px;background:white;padding:16px;font-weight:800;font-size:16px;min-height:55px}
+.answer:active{background:#f0edff}
+.memorygrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:17px}
+.memorycard{aspect-ratio:1;border:1px solid #e5defd;border-radius:15px;background:linear-gradient(145deg,#9b83ff,#684be7);color:white;font-size:23px;box-shadow:0 4px 10px #7255ed13;transition:transform .2s,background .2s;transform-style:preserve-3d}
+.memorycard.open{background:#fff;color:#24203a;border-color:#d9d0ff;transform:rotateY(180deg);font-size:25px}
+.memorycard.matched{background:#e8f8ef;color:#15996a;border-color:#bdebd0;animation:pop .25s}
+.gamestatus{text-align:center;font-weight:800;min-height:20px;margin-top:13px}
+.game-top{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.game-tag{background:#f0edff;color:#6249de;border-radius:99px;padding:7px 10px;font-size:11px;font-weight:850}
+.game-banner{padding:19px;border-radius:20px;background:linear-gradient(145deg,#f5f1ff,#ebe5ff);border:1px solid #e7dfff;margin:14px 0;text-align:center}
+.game-banner .big{font-size:42px;margin:4px 0 9px}
+.game-banner strong{font-size:18px}
+.game-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.game-stat{padding:12px 7px;text-align:center;background:#faf9ff;border:1px solid var(--line);border-radius:15px}
+.game-stat strong{display:block;font-size:19px}
+.game-stat small{font-size:10px;color:var(--muted)}
 
-        /* Style the iframe to take up the full screen */
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-    </style>
+/* The supplied Robux logo */
+.robux-icon{width:30px;height:30px;object-fit:contain;vertical-align:middle;flex-shrink:0}
+.robux-purchase-logo{display:block;width:86px;height:86px;object-fit:contain;margin:0 auto 12px;animation:robuxPurchase 1s cubic-bezier(.2,.9,.3,1.3) both;filter:drop-shadow(0 8px 14px #7255ed30)}
+@keyframes robuxPurchase{
+ 0%{opacity:0;transform:scale(.25) rotate(-35deg)}
+ 55%{opacity:1;transform:scale(1.2) rotate(8deg)}
+ 75%{transform:scale(.92) rotate(-4deg)}
+ 100%{opacity:1;transform:scale(1) rotate(0)}
+}
+
+/* Full-screen gaming overlay */
+#gameArea.game-popup{
+ position:fixed;inset:0;z-index:90;
+ display:flex;align-items:center;justify-content:center;
+ padding:max(12px,env(safe-area-inset-top)) 12px max(12px,env(safe-area-inset-bottom));
+ background:#151326f2;backdrop-filter:blur(22px);
+ overflow-y:auto;overscroll-behavior:contain;
+ animation:gamePopupIn .22s ease both;
+}
+@keyframes gamePopupIn{from{opacity:0}to{opacity:1}}
+#gameArea.game-popup .card{
+ position:relative;width:min(720px,100%);
+ max-height:calc(100dvh - 30px);overflow-y:auto;overscroll-behavior:contain;
+ margin:auto;padding:24px;border-radius:28px;
+ border:1px solid #ffffff;background:#fff;
+ box-shadow:0 30px 100px #0005;
+ animation:gameCardIn .3s cubic-bezier(.2,.8,.2,1) both;
+}
+@keyframes gameCardIn{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.game-close{
+ position:sticky;top:0;float:right;z-index:8;
+ width:45px;height:45px;margin:-10px -10px 8px 12px;
+ border:0;border-radius:16px;background:#fff0f2;color:#df3f5d;
+ font-size:24px;font-weight:850;display:grid;place-items:center;
+ box-shadow:0 4px 14px #24133a0c;
+ transition:transform .18s,background .18s;
+}
+.game-close:active{transform:scale(.86) rotate(-10deg);background:#ffdfe5}
+.game-close .close-x{display:block;transition:transform .2s}
+.game-close:hover .close-x{transform:rotate(90deg)}
+#gameArea.game-popup .question{font-size:clamp(35px,8vw,54px);margin:28px 0}
+#gameArea.game-popup .answer{min-height:64px;border-radius:17px;font-size:19px;transition:background .15s,transform .15s}
+#gameArea.game-popup .answer:active{background:#eee8ff;transform:scale(.97)}
+#gameArea.game-popup .memorygrid{gap:11px}
+#gameArea.game-popup .memorycard{border-radius:17px;font-size:clamp(23px,5vw,32px)}
+#gameArea.game-popup .gamechoices{gap:13px}
+#gameArea.game-popup .gamechoice{height:115px;border-radius:21px;font-size:38px}
+#gameArea.game-popup .gamestatus{font-size:14px;padding:7px}
+#gameArea.game-popup .game-tag{font-size:11px}
+.game-popup .game-exit-note{color:var(--muted);font-size:11px;text-align:center;margin:12px 0 0}
+body.game-open{overflow:hidden}
+body.game-open .top,body.game-open .nav{pointer-events:none}
+body.game-open .nav{opacity:0}
+
+.login{position:fixed;inset:0;z-index:150;background:var(--bg);display:none;overflow:auto;padding:25px 20px calc(30px + env(safe-area-inset-bottom))}
+.login.show{display:block}
+.loginwrap{max-width:430px;margin:8vh auto 0}
+.login h1{font-size:35px;margin:0 0 8px}
+.loginwrap>p{color:var(--muted);font-size:13px;line-height:1.6;margin-bottom:25px}
+.field{margin-top:14px}
+.field label{display:block;color:var(--muted);font-size:12px;margin-bottom:7px}
+.input{width:100%;padding:14px;border:1px solid var(--line);border-radius:13px;background:#faf9ff;outline:none}
+.input:focus{border-color:#a797ff;background:white}
+.toast{position:fixed;z-index:200;bottom:105px;left:50%;transform:translateX(-50%);background:#202033;color:white;border-radius:13px;padding:12px 17px;font-size:12px;max-width:calc(100% - 32px);text-align:center;box-shadow:0 8px 30px #0002}
+@media(min-width:520px){.backdrop{align-items:center}}
+@media(max-width:380px){
+ main{padding-left:12px;padding-right:12px}
+ #gameArea.game-popup .card{padding:17px;border-radius:23px}
+ #gameArea.game-popup .memorygrid{gap:6px}
+ #gameArea.game-popup .memorycard{border-radius:11px}
+ .game-stat strong{font-size:16px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
+
 <body>
-    <iframe src="https://llamacoder.together.ai/share/v2/PM41Ws9W0HLAXAyo" allowfullscreen></iframe>
+<div class="app">
+<header class="top">
+ <div class="brand"><div class="logo">P</div><div><strong>Playcentrix</strong><small>Rewards Wallet</small></div></div>
+ <button class="iconbtn" id="accountBtn" aria-label="Account">☻</button>
+</header>
+
+<main>
+<section class="page active" id="page-home">
+ <div class="muted small">YOUR REWARDS, IN ONE PLACE</div>
+ <h1>Welcome back<span id="welcomeName"></span></h1>
+ <p class="muted">Your Playcentrix rewards at a glance.</p>
+ <div class="hero">
+  <div class="herotop"><span class="herolabel">TOTAL WALLET BALANCE</span><span class="pill" id="planBadge">Basic</span></div>
+  <div class="balance" id="balanceText">••••••</div>
+  <div class="balancesub" id="walletCaption">Your balance is protected</div>
+  <div class="actions"><button class="herobtn" id="revealBtn">⌁ Reveal balance</button><button class="herobtn alt" data-go="withdraw">⇧ Redeem</button></div>
+ </div>
+ <div class="statrow">
+  <div class="stat"><strong id="minedStat">0.0</strong><small>Total mined · PCX</small></div>
+  <div class="stat"><strong id="robuxStat">0</strong><small>Robux requested*</small></div>
+ </div>
+ <div class="head"><h2>Quick actions</h2></div>
+ <div class="grid2">
+  <button class="actioncard" data-go="earn"><div class="actionicon">⛏️</div><strong>PCX Miner</strong><small>Earn 10 PCX/min while active.</small></button>
+  <button class="actioncard" data-go="games"><div class="actionicon">🎮</div><strong>Game zone</strong><small>50 PCX entry. Game-specific rewards.</small></button>
+  <button class="actioncard" data-go="withdraw"><div class="actionicon">🎟️</div><strong>Redeem Robux</strong><small>Review every fee before confirming.</small></button>
+  <button class="actioncard" data-go="activity"><div class="actionicon">↗️</div><strong>Activity</strong><small>Review your wallet history.</small></button>
+ </div>
+ <div class="notice">*Robux shown here represents redemption requests tracked by this app. It is not a live Roblox account balance.</div>
+ <div class="head"><h2>Recent activity</h2><button data-go="activity">View all →</button></div>
+ <div class="card" id="homeActivity"></div>
+</section>
+
+<section class="page" id="page-games">
+ <div class="muted small">PLAY & EARN</div><h1>Game zone 🎮</h1><p class="muted">Quick challenges. Clear rules. Different rewards.</p>
+ <div class="hero"><div class="herotop"><span class="herolabel">ENTRY FEE</span><span class="pill">PCX</span></div><div class="balance">50 PCX</div><div class="balancesub">Charged before each attempt.</div></div>
+ <div class="notice">Every game opens in a large gaming window. You can exit using the ✕ button, but leaving an active attempt forfeits the entry fee.</div>
+ <div class="head"><h2>Choose your challenge</h2></div>
+ <button class="option" data-game="rps"><div class="optionicon">✊</div><div class="optioninfo"><strong>Rock Paper Scissors</strong><small>Best of 3 · First to 2 wins.</small></div><div class="optionend"><strong>+500</strong><small>PCX reward</small></div></button>
+ <button class="option" data-game="math"><div class="optionicon">🧠</div><div class="optioninfo"><strong>Math Challenge</strong><small>5 questions · 10 seconds each.</small></div><div class="optionend"><strong>+250</strong><small>PCX reward</small></div></button>
+ <button class="option" data-game="rush"><div class="optionicon">⚡</div><div class="optioninfo"><strong>Number Rush</strong><small>5 rounds · 5 seconds per round.</small></div><div class="optionend"><strong>+100</strong><small>PCX reward</small></div></button>
+ <button class="option" data-game="memory"><div class="optionicon">🧩</div><div class="optioninfo"><strong>Memory Match</strong><small>8 pairs · Maximum 25 moves.</small></div><div class="optionend"><strong>+500</strong><small>PCX reward</small></div></button>
+ <div id="gameArea"></div>
+</section>
+
+<section class="page" id="page-earn">
+ <div class="muted small">REWARDS MINER</div><h1>PCX Miner ⛏️</h1><p class="muted">Mining runs only while this screen is visible.</p>
+ <div class="hero"><div class="herotop"><span class="herolabel">MINING SPEED</span><span class="pill">LIVE WHEN ACTIVE</span></div><div class="balance">10 <span style="font-size:18px;letter-spacing:0">PCX/min</span></div><div class="balancesub">Keep this page visible to earn.</div></div>
+ <div class="card"><div class="muted small">PENDING PCX</div><div class="balance" style="color:var(--purple);font-size:36px" id="pendingMiner">0.0</div><div class="progress"><span id="minerProgress"></span></div><div class="muted small" id="minerProgressText">Next credit in 12 seconds.</div><button class="btn primary" id="minerToggle" style="margin-top:19px">▶ Start mining</button></div>
+ <div class="grid2"><div class="card"><div class="muted small">TOTAL MINED</div><div class="balance" style="font-size:27px" id="minerTotal">0.0</div><div class="small muted">PCX all-time</div></div><div class="card"><div class="muted small">CREDITED</div><div class="balance" style="font-size:27px" id="minerCredited">0.0</div><div class="small muted">PCX to wallet</div></div></div>
+ <div class="notice green">Mining earns 10 PCX per minute while this screen is visible. Every full 2 PCX is credited automatically. Leaving this screen or hiding the page pauses mining.</div>
+</section>
+
+<section class="page" id="page-withdraw">
+ <div class="muted small">REDEEM YOUR REWARDS</div><h1>Withdraw</h1><p class="muted">Memberships and Robux redemption.</p>
+ <div class="card"><div class="muted small">AVAILABLE PCX</div><div class="balance" style="font-size:32px" id="withdrawBalance">••••••</div><button class="btn outline" id="withdrawReveal" style="margin-top:14px">Reveal with PIN</button></div>
+ <div class="head"><h2>Membership plans</h2></div><div class="muted small">Buy a plan, then manage your active membership in Account.</div>
+ <button class="option plan-premium" data-plan="Premium"><div class="optionicon">👑</div><div class="optioninfo"><strong>Premium</strong><small>Premium membership</small></div><div class="optionend"><strong>10,000</strong><small>PCX</small></div></button>
+ <button class="option plan-elite" data-plan="Elite"><div class="optionicon">💎</div><div class="optioninfo"><strong>Elite</strong><small>Elite membership</small></div><div class="optionend"><strong>50,000</strong><small>PCX</small></div></button>
+ <button class="option plan-admin" data-plan="Admin"><div class="optionicon">🛡️</div><div class="optioninfo"><strong>Admin</strong><small>Admin membership</small></div><div class="optionend"><strong>100,000</strong><small>PCX</small></div></button>
+ <div class="head"><h2>Redeem for Robux</h2></div>
+ <div class="notice orange">Fee breakdown: 15% transaction fee + 30% Roblox Fee + 15% Playcentrix commission. You receive 40% of the gross amount.</div>
+
+ <button class="option" data-robux="10000">
+  <div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div>
+  <div class="optioninfo"><strong>Starter redemption</strong><small>10,000 PCX</small></div><div class="optionend"><strong>100 Robux</strong><small>40 net Robux</small></div>
+ </button>
+ <button class="option" data-robux="100000">
+  <div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div>
+  <div class="optioninfo"><strong>Plus redemption</strong><small>100,000 PCX</small></div><div class="optionend"><strong>1,000 Robux</strong><small>400 net Robux</small></div>
+ </button>
+ <button class="option" data-robux="1000000">
+  <div class="optionicon"><img class="robux-icon" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10" alt="Robux" onerror="this.style.display='none';this.parentElement.textContent='◇'"></div>
+  <div class="optioninfo"><strong>Max redemption</strong><small>1,000,000 PCX</small></div><div class="optionend"><strong>10,000 Robux</strong><small>4,000 net Robux</small></div>
+ </button>
+ <div class="card"><h3>Robux account</h3><div class="statrow"><div class="stat"><strong id="robuxBalance">0</strong><small>Requested Robux*</small></div><div class="stat"><strong id="ownedPlans">Basic</strong><small>Owned memberships</small></div></div><p class="muted small">*This is app-side tracking, not an official Roblox account balance.</p></div>
+</section>
+
+<section class="page" id="page-activity"><div class="muted small">YOUR WALLET HISTORY</div><h1>Activity</h1><p class="muted">Your recent rewards, games, and redemptions.</p><div class="card" id="activityList"></div></section>
+</main>
+
+<nav class="nav">
+ <button class="active" data-page="home"><span class="ni">⌂</span>Home</button>
+ <button data-page="games"><span class="ni">🎮</span>Games</button>
+ <button data-page="earn"><span class="ni">⛏</span>Earn</button>
+ <button data-page="withdraw"><span class="ni">⇧</span>Withdraw</button>
+ <button data-page="activity"><span class="ni">↗</span>Activity</button>
+</nav>
+</div>
+
+<div class="backdrop" id="backdrop"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+
+<div class="login" id="loginScreen">
+ <div class="loginwrap">
+  <div class="logo" style="width:66px;height:66px;border-radius:22px;font-size:30px;margin-bottom:22px">P</div>
+  <h1>Playcentrix<br>Rewards.</h1>
+  <p>Sign in to your existing wallet to manage PCX rewards.</p>
+  <form id="loginForm">
+   <div class="field"><label for="username">Username</label><input class="input" id="username" autocomplete="username" required></div>
+   <div class="field"><label for="password">Password</label><input class="input" id="password" type="password" autocomplete="current-password" required></div>
+   <button class="btn primary" type="submit" style="margin-top:20px">Sign in →</button>
+  </form>
+  <div class="notice" id="loginError" style="display:none"></div>
+ </div>
+</div>
+
+<script>
+"use strict";
+
+const API="https://wallet-database.playcentrix.workers.dev/db";
+const ENTRY=50,MINER_RATE=10,MINER_STEP=2;
+const GAME_REWARDS={rps:500,math:250,rush:100,memory:500};
+const GAME_NAMES={rps:"Rock Paper Scissors",math:"Math Challenge",rush:"Number Rush",memory:"Memory Match"};
+const $=id=>document.getElementById(id);
+const fmt=n=>Number(n||0).toLocaleString("en-US",{maximumFractionDigits:2});
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const getLocal=(k,d)=>{try{const x=localStorage.getItem(k);return x===null?d:JSON.parse(x)}catch{return d}};
+const setLocal=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch{}};
+
+let database=null,user=null,walletVisible=false,activePage="home";
+let activity=[],owned=["Basic"],robuxRequested=0,redemptions=[];
+let modalResolver=null,minerTimer=null,minerLast=0,minerWorking=false;
+let gameState=null,gameTimer=null,toastTimer=null,activeReceipt=null,syncing=false;
+let syncTimer=null,navigationPending=false,exitPending=false;
+
+function localKey(){return "pcx_rewards_"+user?.walletId}
+function readLocal(){
+ const s=getLocal(localKey(),{});
+ owned=Array.isArray(s.owned)?s.owned:["Basic"];
+ if(!owned.includes("Basic"))owned.unshift("Basic");
+ robuxRequested=Number(s.robuxRequested||0);
+ activity=Array.isArray(s.activity)?s.activity:[];
+ redemptions=Array.isArray(s.redemptions)?s.redemptions:[];
+}
+function saveLocal(){setLocal(localKey(),{owned,robuxRequested,activity,redemptions})}
+function balance(){return Number(user?.balance||0)}
+function plan(){return user?.plan||"Basic"}
+
+function toast(msg){
+ document.querySelector(".toast")?.remove();
+ const e=document.createElement("div");e.className="toast";e.textContent=msg;document.body.append(e);
+ clearTimeout(toastTimer);toastTimer=setTimeout(()=>e.remove(),3000);
+}
+function addActivity(title,subtitle,amount,kind="plus",unit="PCX"){
+ activity.unshift({id:Date.now()+Math.random(),title,subtitle,amount:Number(amount||0),kind,unit,date:new Date().toISOString()});
+ activity=activity.slice(0,100);saveLocal();renderActivity();
+}
+function renderActivity(){
+ const row=a=>`<div class="listitem"><div class="listicon">${a.kind==="minus"?"↗":a.kind==="pending"?"◷":"✦"}</div><div class="listinfo"><strong>${esc(a.title)}</strong><small>${esc(a.subtitle||new Date(a.date).toLocaleString())}</small></div><div class="amount ${a.kind==="minus"?"minus":a.kind==="plus"?"plus":""}">${a.kind==="minus"?"−":a.kind==="plus"?"+":""}${fmt(a.amount)} ${esc(a.unit||"PCX")}</div></div>`;
+ $("activityList").innerHTML=activity.length?activity.slice(0,40).map(row).join(""):`<div class="empty">No activity yet.</div>`;
+ $("homeActivity").innerHTML=activity.length?activity.slice(0,3).map(row).join(""):`<div class="empty">Your latest activity will appear here.</div>`;
+}
+
+/* Navigation */
+async function setPage(p){
+ if(navigationPending)return;
+ if(gameState&&!gameState.finished&&gameState.phase==="playing"&&p!=="games"){
+  navigationPending=true;
+  const ok=await confirmModal("Leave your active game?","Your 50 PCX entry fee has already been charged. Leaving ends the attempt without a reward.","Leave game");
+  navigationPending=false;
+  if(!ok)return;
+  abandonGame();
+ }
+ stopMiner();activePage=p;
+ document.querySelectorAll(".page").forEach(e=>e.classList.toggle("active",e.id==="page-"+p));
+ document.querySelectorAll("[data-page]").forEach(e=>e.classList.toggle("active",e.dataset.page===p));
+ if(p==="earn")startMiner();
+ render();window.scrollTo({top:0,behavior:"auto"});
+}
+function render(){
+ if(!user)return;
+ $("welcomeName").textContent=user.displayName?", "+user.displayName.split(" ")[0]:"";
+ $("planBadge").textContent=plan();
+ $("balanceText").textContent=walletVisible?fmt(balance())+" PCX":"••••••";
+ $("walletCaption").textContent=walletVisible?"Available wallet balance":"Your balance is protected";
+ $("revealBtn").textContent=walletVisible?"◉ Hide balance":"⌁ Reveal balance";
+ $("withdrawBalance").textContent=walletVisible?fmt(balance())+" PCX":"••••••";
+ $("robuxStat").textContent=fmt(robuxRequested);
+ $("robuxBalance").textContent=fmt(robuxRequested);
+ $("ownedPlans").textContent=owned.join(", ");
+ $("minedStat").textContent=Number(minerState().total||0).toFixed(1);
+ renderActivity();updateMinerUI();
+}
+
+/* Wallet API */
+async function apiGet(){
+ const r=await fetch(API,{method:"GET",cache:"no-store"});
+ if(!r.ok)throw Error("API request failed: HTTP "+r.status);
+ const db=await r.json();
+ if(Array.isArray(db))return {users:db,transactions:[],redeemCodes:[]};
+ if(db&&typeof db==="object"&&Array.isArray(db.users))return {...db,users:db.users,transactions:Array.isArray(db.transactions)?db.transactions:[],redeemCodes:Array.isArray(db.redeemCodes)?db.redeemCodes:[]};
+ throw Error("Invalid API response. Expected an object containing users[].");
+}
+async function apiPut(db){
+ const r=await fetch(API,{method:"PUT",headers:{"Content-Type":"application/json"},body:JSON.stringify(db)});
+ if(!r.ok)throw Error("Wallet update failed: HTTP "+r.status);
+ const result=await r.json().catch(()=>({}));
+ if(result&&result.success===false)throw Error(result.message||"Wallet update rejected.");
+ return result;
+}
+function findWallet(db,target){return db.users.find(w=>String(w.walletId)===String(target.walletId))}
+async function refreshWallet(){
+ const db=await apiGet(),fresh=findWallet(db,user);
+ if(!fresh)throw Error("Wallet not found in database.");
+ if(fresh.isBlocked===true||String(fresh.isBlocked).toLowerCase()==="true")throw Error("This wallet is blocked.");
+ database=db;user=fresh;render();return fresh;
+}
+async function changeBalance(delta,reason="",opts={}){
+ const db=await apiGet(),fresh=findWallet(db,user);
+ if(!fresh)throw Error("Wallet not found.");
+ if(fresh.isBlocked===true||String(fresh.isBlocked).toLowerCase()==="true")throw Error("This wallet is blocked.");
+ const old=Number(fresh.balance||0),amount=Number(delta);
+ if(amount<0&&old< -amount)throw Error("Insufficient PCX balance.");
+ fresh.balance=Math.round((old+amount)*100)/100;
+ if(opts.plan!==undefined)fresh.plan=opts.plan;
+ await apiPut(db);
+ database=db;user=fresh;
+ if(reason)addActivity(reason,new Date().toLocaleString(),Math.abs(amount),amount>=0?"plus":"minus");
+ render();return fresh;
+}
+async function login(username,password){
+ const db=await apiGet();
+ const found=db.users.find(w=>String(w.username||"").toLowerCase()===username.trim().toLowerCase()&&String(w.password??"")===password);
+ if(!found)throw Error("Username or password is incorrect.");
+ if(found.isBlocked===true||String(found.isBlocked).toLowerCase()==="true")throw Error("This wallet is blocked.");
+ database=db;user=found;sessionStorage.setItem("pcx_wallet_id",String(found.walletId));readLocal();
+ $("loginScreen").classList.remove("show");render();await setPage("home");startAutoSync();
+}
+async function restoreSession(){
+ const id=sessionStorage.getItem("pcx_wallet_id");
+ if(!id){$("loginScreen").classList.add("show");return}
+ try{
+  const db=await apiGet(),found=db.users.find(w=>String(w.walletId)===id);
+  if(!found||found.isBlocked===true||String(found.isBlocked).toLowerCase()==="true"){
+   sessionStorage.removeItem("pcx_wallet_id");$("loginScreen").classList.add("show");return;
+  }
+  database=db;user=found;readLocal();$("loginScreen").classList.remove("show");render();startAutoSync();
+ }catch(e){
+  $("loginScreen").classList.add("show");$("loginError").style.display="block";$("loginError").textContent="Unable to connect: "+e.message;
+ }
+}
+function startAutoSync(){
+ clearInterval(syncTimer);
+ syncTimer=setInterval(async()=>{
+  if(!user||document.visibilityState!=="visible"||syncing)return;
+  syncing=true;try{await refreshWallet()}catch(e){console.warn("Wallet sync:",e.message)}finally{syncing=false}
+ },10000);
+}
+async function syncNow(){
+ if(!user||syncing)return false;
+ syncing=true;
+ try{await refreshWallet();return true}catch(e){toast("Wallet sync failed: "+e.message);return false}finally{syncing=false}
+}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="visible"&&user)syncNow()});
+
+/* Modal helpers */
+function openModal(html,close=true){
+ $("modal").innerHTML=`<div class="handle"></div>${html}`;
+ $("backdrop").classList.add("show");
+ if(close)$("modal").querySelectorAll("[data-close]").forEach(b=>b.addEventListener("click",closeModal));
+}
+function closeModal(){
+ $("backdrop").classList.remove("show");
+ if(modalResolver){const r=modalResolver;modalResolver=null;r(null)}
+}
+$("backdrop").addEventListener("click",e=>{
+ if(e.target===$("backdrop"))closeModal();
+});
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape"&&$("backdrop").classList.contains("show"))closeModal();
+});
+function confirmModal(title,desc,yes="Confirm"){
+ return new Promise(resolve=>{
+  modalResolver=resolve;
+  openModal(`<button class="close" data-close>×</button><div class="modtitle">${esc(title)}</div><p class="moddesc">${esc(desc)}</p><button class="btn primary" id="confirmYes">${esc(yes)}</button><button class="btn outline" data-close>Cancel</button>`);
+  $("confirmYes").addEventListener("click",()=>{
+   const r=modalResolver;modalResolver=null;$("backdrop").classList.remove("show");if(r)r(true);
+  });
+ });
+}
+
+/* PIN keypad */
+function askPin(title="Enter your 4-digit PIN"){
+ return new Promise(resolve=>{
+  let pin="",done=false;
+  const finish=value=>{
+   if(done)return;done=true;document.removeEventListener("keydown",physicalPinKey,true);
+   $("backdrop").classList.remove("show");resolve(value);
+  };
+  const draw=()=>{
+   const dots=$("pinDots");if(dots)for(let i=0;i<4;i++)dots.children[i]?.classList.toggle("filled",i<pin.length);
+  };
+  const updateError=t=>{const e=$("pinError");if(e)e.textContent=t};
+  const addDigit=d=>{
+   if(done||pin.length>=4)return;
+   pin+=d;draw();updateError("");
+   if(pin.length===4){
+    if(String(user.pin??"")===pin)finish(pin);
+    else{pin="";draw();updateError("Incorrect PIN. Try again.");if(navigator.vibrate)navigator.vibrate(35)}
+   }
+  };
+  const physicalPinKey=e=>{
+   if(!$("backdrop").classList.contains("show")||!$("pinDots"))return;
+   if(/^\d$/.test(e.key)){e.preventDefault();addDigit(e.key)}
+   else if(e.key==="Backspace"){e.preventDefault();pin=pin.slice(0,-1);draw();updateError("")}
+   else if(e.key==="Escape"){e.preventDefault();finish(null)}
+  };
+  openModal(`<button class="close" id="pinCancel">×</button><div class="modtitle">${esc(title)}</div><p class="moddesc">Enter your wallet PIN to authorise this action.</p><div class="pinDots" id="pinDots"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div><div class="muted small" style="text-align:center;min-height:18px" id="pinError"></div><div class="keypad" id="pinKeypad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button type="button" class="key" data-key="${n}">${n}</button>`).join("")}<button type="button" class="key clear" data-key="clear">Clear</button><button type="button" class="key" data-key="0">0</button><button type="button" class="key" data-key="back">⌫</button></div>`,false);
+  $("pinCancel").addEventListener("click",()=>finish(null));
+  $("pinKeypad").addEventListener("pointerdown",e=>{
+   const b=e.target.closest("[data-key]");if(!b)return;e.preventDefault();
+   const k=b.dataset.key;
+   if(k==="clear"){pin="";draw();updateError("")}
+   else if(k==="back"){pin=pin.slice(0,-1);draw();updateError("")}
+   else addDigit(k);
+  });
+  document.addEventListener("keydown",physicalPinKey,true);
+ });
+}
+async function authorize(title){return (await askPin(title))!==null}
+async function revealBalance(){
+ if(walletVisible){walletVisible=false;render();return}
+ try{if(!(await authorize("Unlock wallet balance")))return;await refreshWallet();walletVisible=true;render()}catch(e){toast(e.message)}
+}
+$("revealBtn").addEventListener("click",revealBalance);
+$("withdrawReveal").addEventListener("click",revealBalance);
+
+/* Miner */
+function minerState(){return getLocal(localKey()+"_miner",{pending:0,total:0,credited:0})}
+function saveMiner(s){setLocal(localKey()+"_miner",s)}
+function stopMiner(){
+ if(minerTimer)clearInterval(minerTimer);
+ minerTimer=null;minerLast=0;updateMinerUI();
+}
+function startMiner(){
+ stopMiner();
+ if(!user||activePage!=="earn"||document.visibilityState!=="visible")return;
+ minerLast=Date.now();minerTimer=setInterval(tickMiner,250);updateMinerUI();
+}
+async function tickMiner(){
+ if(!user||activePage!=="earn"||document.visibilityState!=="visible"||minerWorking){minerLast=Date.now();return}
+ const now=Date.now(),dt=Math.min(1,Math.max(0,(now-minerLast)/1000));minerLast=now;
+ const s=minerState();s.pending=Number(s.pending||0)+dt*MINER_RATE/60;s.total=Number(s.total||0)+dt*MINER_RATE/60;
+ let credit=0;
+ if(s.pending>=MINER_STEP){credit=Math.floor(s.pending/MINER_STEP)*MINER_STEP;s.pending-=credit;s.credited=Number(s.credited||0)+credit}
+ saveMiner(s);updateMinerUI();
+ if(credit){
+  minerWorking=true;
+  try{await changeBalance(credit,"PCX Miner reward")}
+  catch(e){
+   const retry=minerState();retry.pending=Number(retry.pending||0)+credit;
+   retry.credited=Math.max(0,Number(retry.credited||0)-credit);saveMiner(retry);toast("Miner credit failed: "+e.message);
+  }finally{minerWorking=false;updateMinerUI()}
+ }
+}
+function updateMinerUI(){
+ if(!user)return;
+ const s=minerState();
+ if($("pendingMiner"))$("pendingMiner").textContent=Number(s.pending||0).toFixed(1);
+ if($("minerTotal"))$("minerTotal").textContent=Number(s.total||0).toFixed(1);
+ if($("minerCredited"))$("minerCredited").textContent=fmt(s.credited||0);
+ if($("minedStat"))$("minedStat").textContent=Number(s.total||0).toFixed(1);
+ if($("minerProgress"))$("minerProgress").style.width=(Number(s.pending||0)%MINER_STEP)/MINER_STEP*100+"%";
+ if($("minerProgressText"))$("minerProgressText").textContent=`Next 2 PCX credit in about ${Math.ceil((MINER_STEP-(Number(s.pending||0)%MINER_STEP))/MINER_RATE*60)} seconds.`;
+ if($("minerToggle"))$("minerToggle").textContent=minerTimer?"● Mining is active":"▶ Start mining";
+}
+$("minerToggle").addEventListener("click",()=>{if(activePage!=="earn")setPage("earn");else{startMiner();toast("Mining is active while this page stays visible.")}});
+document.addEventListener("visibilitychange",()=>{
+ if(document.visibilityState!=="visible")stopMiner();
+ else if(activePage==="earn")startMiner();
+});
+
+/* Membership plans */
+const PLAN_COST={Premium:10000,Elite:50000,Admin:100000};
+async function handlePlan(p){
+ if(owned.includes(p)){
+  if(!(await confirmModal("Select "+p+"?","This membership is already owned. Make it your active plan?","Select plan")))return;
+  if(!(await authorize("Confirm plan selection")))return;
+  try{await changeBalance(0,"",{plan:p});toast(p+" is now active")}catch(e){toast(e.message)}
+  return;
+ }
+ const cost=PLAN_COST[p];
+ if(balance()<cost){toast("You need "+fmt(cost)+" PCX.");return}
+ if(!(await confirmModal("Buy "+p+"?",`This costs ${fmt(cost)} PCX. Your wallet will be charged after PIN verification.`,"Continue")))return;
+ if(!(await authorize("Authorise membership purchase")))return;
+ if(!(await confirmModal("Final confirmation",`Purchase ${p} for ${fmt(cost)} PCX?`,"Buy membership")))return;
+ try{
+  await changeBalance(-cost,p+" membership purchase",{plan:p});
+  if(!owned.includes(p))owned.push(p);saveLocal();
+  openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">${esc(p)} activated!</div><p class="moddesc" style="text-align:center">Your membership has been selected as the active plan.</p><button class="btn primary" id="planDone">Done</button>`);
+  $("planDone").onclick=closeModal;
+ }catch(e){toast(e.message)}
+}
+
+/* Robux redemption */
+const REDEMPTIONS={10000:{pcx:10000,gross:100},100000:{pcx:100000,gross:1000},1000000:{pcx:1000000,gross:10000}};
+const ROBUX_IMAGE="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCGy2VQZP0ZDovu3RMWFW9D5vWoIaGpb3BLfItK0H-wsZsmrEnY1U5TZL1&s=10";
+async function handleRobux(pcx){
+ const o=REDEMPTIONS[pcx];if(!o)return;
+ if(balance()<o.pcx){toast("You need "+fmt(o.pcx)+" PCX.");return}
+ if(!(await confirmModal("Redeem PCX for Robux?",`Redeem ${fmt(o.pcx)} PCX for ${fmt(o.gross)} gross Robux? You will review every fee before final confirmation.`,"Continue")))return;
+ if(!(await authorize("Authorise Robux redemption")))return;
+ try{await refreshWallet()}catch(e){toast(e.message);return}
+ if(balance()<o.pcx){toast("Your balance changed. You no longer have enough PCX.");return}
+ activeReceipt={pcx:o.pcx,gross:o.gross,transactionFee:o.gross*.15,robloxFee:o.gross*.30,commission:o.gross*.15,net:Math.round(o.gross*.4),id:"PCX-"+Date.now().toString().slice(-9)};
+ showReceipt(activeReceipt);
+}
+function showReceipt(r){
+ openModal(`<button class="close" data-close>×</button><div class="modtitle">Review your receipt</div><p class="moddesc">Your request will not be submitted until you press Confirm redemption.</p>
+ <div class="receiptTotal"><img class="robux-icon" src="${ROBUX_IMAGE}" alt="Robux" onerror="this.style.display='none'"><strong>${fmt(r.net)} Robux</strong><small>Net amount · 40% of gross</small></div>
+ <div class="receiptLine"><span>PCX to deduct</span><strong>${fmt(r.pcx)} PCX</strong></div>
+ <div class="receiptLine"><span>Gross Robux</span><strong>${fmt(r.gross)}</strong></div>
+ <div class="receiptLine"><span>Transaction fee (15%)</span><strong>−${fmt(r.transactionFee)}</strong></div>
+ <div class="receiptLine"><span>Roblox Fee (30%)</span><strong>−${fmt(r.robloxFee)}</strong></div>
+ <div class="receiptLine"><span>Playcentrix commission (15%)</span><strong>−${fmt(r.commission)}</strong></div>
+ <div class="receiptLine"><strong>Net Robux</strong><strong>${fmt(r.net)}</strong></div>
+ <p class="muted small">Receipt ID: ${esc(r.id)}</p>
+ <button class="btn primary" id="confirmRedemption">Confirm redemption</button><button class="btn outline" id="cancelRedemption">Cancel</button>`);
+ $("cancelRedemption").onclick=closeModal;
+ $("confirmRedemption").onclick=submitRedemption;
+}
+async function submitRedemption(){
+ const r=activeReceipt;if(!r)return;
+ const b=$("confirmRedemption");b.disabled=true;b.textContent="Processing…";
+ try{
+  await refreshWallet();
+  if(balance()<r.pcx)throw Error("Insufficient balance. No redemption was submitted.");
+  await changeBalance(-r.pcx,"Robux redemption · "+r.id);
+  robuxRequested+=r.net;
+  const record={...r,status:"Processing",submittedAt:Date.now(),deadline:nextMidnight().getTime()};
+  redemptions.unshift(record);saveLocal();closeModal();showTransfer(record);render();
+ }catch(e){
+  if($("confirmRedemption")){$("confirmRedemption").disabled=false;$("confirmRedemption").textContent="Confirm redemption"}
+  toast(e.message);
+ }
+}
+function nextMidnight(){const d=new Date();d.setHours(24,0,0,0);return d}
+function showTransfer(r){
+ openModal(`<div class="success">✓</div><div class="modtitle" style="text-align:center">Redemption submitted</div>
+ <p class="moddesc" style="text-align:center">Your request is recorded in this app. Actual Robux delivery requires a real, connected transfer service.</p>
+ <div class="receiptTotal">
+  <img class="robux-purchase-logo" src="${ROBUX_IMAGE}" alt="Robux" onerror="this.style.display='none'">
+  <strong>${fmt(r.net)} Robux</strong><small>Redemption request submitted</small>
+ </div>
+ <div class="receiptLine"><span>Status</span><strong style="color:#b57919">Processing</strong></div>
+ <div class="receiptLine"><span>Receipt ID</span><strong>${esc(r.id)}</strong></div>
+ <div class="timerbox"><div class="muted small">COUNTDOWN TO MIDNIGHT</div><div class="timer" id="countdown">--:--:--</div><div class="muted small" id="deadlineText">Until midnight</div></div>
+ <div class="notice orange">This countdown is informational only. This app cannot transfer Robux or enforce a deadline without a connected backend service.</div>
+ <button class="btn primary" id="transferDone">Got it</button>`);
+ $("transferDone").onclick=closeModal;
+ clearInterval(window.pcxCountdown);
+ const update=()=>{
+  const el=$("countdown");if(!el){clearInterval(window.pcxCountdown);return}
+  const ms=Math.max(0,r.deadline-Date.now()),h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000),s=Math.floor(ms%60000/1000);
+  el.textContent=[h,m,s].map(x=>String(x).padStart(2,"0")).join(":");
+  $("deadlineText").textContent=ms<=0?"Midnight reached":"Deadline: "+new Date(r.deadline).toLocaleDateString()+" · 12:00 AM";
+ };
+ update();window.pcxCountdown=setInterval(update,1000);
+}
+
+/* Full-screen game window controls */
+function stopGameTimer(){
+ if(gameTimer){clearInterval(gameTimer);clearTimeout(gameTimer)}
+ gameTimer=null;
+}
+function decorateGamePopup(){
+ const area=$("gameArea");
+ if(!area.querySelector(".card"))return;
+ area.classList.add("game-popup");document.body.classList.add("game-open");
+ const card=area.querySelector(".card");
+ if(!card.querySelector(".game-close")){
+  const close=document.createElement("button");
+  close.className="game-close";close.type="button";close.setAttribute("aria-label","Exit game");
+  close.innerHTML='<span class="close-x">×</span>';
+  close.addEventListener("click",requestGameExit);
+  card.prepend(close);
+ }
+}
+function closeGamePopup(){
+ $("gameArea").classList.remove("game-popup");document.body.classList.remove("game-open");
+}
+async function requestGameExit(){
+ if(exitPending)return;exitPending=true;
+ try{
+  if(gameState&&!gameState.finished){
+   const ok=await confirmModal("Exit this game?","Your 50 PCX entry fee has already been charged. Leaving now ends the attempt without a reward.","Exit game");
+   if(!ok)return;
+   abandonGame();
+  }else{
+   stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup();
+  }
+ }finally{exitPending=false}
+}
+function activateGamePopup(){decorateGamePopup()}
+function abandonGame(){
+ if(!gameState||gameState.finished){closeGamePopup();return}
+ gameState.finished=true;gameState.phase="abandoned";stopGameTimer();
+ $("gameArea").innerHTML=`<div class="card" style="text-align:center"><div class="success" style="background:linear-gradient(145deg,#b4b6c7,#7b7f92)">↩</div><h2>Game exited</h2><p class="muted">Your 50 PCX entry fee was not refunded. No reward was issued.</p><button class="btn primary" id="exitBack">Back to games</button></div>`;
+ activateGamePopup();
+ $("exitBack").onclick=()=>{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()};
+ toast("Game exited. Entry fee forfeited.");
+}
+
+/* Game entry and launch */
+async function startGame(type){
+ if(!GAME_NAMES[type])return;
+ if(gameState&&!gameState.finished){
+  const ok=await confirmModal("Leave current game?","Your entry fee has already been charged. Leaving forfeits this attempt.","Leave game");
+  if(!ok)return;abandonGame();
+ }
+ try{await refreshWallet()}catch(e){toast(e.message);return}
+ if(balance()<ENTRY){toast("You need at least 50 PCX to enter.");return}
+ const reward=GAME_REWARDS[type];
+ if(!(await confirmModal(GAME_NAMES[type],`Entry fee: 50 PCX\nPotential reward: ${fmt(reward)} PCX\n\nBalance before entry: ${fmt(balance())} PCX\nBalance after entry: ${fmt(balance()-ENTRY)} PCX\n\n${gameRule(type)}`,"Continue to PIN")))return;
+ if(!(await authorize("Confirm 50 PCX entry")))return;
+ try{
+  await refreshWallet();if(balance()<ENTRY)throw Error("Insufficient PCX.");
+  await changeBalance(-ENTRY,GAME_NAMES[type]+" entry fee");
+  gameState={type,finished:false,paid:true,phase:"ready",reward};
+  renderGameIntro(type);
+ }catch(e){toast(e.message)}
+}
+function gameRule(type){
+ return ({
+  rps:"Best of 3 rounds. Win two rounds before your opponent.",
+  math:"Answer all 5 questions correctly. Each question has a 10-second timer.",
+  rush:"Answer 5 questions correctly. Each round gives you only 5 seconds.",
+  memory:"Match all 8 pairs in 25 moves or fewer. Two flips count as one move."
+ })[type]||"Complete the challenge to win.";
+}
+function renderGameIntro(type){
+ const reward=GAME_REWARDS[type];
+ openModal(`<div class="game-top"><span class="game-tag">ENTRY CONFIRMED</span><button class="close" id="introExit">×</button></div>
+ <div class="game-banner"><div class="big">${({rps:"✊",math:"🧠",rush:"⚡",memory:"🧩"})[type]}</div><strong>${esc(GAME_NAMES[type])}</strong><p class="muted small">${esc(gameRule(type))}</p></div>
+ <div class="game-stats"><div class="game-stat"><strong>50</strong><small>PCX entry fee</small></div><div class="game-stat"><strong>${fmt(reward)}</strong><small>PCX reward</small></div><div class="game-stat"><strong>${fmt(balance())}</strong><small>Balance now</small></div></div>
+ <div class="notice green">Your entry fee is paid. Tap Start Challenge when ready. Leaving before completion forfeits this attempt.</div>
+ <button class="btn primary" id="beginGame" style="margin-top:15px">🚀 Start challenge</button><button class="btn outline" id="leaveGame">Exit game</button>`,false);
+ $("beginGame").onclick=()=>{
+  $("backdrop").classList.remove("show");
+  if(!gameState||gameState.finished)return;
+  gameState.phase="playing";
+  ({rps:playRPS,math:playMath,rush:playRush,memory:playMemory}[type])();
+ };
+ $("leaveGame").onclick=()=>abandonGame();
+ $("introExit").onclick=async()=>{
+  if(await confirmModal("Exit this game?","Your entry fee has already been charged. No reward will be issued.","Exit game"))abandonGame();
+ } ;
+}
+async function finishGame(won,msg){
+ if(!gameState||gameState.finished)return;
+ const type=gameState.type,reward=GAME_REWARDS[type];
+ gameState.finished=true;gameState.phase="finished";stopGameTimer();
+ let rewardMessage="No reward this time.";
+ if(won){
+  try{await changeBalance(reward,GAME_NAMES[type]+" victory reward");rewardMessage="+"+fmt(reward)+" PCX credited to your wallet!"}
+  catch(e){rewardMessage="Reward credit failed: "+e.message}
+ }
+ $("gameArea").innerHTML=`<div class="card" style="text-align:center"><div class="success" style="${won?"":"background:linear-gradient(145deg,#b4b6c7,#7b7f92)"}">${won?"✓":"↻"}</div><h2>${won?"Challenge complete!":"Challenge over"}</h2><p class="muted">${esc(msg||"")}</p><div class="notice ${won?"green":""}">${esc(rewardMessage)}</div><button class="btn primary" id="playAgain">Play again</button><button class="btn outline" id="backGames">Back to games</button></div>`;
+ activateGamePopup();
+ $("playAgain").onclick=()=>{closeGamePopup();gameState=null;startGame(type)};
+ $("backGames").onclick=()=>{stopGameTimer();gameState=null;$("gameArea").innerHTML="";closeGamePopup()};
+ $("gameArea").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* Rock Paper Scissors: best of three */
+function playRPS(){
+ const s=gameState;s.round=0;s.playerWins=0;s.cpuWins=0;s.finished=false;drawRPS();
+}
+function drawRPS(){
+ const s=gameState;if(!s||s.finished)return;
+ $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">ROUND ${Math.min(s.round+1,3)} / 3</span><span class="game-tag">🏆 +500 PCX</span></div><h2 style="margin-top:12px">Rock Paper Scissors</h2><p class="muted small">First player to win two rounds takes the match.</p><div class="statrow"><div class="stat"><strong>${s.playerWins}</strong><small>Your wins</small></div><div class="stat"><strong>${s.cpuWins}</strong><small>Rival wins</small></div></div><div class="gamechoices"><button class="gamechoice" data-rps="rock">✊<small>Rock</small></button><button class="gamechoice" data-rps="paper">✋<small>Paper</small></button><button class="gamechoice" data-rps="scissors">✌️<small>Scissors</small></button></div><div class="gamestatus" id="rpsStatus">Choose your move.</div></div>`;
+ activateGamePopup();
+ $("gameArea").querySelectorAll("[data-rps]").forEach(b=>b.onclick=()=>{
+  if(s.finished||s.round>=3)return;
+  $("gameArea").querySelectorAll("[data-rps]").forEach(x=>x.disabled=true);
+  const choices=["rock","paper","scissors"],cpu=choices[Math.floor(Math.random()*3)],p=b.dataset.rps;
+  const playerWins=(p==="rock"&&cpu==="scissors")||(p==="paper"&&cpu==="rock")||(p==="scissors"&&cpu==="paper");
+  const result=p===cpu?"Tie round.":playerWins?"You win this round!":"Rival wins this round.";
+  if(playerWins)s.playerWins++;else if(p!==cpu)s.cpuWins++;
+  s.round++;$("rpsStatus").textContent=`You: ${p} · Rival: ${cpu} — ${result}`;
+  if(s.playerWins>=2||s.cpuWins>=2||s.round>=3){
+   setTimeout(()=>finishGame(s.playerWins>s.cpuWins,s.playerWins===s.cpuWins?"The match ended in a tie.":`${s.playerWins}–${s.cpuWins} final score.`),500);
+  }else setTimeout(()=>{if(!s.finished)drawRPS()},650);
+ });
+}
+
+/* Math Challenge: five questions, ten seconds each */
+function mathQuestion(){
+ const type=Math.floor(Math.random()*4);let a,b,op,ans;
+ if(type===0){a=12+Math.floor(Math.random()*39);b=8+Math.floor(Math.random()*29);op="+";ans=a+b}
+ else if(type===1){a=25+Math.floor(Math.random()*65);b=3+Math.floor(Math.random()*Math.min(24,a-2));op="−";ans=a-b}
+ else if(type===2){a=3+Math.floor(Math.random()*17);b=3+Math.floor(Math.random()*12);op="×";ans=a*b}
+ else{b=2+Math.floor(Math.random()*12);ans=3+Math.floor(Math.random()*15);a=b*ans;op="÷";ans=a/b}
+ const choices=new Set([ans]);
+ while(choices.size<4){const offset=1+Math.floor(Math.random()*Math.max(8,Math.ceil(ans*.25)));choices.add(Math.max(0,ans+(Math.random()<.5?-offset:offset)))}
+ return{text:`${a} ${op} ${b}`,answer:ans,choices:[...choices].sort(()=>Math.random()-.5)};
+}
+function playMath(){gameState.round=0;gameState.finished=false;gameState.score=0;drawMath()}
+function drawMath(){
+ const s=gameState;if(!s||s.finished)return;
+ s.question=mathQuestion();s.seconds=10;s.answerLocked=false;
+ $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">QUESTION ${s.round+1} / 5</span><span class="game-tag">🏆 +250 PCX</span></div><div class="progress"><span id="mathProgress" style="width:100%"></span></div><div class="question">${s.question.text} = ?</div><div class="answergrid" id="mathAnswers">${s.question.choices.map(n=>`<button class="answer" data-answer="${n}">${n}</button>`).join("")}</div><div class="gamestatus" id="mathStatus">⏱ 10 seconds left</div></div>`;
+ activateGamePopup();
+ const answer=correct=>{
+  if(s.answerLocked||s.finished)return;s.answerLocked=true;stopGameTimer();
+  $("mathAnswers")?.querySelectorAll("button").forEach(b=>b.disabled=true);
+  if(!correct){finishGame(false,"An answer was incorrect or time ran out. All five answers must be correct.");return}
+  s.score++;s.round++;
+  if(s.round===5){finishGame(true,"Perfect score: 5 out of 5. Excellent work!");return}
+  $("mathStatus").textContent="✓ Correct! Loading next question…";
+  gameTimer=setTimeout(()=>{if(!s.finished)drawMath()},450);
+ };
+ $("mathAnswers").querySelectorAll("button").forEach(b=>b.onclick=()=>answer(Number(b.dataset.answer)===s.question.answer));
+ gameTimer=setInterval(()=>{
+  if(s.answerLocked||s.finished)return;
+  s.seconds--;
+  if($("mathStatus"))$("mathStatus").textContent="⏱ "+Math.max(0,s.seconds)+" seconds left";
+  if($("mathProgress"))$("mathProgress").style.width=Math.max(0,s.seconds)*10+"%";
+  if(s.seconds<=0)answer(false);
+ },1000);
+}
+
+/* Number Rush: five rounds, five seconds each */
+function rushQuestion(){
+ const type=Math.floor(Math.random()*4);let a,b,op,ans;
+ if(type===0){a=10+Math.floor(Math.random()*70);b=5+Math.floor(Math.random()*35);op="+";ans=a+b}
+ else if(type===1){a=30+Math.floor(Math.random()*70);b=2+Math.floor(Math.random()*Math.min(28,a-1));op="−";ans=a-b}
+ else if(type===2){a=2+Math.floor(Math.random()*13);b=2+Math.floor(Math.random()*10);op="×";ans=a*b}
+ else{b=2+Math.floor(Math.random()*10);ans=2+Math.floor(Math.random()*12);a=b*ans;op="÷";ans=a/b}
+ const choices=new Set([ans]);
+ while(choices.size<4){const offset=1+Math.floor(Math.random()*10);choices.add(Math.max(0,ans+(Math.random()<.5?-offset:offset)))}
+ return{text:`${a} ${op} ${b}`,answer:ans,choices:[...choices].sort(()=>Math.random()-.5)};
+}
+function playRush(){gameState.finished=false;gameState.round=0;gameState.score=0;drawRush()}
+function drawRush(){
+ const s=gameState;if(!s||s.finished)return;
+ s.question=rushQuestion();s.seconds=5;s.answerLocked=false;
+ $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">ROUND ${s.round+1} / 5</span><span class="game-tag">🏆 +100 PCX</span></div><div class="progress"><span id="rushProgress" style="width:100%"></span></div><div class="question">${s.question.text} = ?</div><p class="muted" style="text-align:center">Five seconds. Answer correctly to advance.</p><div class="answergrid" id="rushAnswers">${s.question.choices.map(n=>`<button class="answer" data-rush="${n}">${n}</button>`).join("")}</div><div class="gamestatus" id="rushStatus">⚡ 5 seconds left</div></div>`;
+ activateGamePopup();
+ const answer=correct=>{
+  if(s.answerLocked||s.finished)return;s.answerLocked=true;stopGameTimer();
+  $("rushAnswers")?.querySelectorAll("button").forEach(b=>b.disabled=true);
+  if(!correct){finishGame(false,"Incorrect answer or timeout. Number Rush requires five consecutive correct answers.");return}
+  s.score++;s.round++;
+  if(s.round===5){finishGame(true,"Lightning fast! You completed all five rounds.");return}
+  $("rushStatus").textContent="✓ Correct! Next round…";
+  gameTimer=setTimeout(()=>{if(!s.finished)drawRush()},350);
+ };
+ $("gameArea").querySelectorAll("[data-rush]").forEach(b=>b.onclick=()=>answer(Number(b.dataset.rush)===s.question.answer));
+ gameTimer=setInterval(()=>{
+  if(s.answerLocked||s.finished)return;
+  s.seconds--;
+  if($("rushStatus"))$("rushStatus").textContent="⚡ "+Math.max(0,s.seconds)+" seconds left";
+  if($("rushProgress"))$("rushProgress").style.width=Math.max(0,s.seconds)*20+"%";
+  if(s.seconds<=0)answer(false);
+ },1000);
+}
+
+/* Memory Match: eight pairs, maximum 25 moves */
+function playMemory(){
+ gameState.finished=false;
+ const symbols=["🍎","🌙","⚡","🎧","⭐","🍀","🎮","💎"],deck=[...symbols,...symbols].sort(()=>Math.random()-.5);
+ let opened=[],matched=new Set(),locked=false,moves=0;
+ $("gameArea").innerHTML=`<div class="card"><div class="game-top"><span class="game-tag">🧩 MEMORY MATCH</span><span class="game-tag">🏆 +500 PCX</span></div><h2 style="margin-top:12px">Find all 8 pairs</h2><p class="muted">Match every pair in 25 moves or fewer. Two flips count as one move.</p><div class="statrow"><div class="stat"><strong id="memoryPairs">0 / 8</strong><small>Pairs matched</small></div><div class="stat"><strong id="memoryMoves">0 / 25</strong><small>Moves used</small></div></div><div class="progress"><span id="memoryProgress" style="width:0%"></span></div><div class="memorygrid" id="memoryGrid">${deck.map((x,i)=>`<button class="memorycard" data-memory="${i}" aria-label="Hidden card">✦</button>`).join("")}</div><div class="gamestatus" id="memoryStatus">Find your first pair!</div></div>`;
+ activateGamePopup();
+ const paint=()=>{
+  $("gameArea").querySelectorAll("[data-memory]").forEach(b=>{
+   const i=Number(b.dataset.memory),visible=matched.has(i)||opened.includes(i);
+   b.textContent=visible?deck[i]:"✦";b.classList.toggle("open",visible);b.classList.toggle("matched",matched.has(i));
+   b.disabled=matched.has(i)||opened.includes(i)||locked||gameState.finished;
+   b.setAttribute("aria-label",visible?deck[i]:"Hidden card");
+  });
+  $("memoryPairs").textContent=`${matched.size/2} / 8`;
+  $("memoryMoves").textContent=`${moves} / 25`;
+  $("memoryProgress").style.width=(matched.size/16)*100+"%";
+ };
+ $("gameArea").querySelectorAll("[data-memory]").forEach(b=>b.onclick=()=>{
+  const i=Number(b.dataset.memory);if(locked||matched.has(i)||opened.includes(i)||gameState.finished)return;
+  opened.push(i);paint();
+  if(opened.length!==2)return;
+  moves++;$("memoryMoves").textContent=`${moves} / 25`;
+  if(deck[opened[0]]===deck[opened[1]]){
+   opened.forEach(n=>matched.add(n));opened=[];paint();
+   $("memoryStatus").textContent="✨ Match found!";
+   if(matched.size===deck.length){finishGame(true,`All eight pairs matched in ${moves} moves!`);return}
+   if(moves>=25){finishGame(false,"You reached the 25-move limit before finding every pair.");return}
+  }else{
+   locked=true;$("memoryStatus").textContent="Not a match — remember those cards!";
+   gameTimer=setTimeout(()=>{
+    if(gameState.finished)return;
+    opened=[];locked=false;paint();
+    if(moves>=25){finishGame(false,"You reached the 25-move limit before finding every pair.");return}
+    $("memoryStatus").textContent="Keep going. You can do it!";
+   },700);
+  }
+ });
+}
+
+/* Account */
+$("accountBtn").onclick=()=>{
+ if(!user)return;
+ openModal(`<button class="close" data-close>×</button><div class="modtitle">Your account</div><p class="moddesc">Manage your wallet profile and membership.</p>
+ <div class="receiptLine"><span>Display name</span><strong>${esc(user.displayName||"Wallet user")}</strong></div>
+ <div class="receiptLine"><span>Username</span><strong>${esc(user.username||"")}</strong></div>
+ <div class="receiptLine"><span>Wallet ID</span><strong>${esc(user.walletId||"")}</strong></div>
+ <div class="receiptLine"><span>Current membership</span><strong>${esc(plan())}</strong></div>
+ <div class="head"><h3>Switch owned plan</h3></div>
+ <div>${owned.map(p=>`<button class="option" data-switch="${esc(p)}"><div class="optioninfo"><strong>${p==="Premium"?"👑 ":p==="Elite"?"💎 ":p==="Admin"?"🛡️ ":""}${esc(p)}</strong><small>${p===plan()?"Current plan":"Tap to activate"}</small></div><div>${p===plan()?"✓":"→"}</div></button>`).join("")}</div>
+ <button class="btn outline" id="logout" style="margin-top:15px">Sign out</button>`);
+ $("modal").querySelectorAll("[data-switch]").forEach(b=>b.onclick=async()=>{
+  const p=b.dataset.switch;if(!(await authorize("Confirm plan change")))return;
+  try{await changeBalance(0,"",{plan:p});closeModal();toast("Active plan changed to "+p)}catch(e){toast(e.message)}
+ });
+ $("logout").onclick=()=>{
+  closeModal();stopMiner();stopGameTimer();clearInterval(syncTimer);
+  sessionStorage.removeItem("pcx_wallet_id");user=null;walletVisible=false;
+  if(gameState&&!gameState.finished)gameState.finished=true;
+  gameState=null;$("gameArea").innerHTML="";closeGamePopup();$("loginScreen").classList.add("show");
+ };
+};
+
+/* Navigation bindings */
+document.querySelectorAll("[data-page]").forEach(b=>b.onclick=()=>setPage(b.dataset.page));
+document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>setPage(b.dataset.go));
+document.querySelectorAll("[data-game]").forEach(b=>b.onclick=()=>startGame(b.dataset.game));
+document.querySelectorAll("[data-plan]").forEach(b=>b.onclick=()=>handlePlan(b.dataset.plan));
+document.querySelectorAll("[data-robux]").forEach(b=>b.onclick=()=>handleRobux(Number(b.dataset.robux)));
+
+$("loginForm").addEventListener("submit",async e=>{
+ e.preventDefault();const b=e.currentTarget.querySelector("button"),err=$("loginError");
+ err.style.display="none";b.disabled=true;b.textContent="Signing in…";
+ try{await login($("username").value,$("password").value)}
+ catch(x){err.textContent=x.message;err.style.display="block"}
+ finally{b.disabled=false;b.textContent="Sign in →"}
+});
+
+document.addEventListener("gesturestart",e=>e.preventDefault(),{passive:false});
+document.addEventListener("dblclick",e=>e.preventDefault(),{passive:false});
+document.addEventListener("touchend",e=>{
+ const n=Date.now();if(n-(window.lastTouch||0)<300)e.preventDefault();window.lastTouch=n;
+},{passive:false});
+
+restoreSession();
+</script>
 </body>
 </html>

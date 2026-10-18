@@ -1,1306 +1,449 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f4f6fb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Playcentrix Wallet">
 <title>Playcentrix Wallet</title>
 <link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/FbTRW7gJ/IMG-2108.png">
-<link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/FbTRW7gJ/IMG-2108.png">
 <link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/FbTRW7gJ/IMG-2108.png">
-
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+<script src="https://unpkg.com/html5-qrcode" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
 <style>
-    :root {
-        --primary: #ffffff; /* Sleek White Accent */
-        --bg: #0b0f19;      /* Deep Modern Slate */
-        --card-bg: rgba(20, 25, 35, 0.6);
-        --glass-border: rgba(255, 255, 255, 0.1);
-        --text: #f8fafc;
-        --text-muted: #94a3b8;
-        --font-main: 'Plus Jakarta Sans', sans-serif;
-    }
+:root{color-scheme:light;--bg:#f4f6fb;--surface:#fff;--surface-2:#f7f8fc;--ink:#141827;--muted:#6f7688;--line:#e8ebf3;--blue:#356cf6;--blue-dark:#2453d6;--mint:#1eaa83;--red:#dc4655;--amber:#bc7a13;--radius:24px;--shadow:0 14px 36px rgba(34,48,85,.075);--font:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{min-height:100%;background:var(--bg);-webkit-text-size-adjust:100%}body{margin:0;min-height:100dvh;background:radial-gradient(ellipse at 8% 0%,rgba(97,131,255,.10),transparent 32%),var(--bg);color:var(--ink);font-family:var(--font);font-size:14px;-webkit-font-smoothing:antialiased}button,input{font:inherit}button{cursor:pointer;-webkit-tap-highlight-color:transparent}button:focus-visible,input:focus-visible{outline:3px solid rgba(53,108,246,.28);outline-offset:3px}button:disabled{opacity:.48;cursor:not-allowed}input{min-width:0}button,.clickable{-webkit-user-select:none;user-select:none}.hidden{display:none!important}.app{min-height:100dvh;padding-top:var(--safe-top)}.topbar{height:76px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 max(22px,calc((100vw - 1200px)/2));border-bottom:1px solid rgba(226,230,240,.78);background:rgba(249,250,253,.78);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);position:sticky;top:0;z-index:30}.brand{display:flex;align-items:center;gap:12px;font-size:16px;font-weight:800;letter-spacing:-.55px}.brandmark{height:38px;width:38px;border-radius:13px;display:grid;place-items:center;color:white;background:linear-gradient(140deg,#4c83ff,#5b55dc);box-shadow:0 7px 15px rgba(69,105,231,.24);font-size:16px}.brand small{display:block;margin-top:2px;font-size:10px;letter-spacing:1.3px;font-weight:700;text-transform:uppercase;color:var(--muted)}.top-right{display:flex;align-items:center;gap:10px}.connection-pill{display:flex;align-items:center;gap:7px;background:#eef8f4;color:#168363;padding:8px 11px;border-radius:999px;font-size:11px;font-weight:700}.connection-pill i{font-size:8px}.avatar{border:0;width:39px;height:39px;border-radius:50%;display:grid;place-items:center;background:#e6edff;color:#2d5bd2;font-weight:800;font-size:14px}.layout{width:min(1200px,100%);margin:0 auto;padding:28px 22px 54px;display:grid;grid-template-columns:218px minmax(0,1fr);gap:28px}.sidebar{position:sticky;top:100px;align-self:start;display:flex;flex-direction:column;gap:5px;padding:10px 0}.side-label{font-size:10px;text-transform:uppercase;letter-spacing:1.6px;color:#9299aa;font-weight:800;padding:10px 14px}.nav-btn{border:0;background:transparent;display:flex;align-items:center;gap:13px;text-align:left;padding:13px 15px;border-radius:14px;color:#687084;font-weight:700;font-size:13px;transition:background .2s,color .2s;min-height:47px}.nav-btn i{width:19px;text-align:center;font-size:16px}.nav-btn:hover{background:#edf1fb;color:var(--ink)}.nav-btn.active{background:#e8efff;color:#2458dc}.side-note{margin-top:26px;padding:17px 15px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.65);color:var(--muted);font-size:11px;line-height:1.6}.side-note strong{display:block;color:var(--ink);font-size:12px;margin-bottom:5px}.side-note i{color:var(--blue);margin-right:5px}.main{min-width:0}.pane{display:none;animation:arrive .26s ease}.pane.active{display:block}@keyframes arrive{from{opacity:.25;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin:2px 0 22px}.eyebrow{color:var(--blue);font-size:10px;letter-spacing:1.65px;font-weight:800;text-transform:uppercase;margin:0 0 8px}.page-head h1{font-size:clamp(25px,3vw,34px);line-height:1.16;letter-spacing:-1.5px;margin:0;font-weight:800}.page-head p{margin:9px 0 0;color:var(--muted);font-size:13px;line-height:1.55}.icon-btn{border:1px solid var(--line);width:43px;height:43px;border-radius:14px;background:var(--surface);color:#4b5368;display:grid;place-items:center;box-shadow:0 3px 8px rgba(34,48,85,.025)}.primary-btn,.secondary-btn,.danger-btn{border:0;min-height:47px;padding:0 18px;border-radius:14px;font-weight:800;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:transform .17s,box-shadow .17s,background .17s}.primary-btn{color:white;background:var(--blue);box-shadow:0 8px 18px rgba(53,108,246,.20)}.primary-btn:hover{background:var(--blue-dark);box-shadow:0 10px 22px rgba(53,108,246,.24);transform:translateY(-1px)}.secondary-btn{background:var(--surface);color:#343c50;border:1px solid var(--line)}.secondary-btn:hover{background:#f6f8fe}.danger-btn{background:#fff0f1;color:#c73647;border:1px solid #ffe0e4}.btn-wide{width:100%}.btn-small{min-height:39px;padding:0 13px;border-radius:12px}.hero-balance{position:relative;overflow:hidden;isolation:isolate;border-radius:28px;padding:25px 27px 23px;color:white;background:linear-gradient(115deg,#1b2340 0%,#273d8b 56%,#345fde 100%);box-shadow:0 22px 42px rgba(42,65,148,.2);margin-bottom:19px;min-height:215px}.hero-balance:before{content:"";position:absolute;z-index:-1;width:290px;height:290px;border-radius:50%;right:-75px;top:-155px;border:1px solid rgba(255,255,255,.12);box-shadow:0 0 0 26px rgba(255,255,255,.035),0 0 0 55px rgba(255,255,255,.025)}.hero-balance:after{content:"";position:absolute;z-index:-1;width:170px;height:170px;border-radius:50%;right:80px;bottom:-140px;background:rgba(112,223,255,.2);filter:blur(5px)}.hero-top{display:flex;justify-content:space-between;align-items:center;gap:10px}.hero-caption{color:#cbd7ff;font-size:11px;font-weight:600}.plan-badge{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.19);padding:7px 10px;border-radius:999px;color:#fff;display:flex;align-items:center;gap:7px;font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:800}.hero-amount{font-size:clamp(32px,5vw,45px);letter-spacing:-2px;font-weight:800;line-height:1.15;margin:20px 0 4px;overflow-wrap:anywhere}.hero-unit{color:#dce3ff;font-size:12px}.hero-foot{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-top:21px}.wallet-id-label{font-size:9px;color:#bdcaff;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:5px}.wallet-id-value{font-size:15px;letter-spacing:2px;font-weight:800}.copy-id{border:1px solid rgba(255,255,255,.22);color:white;background:rgba(255,255,255,.09);padding:9px 12px;border-radius:11px;font-size:11px;font-weight:700}.quick-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:20px}.quick-action{border:1px solid var(--line);background:rgba(255,255,255,.9);border-radius:18px;min-height:98px;padding:15px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;color:var(--ink);font-size:11px;font-weight:800;box-shadow:0 4px 10px rgba(34,48,85,.018);transition:transform .16s,border-color .16s}.quick-action:hover{transform:translateY(-2px);border-color:#cad7ff}.quick-icon{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:#edf2ff;color:#3267e8;font-size:15px}.quick-action:nth-child(2) .quick-icon{background:#e7f8f1;color:#168661}.quick-action:nth-child(3) .quick-icon{background:#f0eaff;color:#7952d4}.quick-action:nth-child(4) .quick-icon{background:#fff2dd;color:#b77913}.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:19px}.stat-card{background:var(--surface);border:1px solid var(--line);border-radius:19px;padding:17px;min-width:0}.stat-card .stat-head{display:flex;align-items:center;justify-content:space-between;gap:8px;color:var(--muted);font-size:11px;font-weight:600}.stat-icon{width:30px;height:30px;border-radius:10px;display:grid;place-items:center;background:#f1f4fb;color:#5d6b8e}.stat-value{font-size:22px;letter-spacing:-.8px;font-weight:800;margin-top:14px;overflow-wrap:anywhere}.stat-sub{font-size:10px;color:#8b91a1;margin-top:5px}.content-card{background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:20px 21px;box-shadow:0 4px 14px rgba(34,48,85,.02);margin-bottom:17px;min-width:0}.card-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}.card-heading h2{font-size:15px;letter-spacing:-.45px;margin:0;font-weight:800}.card-heading p{font-size:11px;color:var(--muted);margin:5px 0 0}.text-link{border:0;background:transparent;color:var(--blue);font-size:11px;font-weight:800;padding:8px 0}.activity-list{display:flex;flex-direction:column;gap:0}.activity-row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f0f2f7;min-width:0}.activity-row:last-child{border-bottom:0;padding-bottom:0}.activity-icon{width:39px;height:39px;border-radius:13px;display:grid;place-items:center;background:#eff3ff;color:#3368e9;flex:0 0 auto}.activity-icon.in{background:#e8f8f1;color:#178360}.activity-icon.out{background:#fff0f1;color:#d44454}.activity-copy{flex:1;min-width:0}.activity-copy strong{display:block;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.activity-copy small{display:block;color:#8a90a1;font-size:10px;margin-top:5px}.activity-amount{font-size:12px;font-weight:800;white-space:nowrap}.amount-negative{color:#d64655}.amount-positive{color:#178360}.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;padding:28px 15px;color:var(--muted);font-size:12px;line-height:1.6}.empty-state i{font-size:23px;color:#a6b3d6;margin-bottom:10px}.empty-state strong{color:var(--ink);font-size:13px;margin-bottom:3px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}.field{display:flex;flex-direction:column;gap:8px;margin-bottom:15px}.field label{font-size:11px;font-weight:800;color:#424a5e}.field-hint{font-size:10px;color:#8a91a3;margin-top:-2px;line-height:1.5}.input-wrap{position:relative}.input-wrap>i{position:absolute;top:50%;left:15px;transform:translateY(-50%);color:#969eb0;font-size:13px;pointer-events:none}.input,.select{width:100%;height:48px;background:#f8f9fc;border:1px solid #e5e8f0;border-radius:13px;padding:0 14px;color:var(--ink);outline:none;transition:border-color .18s,box-shadow .18s;font-size:13px}.input.has-icon{padding-left:42px}.input:focus,.select:focus{border-color:#8aa8ff;box-shadow:0 0 0 4px rgba(53,108,246,.09);background:#fff}.input::placeholder{color:#a6abba}.amount-input{font-size:19px;font-weight:800;letter-spacing:-.4px}.form-help{font-size:11px;color:var(--muted);line-height:1.65;margin:12px 0 0}.inline-note{padding:12px 14px;border-radius:13px;background:#f3f6ff;color:#51648f;font-size:11px;line-height:1.6;margin:15px 0}.inline-note i{margin-right:5px;color:var(--blue)}.transfer-preview{display:flex;align-items:center;gap:12px;background:#f8f9fc;border:1px solid var(--line);border-radius:15px;padding:13px;margin:14px 0 18px}.recipient-avatar{width:39px;height:39px;border-radius:13px;background:#e5edff;color:#356cf6;display:grid;place-items:center;font-weight:800}.recipient-preview{min-width:0;flex:1}.recipient-preview strong{font-size:12px;display:block}.recipient-preview small{font-size:10px;color:var(--muted);display:block;margin-top:3px}.locker-hero{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:23px;border-radius:23px;background:linear-gradient(118deg,#ecf9f4,#f4fbf9 55%,#e9f0ff);border:1px solid #dcefe8;margin-bottom:17px}.locker-hero .big-number{font-size:30px;letter-spacing:-1.2px;font-weight:800;margin:7px 0 4px}.locker-symbol{width:62px;height:62px;flex:0 0 auto;display:grid;place-items:center;border-radius:20px;background:linear-gradient(145deg,#26ba8f,#17876a);color:white;font-size:23px;box-shadow:0 9px 20px rgba(30,170,131,.2)}.locker-actions{display:grid;grid-template-columns:1fr 1fr;gap:14px}.locker-action{border:1px solid var(--line);background:white;border-radius:20px;padding:18px;min-width:0}.locker-action h3{font-size:14px;margin:0 0 6px;letter-spacing:-.4px}.locker-action p{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 17px}.locker-action .mini-icon{display:grid;place-items:center;width:38px;height:38px;border-radius:13px;margin-bottom:15px;background:#e5f8f0;color:#168662}.locker-action.withdraw .mini-icon{background:#edf2ff;color:var(--blue)}.limit-track{height:7px;border-radius:999px;background:#edf0f5;overflow:hidden;margin:11px 0 6px}.limit-track span{display:block;height:100%;background:linear-gradient(90deg,#36bd93,#69d7b1);border-radius:999px;transition:width .3s}.limit-copy{font-size:10px;color:var(--muted);display:flex;justify-content:space-between;gap:10px}.profile-hero{display:flex;align-items:center;gap:15px;padding:21px;background:linear-gradient(120deg,#fff,#f4f6ff);border:1px solid var(--line);border-radius:22px;margin-bottom:17px}.profile-avatar{width:58px;height:58px;border-radius:20px;background:linear-gradient(140deg,#4c83ff,#6c59da);display:grid;place-items:center;color:white;font-size:22px;font-weight:800}.profile-copy{flex:1;min-width:0}.profile-copy h2{font-size:17px;letter-spacing:-.6px;margin:0;overflow-wrap:anywhere}.profile-copy p{font-size:11px;color:var(--muted);margin:6px 0 0;overflow-wrap:anywhere}.plan-description{display:flex;gap:13px;align-items:center;padding:15px 0;border-bottom:1px solid #f0f2f7}.plan-description:last-child{border-bottom:0}.plan-dot{width:9px;height:9px;border-radius:50%;background:var(--blue);flex:0 0 auto}.plan-description strong{font-size:12px}.plan-description small{display:block;color:var(--muted);font-size:10px;margin-top:4px;line-height:1.5}.tag{border-radius:999px;padding:6px 9px;font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;background:#edf2ff;color:#3564de}.muted{color:var(--muted)}.desktop-only{display:block}.mobile-nav{display:none}.view{display:none}.view.active{display:block}.auth-wrap{width:min(100%,470px);margin:42px auto 70px;padding:0 20px}.auth-card{background:rgba(255,255,255,.92);border:1px solid rgba(228,232,242,.94);border-radius:30px;padding:34px;box-shadow:0 25px 75px rgba(37,53,96,.09)}.auth-brand{display:flex;justify-content:center;margin-bottom:28px}.auth-card h1{text-align:center;font-size:28px;letter-spacing:-1.15px;line-height:1.2;margin:0}.auth-sub{text-align:center;color:var(--muted);font-size:12px;line-height:1.65;margin:11px 0 28px}.auth-card .field{margin-bottom:16px}.auth-footer{text-align:center;color:#9299aa;font-size:10px;line-height:1.6;margin:19px 0 0}.auth-secure{display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;color:#687a9c;margin-top:19px}.auth-secure i{color:#1a9b77}.error-text{color:#c73647;font-size:11px;min-height:16px;margin:8px 0 2px}.pin-wrap{width:min(100%,410px);margin:35px auto 55px;padding:0 18px;text-align:center}.pin-card{background:rgba(255,255,255,.95);border:1px solid var(--line);border-radius:30px;padding:30px 25px 26px;box-shadow:var(--shadow)}.pin-emblem{width:54px;height:54px;border-radius:19px;margin:0 auto 17px;display:grid;place-items:center;background:#edf2ff;color:var(--blue);font-size:20px}.pin-card h1{font-size:24px;letter-spacing:-.8px;margin:0}.pin-card p{font-size:12px;color:var(--muted);line-height:1.6;margin:9px 0 24px}.pin-dots{display:flex;justify-content:center;gap:15px;margin:0 auto 23px}.pin-dot{width:13px;height:13px;border-radius:50%;background:#e3e7ef;transition:background .14s,transform .14s}.pin-dot.filled{background:var(--blue);transform:scale(1.12)}.keypad{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:280px;margin:0 auto}.key{height:57px;border:1px solid transparent;border-radius:16px;background:#f5f7fb;color:var(--ink);font-weight:700;font-size:21px;display:grid;place-items:center;transition:background .12s,transform .12s}.key:active{transform:scale(.96);background:#e6edff}.key.utility{font-size:14px;color:#73809b;background:#fff;border-color:#e9edf5}.pin-cancel{border:0;background:transparent;color:var(--muted);font-size:11px;font-weight:700;padding:14px;margin-top:8px}.processing-wrap{min-height:calc(100dvh - 76px);display:grid;place-items:center;padding:28px 20px}.processing-card{width:min(100%,470px);text-align:center;background:rgba(255,255,255,.96);border:1px solid var(--line);border-radius:29px;padding:34px 28px;box-shadow:var(--shadow)}.processing-mark{width:74px;height:74px;margin:0 auto 20px;border-radius:26px;background:#edf2ff;color:var(--blue);display:grid;place-items:center;font-size:24px;position:relative}.processing-mark:after{content:"";position:absolute;inset:-6px;border:1px solid rgba(53,108,246,.17);border-radius:31px;animation:soft-pulse 1.5s ease-in-out infinite}@keyframes soft-pulse{0%,100%{transform:scale(.96);opacity:.55}50%{transform:scale(1.04);opacity:1}}.processing-card h1{font-size:25px;letter-spacing:-1px;margin:0}.processing-card p{color:var(--muted);font-size:12px;line-height:1.7;margin:11px auto 22px;max-width:330px}.processing-amount{font-size:26px;letter-spacing:-.7px;font-weight:800;margin:0 0 4px}.processing-destination{font-size:11px;color:var(--muted);margin-bottom:24px}.progress{height:8px;border-radius:999px;background:#edf0f6;overflow:hidden}.progress-fill{height:100%;width:4%;background:linear-gradient(90deg,#3975ff,#7a6eff);border-radius:999px;transition:width .2s linear}.processing-status{display:flex;justify-content:space-between;gap:12px;font-size:10px;color:#81899a;margin:10px 0 18px}.processing-foot{border-top:1px solid var(--line);padding-top:16px;color:#7d869a;display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px}.processing-foot i{color:#259a79}.loader-overlay{position:fixed;inset:0;z-index:150;background:rgba(244,246,251,.74);backdrop-filter:blur(8px);display:none;place-items:center}.loader-overlay.visible{display:grid}.loader-box{background:#fff;padding:22px 26px;border:1px solid var(--line);border-radius:18px;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow);font-size:12px;font-weight:700}.spinner{width:22px;height:22px;border:3px solid #e5ebfb;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.toast-area{position:fixed;z-index:250;top:calc(16px + var(--safe-top));left:50%;transform:translateX(-50%);width:min(92vw,430px);pointer-events:none;display:flex;flex-direction:column;gap:8px}.toast{display:flex;align-items:center;gap:10px;background:#17213a;color:#fff;padding:13px 15px;border-radius:15px;box-shadow:0 12px 30px rgba(20,32,62,.22);font-size:12px;font-weight:700;animation:toast-in .22s ease}.toast i{color:#83e0bd}.toast.error i{color:#ff9ba5}@keyframes toast-in{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}.modal-backdrop{position:fixed;inset:0;z-index:120;background:rgba(19,26,46,.45);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;padding:14px}.modal-backdrop.open{display:flex}.modal{width:min(100%,490px);max-height:calc(100dvh - 32px - var(--safe-top));overflow:auto;background:#fff;border:1px solid rgba(255,255,255,.8);border-radius:26px;padding:24px;box-shadow:0 25px 75px rgba(22,31,56,.24);animation:sheet-up .23s ease}.modal-head{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:18px}.modal-head h2{font-size:18px;letter-spacing:-.6px;margin:0}.modal-close{width:34px;height:34px;border:0;background:#f2f4f8;border-radius:11px;color:#687085}.modal p{color:var(--muted);font-size:12px;line-height:1.65}.modal-actions{display:flex;gap:10px;margin-top:17px}.modal-actions>*{flex:1}@keyframes sheet-up{from{opacity:.5;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}.qr-tabs{display:flex;background:#f2f4f9;padding:4px;border-radius:12px;gap:4px;margin-bottom:17px}.qr-tab{flex:1;border:0;border-radius:9px;padding:11px;background:transparent;color:#7b8294;font-size:11px;font-weight:800}.qr-tab.active{background:white;color:var(--blue);box-shadow:0 2px 6px rgba(30,45,80,.08)}#qr-reader{border-radius:16px;overflow:hidden;background:#151b2a;min-height:190px;margin-bottom:13px}#qr-reader video{object-fit:cover;width:100%;border-radius:16px}#qrcode-container{display:inline-flex;align-items:center;justify-content:center;background:white;padding:14px;border-radius:17px;border:1px solid var(--line);min-width:190px;min-height:190px}#qrcode-container img,#qrcode-container canvas{max-width:100%;height:auto!important;margin:auto!important}.qr-receive{text-align:center}.qr-receive p{margin-bottom:12px}.qr-wallet-id{font-size:20px;letter-spacing:3px;font-weight:800;margin-top:13px}.blocked-screen{position:fixed;inset:0;z-index:300;background:rgba(244,246,251,.96);backdrop-filter:blur(22px);display:none;place-items:center;padding:20px}.blocked-screen.visible{display:grid}.blocked-card{width:min(100%,390px);text-align:center;padding:32px 26px;background:white;border:1px solid #f0dfe2;border-radius:26px;box-shadow:var(--shadow)}.blocked-icon{width:62px;height:62px;border-radius:21px;background:#fff0f1;color:var(--red);display:grid;place-items:center;font-size:24px;margin:0 auto 18px}.blocked-card h2{font-size:22px;letter-spacing:-.8px;margin:0}.blocked-card p{font-size:12px;color:var(--muted);line-height:1.7;margin:11px 0 22px}.footnote{font-size:10px;line-height:1.65;color:#9299aa;text-align:center;margin:15px 0}.banner-error{background:#fff0f1;border:1px solid #ffdfe3;color:#bd3849;padding:12px 14px;border-radius:13px;font-size:11px;line-height:1.55;margin-bottom:14px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(min-width:1100px){.layout{padding-top:34px}.content-card{padding:23px 24px}.hero-balance{min-height:226px}}
+@media(max-width:780px){.topbar{height:65px;padding:0 17px}.brand{font-size:14px;gap:9px}.brandmark{width:35px;height:35px;border-radius:12px}.brand small{font-size:9px}.connection-pill{padding:8px 9px;font-size:10px}.layout{display:block;padding:23px 16px calc(95px + var(--safe-bottom));width:100%}.sidebar{display:none}.page-head{margin-bottom:19px}.page-head h1{font-size:27px;letter-spacing:-1.2px}.page-head p{font-size:12px}.hero-balance{padding:22px;border-radius:25px;min-height:205px}.quick-actions{gap:9px}.quick-action{min-height:89px;border-radius:16px;font-size:10px}.quick-icon{width:35px;height:35px}.content-card{padding:18px;border-radius:20px}.mobile-nav{display:flex;align-items:center;justify-content:space-around;gap:5px;position:fixed;left:10px;right:10px;bottom:calc(10px + var(--safe-bottom));z-index:80;padding:8px 6px max(8px,env(safe-area-inset-bottom));border:1px solid rgba(225,229,239,.92);border-radius:22px;background:rgba(255,255,255,.92);box-shadow:0 12px 34px rgba(34,48,85,.16);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}.mobile-nav .nav-btn{flex:1;min-width:0;min-height:54px;border-radius:15px;padding:6px 2px;display:flex;flex-direction:column;justify-content:center;gap:5px;font-size:9px}.mobile-nav .nav-btn i{font-size:17px;width:auto}.desktop-only{display:none}.auth-wrap{margin:26px auto 40px;padding:0 16px}.auth-card{padding:27px 22px;border-radius:26px}.auth-card h1{font-size:26px}.pin-wrap{margin:24px auto 35px}.pin-card{padding:27px 20px 22px;border-radius:27px}.processing-wrap{min-height:calc(100dvh - 65px);padding:20px 16px}.processing-card{padding:30px 21px;border-radius:26px}.two-col{grid-template-columns:1fr;gap:0}.locker-actions{grid-template-columns:1fr}.locker-action{padding:17px}.locker-hero{padding:19px}.locker-hero .big-number{font-size:27px}.locker-symbol{width:54px;height:54px;border-radius:18px}.modal-backdrop{padding:8px;align-items:flex-end}.modal{border-radius:25px 25px 20px 20px;padding:22px 19px max(22px,var(--safe-bottom))}.quick-actions .quick-action{padding:12px 4px}}
+@media(max-width:380px){.layout{padding-left:12px;padding-right:12px}.topbar{padding:0 12px}.connection-pill{display:none}.hero-balance{padding:19px}.hero-amount{font-size:34px}.quick-actions{gap:7px}.quick-action{font-size:9px;min-height:82px}.stat-card{padding:14px}.stat-value{font-size:19px}.page-head h1{font-size:25px}.pin-card{padding-left:15px;padding-right:15px}.key{height:53px}}
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: var(--font-main);
-        -webkit-font-smoothing: antialiased;
-    }
-
-    body {
-        height: 100vh;
-        width: 100vw;
-        background-color: var(--bg);
-        background-image: 
-            radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
-            radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
-        color: var(--text);
-    }
-
-    .app-wrapper {
-        position: relative;
-        width: 100%;
-        max-width: 400px;
-        height: 100%;
-        max-height: 850px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .screen {
-        position: absolute;
-        width: 100%;
-        padding: 40px 30px;
-        background: var(--card-bg);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        border-radius: 32px;
-        border: 1px solid var(--glass-border);
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
-        opacity: 0;
-        visibility: hidden;
-        transform: translateY(40px) scale(0.95);
-        transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
-    }
-
-    .screen.active {
-        opacity: 1;
-        visibility: visible;
-        transform: translateY(0) scale(1);
-        z-index: 10;
-    }
-
-    .brand {
-        text-align: center;
-        font-size: 26px;
-        font-weight: 800;
-        letter-spacing: -0.5px;
-        margin-bottom: 40px;
-        color: var(--primary);
-    }
-    
-    h2 { font-weight: 700; font-size: 22px; margin-bottom: 8px; }
-    p.subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
-
-    .input-field {
-        position: relative;
-        margin-bottom: 20px;
-    }
-
-    .input-field i {
-        position: absolute;
-        left: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--text-muted);
-        transition: 0.3s;
-    }
-
-    input {
-        width: 100%;
-        background: rgba(0, 0, 0, 0.3);
-        border: 1px solid var(--glass-border);
-        padding: 18px 20px 18px 55px;
-        border-radius: 16px;
-        color: white;
-        font-size: 15px;
-        outline: none;
-        transition: all 0.3s ease;
-    }
-
-    input:focus {
-        border-color: var(--primary);
-        background: rgba(255, 255, 255, 0.05);
-    }
-    
-    input:focus + i { color: var(--primary); }
-
-    .btn-main {
-        width: 100%;
-        padding: 18px;
-        border-radius: 16px;
-        border: none;
-        background: var(--text);
-        color: #000;
-        font-weight: 700;
-        font-size: 15px;
-        cursor: pointer;
-        margin-top: 10px;
-        transition: 0.3s;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,255,255,0.08); }
-    .btn-main:active { transform: scale(0.98); }
-
-    .btn-logout {
-        margin-top: 15px;
-        background: rgba(239, 68, 68, 0.05);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.2);
-    }
-    .btn-logout:hover { background: #ef4444; color: white; }
-
-    .plan-status-bar {
-        width: 100%;
-        padding: 16px;
-        border-radius: 14px;
-        border: 1px solid var(--glass-border);
-        background: rgba(255,255,255,0.02);
-        color: var(--text-muted);
-        font-weight: 600;
-        font-size: 14px;
-        text-align: center;
-        margin-top: 0;
-        pointer-events: none; 
-        cursor: default;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-    }
-    .plan-highlight {
-        color: var(--primary);
-        font-weight: 800;
-        margin-left: 8px;
-    }
-
-    .pin-dots {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 40px;
-    }
-    .dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: rgba(255,255,255,0.15);
-        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    }
-    .dot.active {
-        background: var(--primary);
-        transform: scale(1.2);
-    }
-
-    .keypad {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-        padding: 0 20px;
-    }
-    .key {
-        height: 65px;
-        width: 65px;
-        margin: 0 auto;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 22px;
-        font-weight: 500;
-        background: rgba(255,255,255,0.04);
-        border: 1px solid transparent;
-        cursor: pointer;
-        transition: 0.2s;
-        user-select: none;
-    }
-    .key:hover { background: rgba(255,255,255,0.1); }
-    .key:active { background: var(--primary); color: #000; transform: scale(0.9); }
-
-    .key-action {
-        font-size: 18px;
-        font-weight: 600;
-        background: rgba(239, 68, 68, 0.05);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.1);
-    }
-    .key-action:hover { background: #ef4444; color: white; }
-
-    .card-container {
-        perspective: 1000px;
-        margin: 10px 0 25px 0;
-    }
-
-    .premium-card {
-        position: relative;
-        width: 100%;
-        aspect-ratio: 1.586;
-        border-radius: 20px;
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-        overflow: hidden;
-        border: 1px solid rgba(255,255,255,0.15);
-        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        transition: transform 0.5s ease;
-    }
-
-    .premium-card:hover { transform: rotateX(4deg) rotateY(4deg); }
-
-    .premium-card::before {
-        content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-        background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 60%);
-        pointer-events: none;
-    }
-
-    /* Card Shine Effect */
-    .premium-card::after {
-        content: '';
-        position: absolute;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.1) 45%, transparent 50%);
-        background-size: 200% 200%;
-        animation: shine 6s infinite linear;
-        pointer-events: none;
-    }
-    @keyframes shine { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
-    .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 2; }
-    
-    /* Golden Chip Restored */
-    .chip {
-        width: 45px; height: 32px;
-        background: linear-gradient(135deg, #fbbf24, #d97706);
-        border-radius: 6px; position: relative;
-        border: 1px solid rgba(255,255,255,0.2);
-    }
-    
-    .contactless { font-size: 24px; color: rgba(255,255,255,0.6); transform: rotate(90deg); }
-
-    .balance-group { z-index: 2; margin-top: 10px; }
-    .balance-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
-    .balance-amount { font-size: 32px; font-weight: 700; color: #fff; }
-
-    .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 2; }
-    .card-holder { font-size: 15px; font-weight: 600; letter-spacing: 2px; color: rgba(255,255,255,0.9); }
-    .card-logo { font-size: 24px; font-weight: 800; font-style: italic; opacity: 0.9; letter-spacing: -1px; }
-
-    .loader {
-        position: fixed; top:0; left:0; width:100%; height:100%;
-        background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(10px);
-        z-index: 100; display: none; justify-content: center; align-items: center; transition: opacity 0.3s;
-    }
-    .loader.visible { display: flex; }
-    
-    .spinner {
-        width: 40px; height: 40px;
-        border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary);
-        border-radius: 50%; animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    #error-msg { color: #ef4444; text-align: center; margin-top: 15px; font-size: 13px; min-height: 20px; }
-
-    .modal-overlay {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
-        z-index: 200; display: flex; justify-content: center; align-items: center;
-        opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
-    }
-    .modal-overlay.open { opacity: 1; pointer-events: auto; }
-
-    .modal-box {
-        background: #111827; border: 1px solid var(--glass-border); padding: 30px;
-        border-radius: 24px; width: 85%; max-width: 340px; text-align: center;
-        transform: scale(0.9) translateY(20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-    }
-    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
-
-    .modal-actions { display: flex; gap: 10px; margin-top: 25px; }
-    .btn-modal {
-        flex: 1; padding: 14px; border-radius: 12px; border: none;
-        font-weight: 600; cursor: pointer; font-size: 14px; transition: 0.2s;
-    }
-    .btn-modal:active { transform: scale(0.95); }
-    .btn-cancel { background: rgba(255,255,255,0.08); color: white; }
-    .btn-confirm { background: #ef4444; color: white; }
-    .btn-primary-modal { background: var(--primary); color: #000; }
-
-    .toast {
-        position: fixed; top: 20px; right: 20px; padding: 16px 24px;
-        background: #1e293b; color: white; border-left: 4px solid var(--primary);
-        border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-        transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        z-index: 9999; font-weight: 600; font-size: 13px;
-    }
-    .toast.show { transform: translateX(0); }
-    .toast.error { border-left-color: #ef4444; }
-
-    .blocked-overlay {
-        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(20px);
-        z-index: 9000; display: none; flex-direction: column;
-        justify-content: center; align-items: center; text-align: center;
-    }
-    .blocked-overlay.visible { display: flex; }
-    
-    .qr-tabs { display: flex; background: rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 20px; padding: 5px; }
-    .qr-tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
-    .qr-tab.active { background: var(--primary); color: #000; }
-    
-    #qr-reader { width: 100%; border-radius: 16px; overflow: hidden; margin-bottom: 15px; border: 1px solid var(--glass-border); background: #000; }
-    #qr-reader video { object-fit: cover; width: 100%; border-radius: 16px; } 
-    #qrcode-container img { margin: 0 auto; border-radius: 8px; }
-    
-    .settings-btn {
-        padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
-        border-radius: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s;
-    }
-    .settings-btn:hover { background: rgba(255,255,255,0.1); }
-    .settings-btn span { font-size: 12px; font-weight: 600; color: var(--text); }
-    .settings-btn i { font-size: 14px; color: var(--primary); }
+.transfer-spinner{display:block;width:34px;height:34px;border:3px solid #dce6ff;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}.processing-mark.is-complete{background:#e7f8f0;color:#168360}.processing-mark.is-complete:after{display:none}.success-check{font-size:35px;line-height:1;font-weight:800}.quick-icon svg,.mini-icon svg,.locker-action button svg{display:block;flex:0 0 auto}.mini-icon{display:grid;place-items:center}.processing-card .processing-destination{font-size:13px;margin-top:7px;margin-bottom:0}.processing-card .processing-amount{margin-top:23px;margin-bottom:0;font-size:30px}.processing-card h1{margin-top:0}.processing-card{min-width:min(100%,320px)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><div class="brandmark"><i class="fa-solid fa-layer-group" aria-hidden="true"></i></div><div>Playcentrix Wallet</div></div>
+    <div class="top-right"><div class="connection-pill" id="connectionPill"><i class="fa-solid fa-circle" aria-hidden="true"></i><span id="connectionLabel">Connecting</span></div><button class="avatar" id="topAvatar" aria-label="Open profile" onclick="navigateTo('profile')">P</button></div>
+  </header>
 
-<div id="toast" class="toast"></div>
+  <div id="loginView" class="view active">
+    <div class="auth-wrap"><div class="auth-card">
+      <div class="auth-brand"><div class="brand"><div class="brandmark"><i class="fa-solid fa-layer-group"></i></div><div>Playcentrix Wallet</div></div></div>
+      <h1>Welcome back</h1><p class="auth-sub">Sign in to continue.</p>
+      <form id="loginForm" autocomplete="on">
+        <div class="field"><label for="loginUsername">Username</label><div class="input-wrap"><i class="fa-regular fa-user"></i><input class="input has-icon" id="loginUsername" name="username" autocomplete="username" placeholder="Enter your username" required maxlength="32"></div></div>
+        <div class="field"><label for="loginPassword">Password</label><div class="input-wrap"><i class="fa-solid fa-lock"></i><input class="input has-icon" id="loginPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter your password" required></div></div>
+        <div id="loginError" class="error-text" role="alert"></div><button class="primary-btn btn-wide" type="submit" id="loginSubmit">Sign in <i class="fa-solid fa-arrow-right"></i></button>
+      </form>
+<p class="auth-footer">PCX is an in-app balance unit, not a bank deposit or real-world currency.</p>
+    </div></div>
+  </div>
 
-<div class="blocked-overlay" id="blockedOverlay">
-    <div style="background: var(--card-bg); padding: 40px; border-radius: 24px; border: 1px solid rgba(239, 68, 68, 0.4); text-align: center; width: 85%; max-width: 320px;">
-        <i class="fas fa-ban" style="font-size: 48px; color: #ef4444; margin-bottom: 20px;"></i>
-        <h2 style="color: #ef4444; margin-bottom: 10px;">Account Blocked</h2>
-        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px; line-height: 1.5;">This Account Has Been Blocked.<br>Please Contact Support.</p>
-        <button class="btn-main btn-logout" onclick="executeLogout()" style="margin-top: 0;">Log Out</button>
-    </div>
-</div>
+  <div id="pinView" class="view">
+    <div class="pin-wrap"><div class="pin-card">
+      <div class="pin-emblem"><i class="fa-solid fa-shield-halved"></i></div><h1 id="pinTitle">One last check</h1><p id="pinSubtitle">Enter your 4-digit wallet PIN to continue.</p>
+      <div class="pin-dots" id="pinDots" aria-label="PIN length"><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span><span class="pin-dot"></span></div>
+      <div class="keypad" id="pinKeypad" aria-label="PIN keypad"></div><div id="pinError" class="error-text" role="alert"></div><button class="pin-cancel" id="pinCancel" onclick="cancelPinFlow()">Cancel and go back</button>
+    </div></div>
+  </div>
 
-<div class="app-wrapper">
-    
-    <div class="loader" id="loader">
-        <div class="spinner"></div>
-    </div>
+  <div id="processingView" class="view">
+    <div class="processing-wrap"><div class="processing-card" id="processingCard">
+      <div class="processing-mark" id="processingMark"><span class="transfer-spinner" aria-hidden="true"></span></div>
+      <h1 id="processingTitle">Sending PCX</h1>
+      <div class="processing-amount" id="processingAmount">0.00 PCX</div>
+      <div class="processing-destination" id="processingDestination">To wallet</div>
+    </div></div>
+  </div>
 
-    <div class="modal-overlay" id="deleteWarningModal">
-        <div class="modal-box" style="border-color: #ef4444;">
-            <i class="fas fa-exclamation-triangle" style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
-            <h3>Critical Warning</h3>
-            <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px; line-height:1.5;">Your account and all associated PCX will be permanently deleted. This action is <b>NOT recoverable</b>.</p>
-            <div class="modal-actions">
-                <button class="btn-modal btn-cancel" onclick="cancelDelete()">Cancel</button>
-                <button class="btn-modal btn-confirm" onclick="finalizeAccountDeletion()">Yes, Delete Forever</button>
-            </div>
-        </div>
-    </div>
+  <div id="blockedScreen" class="blocked-screen"><div class="blocked-card"><div class="blocked-icon"><i class="fa-solid fa-ban"></i></div><h2>Account restricted</h2><p>This wallet is currently blocked. Please contact Playcentrix support if you believe this is a mistake.</p><button class="danger-btn btn-wide" onclick="logout(true)"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button></div></div>
 
-    <div class="modal-overlay" id="deletePasswordModal">
-        <div class="modal-box">
-            <i class="fas fa-user-times" style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
-            <h3>Delete Account</h3>
-            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px; margin-bottom: 20px;">Enter your password to proceed.</p>
-            <div class="input-field">
-                <input type="password" id="deleteAuthPassword" placeholder="Current Password">
-                <i class="fas fa-key"></i>
-            </div>
-            <div class="modal-actions">
-                <button class="btn-modal btn-cancel" onclick="closeDeletePasswordModal()">Cancel</button>
-                <button class="btn-modal btn-confirm" onclick="verifyPasswordForDelete()">Proceed</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-box">
-            <i class="fas fa-cog" style="font-size: 30px; color: var(--primary); margin-bottom: 15px;"></i>
-            <h3>Preferences</h3>
-            
-            <div style="margin-top: 25px; text-align: left;">
-                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; font-weight: 700;">Change Display Name</p>
-                <div class="input-field" style="margin-bottom: 10px;">
-                    <input type="text" id="newDisplayName" placeholder="New Name (Max 15)" maxlength="15" autocomplete="off">
-                    <i class="fas fa-user-edit"></i>
-                </div>
-                <button class="btn-main" style="padding: 14px; font-size: 13px; margin-top: 0;" onclick="initiateNameChange()">Update Name</button>
-            </div>
-
-            <div style="margin-top: 30px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
-                <button class="btn-main btn-logout" style="padding: 14px; font-size: 13px; margin-top: 0;" onclick="openDeletePasswordModal()">Delete Account</button>
-            </div>
-
-            <button class="btn-modal btn-cancel" style="width: 100%; margin-top: 20px;" onclick="closeSettingsModal()">Close</button>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="confirmModal">
-        <div class="modal-box">
-            <i class="fas fa-sign-out-alt" style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
-            <h3>Log Out?</h3>
-            <p style="color: var(--text-muted); font-size: 14px; margin-top: 5px;">Are you sure you want to end your session?</p>
-            <div class="modal-actions">
-                <button class="btn-modal btn-cancel" onclick="hideLogoutConfirm()">Cancel</button>
-                <button class="btn-modal btn-confirm" onclick="executeLogout()">Yes, Logout</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="transferModal">
-        <div class="modal-box">
-            <i class="fas fa-paper-plane" style="font-size: 30px; color: var(--primary); margin-bottom: 15px;"></i>
-            <h3>Transfer Credits</h3>
-            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px; margin-bottom: 20px;">Send funds instantly and securely.</p>
-            
-            <div class="input-field">
-                <input type="text" id="transferReceiverId" placeholder="Receiver ID (5 Digits)" maxlength="5" autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                <i class="fas fa-wallet"></i>
-            </div>
-
-            <div class="input-field" style="margin-bottom: 10px;">
-                <input type="number" id="transferAmount" placeholder="Amount" min="0" step="any" inputmode="decimal">
-                <i class="fas fa-coins"></i>
-            </div>
-            
-            <div id="transfer-error" style="color: #ef4444; font-size: 12px; min-height: 15px;"></div>
-
-            <div class="modal-actions">
-                <button class="btn-modal btn-cancel" onclick="closeTransferModal()">Cancel</button>
-                <button class="btn-modal btn-primary-modal" onclick="initiateTransfer()">Send</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal-overlay" id="qrModal">
-        <div class="modal-box">
-            <div class="qr-tabs">
-                <div class="qr-tab active" id="tabSend" onclick="switchQRTab('send')">Send</div>
-                <div class="qr-tab" id="tabReceive" onclick="switchQRTab('receive')">Receive</div>
-            </div>
-            
-            <div id="qrSendContent">
-                <div id="qr-reader"></div>
-                <div id="qrAmountSection" style="display: none;">
-                    <p style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 15px;" id="qrScannedId"></p>
-                    <div class="input-field" style="margin-bottom: 10px;">
-                        <input type="number" id="qrTransferAmount" placeholder="Enter Amount" min="0" step="any" inputmode="decimal">
-                        <i class="fas fa-coins"></i>
-                    </div>
-                    <div id="qr-transfer-error" style="color: #ef4444; font-size: 12px; min-height: 15px; margin-bottom:10px;"></div>
-                    <button class="btn-main" style="background: var(--primary); color: #000; margin-top: 0;" onclick="proceedQRTransfer()">Pay Now</button>
-                </div>
-            </div>
-
-            <div id="qrReceiveContent" style="display: none;">
-                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Scan this code to receive PCX.</p>
-                <div id="qrcode-container" style="background: white; padding: 15px; border-radius: 12px; display: inline-block;"></div>
-                <p style="font-size: 20px; font-weight: 800; margin-top: 15px; letter-spacing: 2px;" id="myWalletIdDisplay"></p>
-            </div>
-
-            <button class="btn-modal btn-cancel" style="width: 100%; margin-top: 15px;" onclick="closeQRModal()">Close</button>
-        </div>
-    </div>
-
-    <div class="screen active" id="loginScreen">
-        <div class="brand"><i class="fas fa-layer-group" style="margin-right:8px;"></i> Playcentrix Wallet</div>
-        <div style="text-align:center;">
-            <h2>Welcome Back</h2>
-            <p class="subtitle">Enter your credentials to access your vault.</p>
-        </div>
-
-        <div class="input-field">
-            <input type="text" id="username" placeholder="Username" autocomplete="off">
-            <i class="fas fa-user-circle"></i>
-        </div>
-
-        <div class="input-field">
-            <input type="password" id="password" placeholder="Password">
-            <i class="fas fa-lock"></i>
-        </div>
-
-        <button class="btn-main" onclick="attemptLogin()">Secure Sign In</button>
-        <div id="error-msg"></div>
-    </div>
-
-    <div class="screen" id="pinScreen">
-        <div style="text-align:center; margin-bottom:20px;">
-            <i class="fas fa-shield-alt" style="font-size:30px; color:var(--primary); margin-bottom:15px;"></i>
-            <h2 id="pinTitle">Security Check</h2>
-            <p class="subtitle" id="pinSubtitle">Enter your 4-digit PIN</p>
-        </div>
-
-        <div class="pin-dots" id="dots">
-            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-        </div>
-
-        <div class="keypad" id="keypad"></div>
-    </div>
-
-    <div class="screen" id="dashScreen">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <div>
-                <p style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Good Day,</p>
-                <h2 id="displayUser">User</h2>
-            </div>
-            
-            <div class="settings-btn" onclick="openSettingsModal()">
-                <span>Settings</span>
-                <i class="fas fa-cog"></i>
-            </div>
-        </div>
-
-        <div class="card-container">
-            <div class="premium-card">
-                <div class="card-top">
-                    <div class="chip"></div>
-                    <i class="fas fa-wifi contactless"></i>
-                </div>
-                
-                <div class="balance-group">
-                    <div class="balance-label">Current Balance</div>
-                    <div class="balance-amount"><span id="balance">0.00</span></div>
-                </div>
-
-                <div class="card-bottom">
-                    <div>
-                        <div class="balance-label" style="font-size:9px; margin-bottom:2px;">Card Number</div>
-                        <div class="card-holder" id="cardHolder">00000</div>
-                    </div>
-                    <div class="card-logo">PCX</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="plan-status-bar">
-            Current Plan: <span class="plan-highlight" id="userPlan">BASIC</span>
-        </div>
-
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-            <button class="btn-main" style="flex: 7; background: var(--primary); color: #000; margin-top: 0;" onclick="openTransferModal()">Send Credits</button>
-            <button class="btn-main" style="flex: 3; background: transparent; border: 1px solid var(--glass-border); color: var(--text); margin-top: 0; display: flex; align-items: center; justify-content: center;" onclick="openQRModal()"><i class="fas fa-qrcode" style="font-size: 20px;"></i></button>
-        </div>
+  <div id="walletView" class="view">
+    <div class="layout">
+      <aside class="sidebar" aria-label="Primary navigation">
+        <div class="side-label">Workspace</div>
+        <button class="nav-btn active" data-pane="home" onclick="navigateTo('home')"><i class="fa-solid fa-house"></i> Overview</button>
+        <button class="nav-btn" data-pane="send" onclick="navigateTo('send')"><i class="fa-solid fa-paper-plane"></i> Send PCX</button>
+        <button class="nav-btn" data-pane="locker" onclick="navigateTo('locker')"><i class="fa-solid fa-vault"></i> PCX Locker</button>
+        <button class="nav-btn" data-pane="activity" onclick="navigateTo('activity')"><i class="fa-solid fa-clock-rotate-left"></i> Recent activity</button>
+        <div class="side-label" style="margin-top:15px">Account</div>
+        <button class="nav-btn" data-pane="profile" onclick="navigateTo('profile')"><i class="fa-regular fa-user"></i> Profile & plan</button>
         
-        <button class="btn-main btn-logout" onclick="askLogout()">Log Out</button>
-    </div>
+      </aside>
 
+      <main class="main">
+        <section class="pane active" id="pane-home">
+          <div class="page-head"><div><h1>Hi, <span id="helloName">there</span></h1></div><button class="icon-btn" aria-label="Refresh balance" onclick="refreshNow()"><i class="fa-solid fa-arrows-rotate"></i></button></div>
+          <section class="hero-balance" aria-label="Wallet balance">
+            <div class="hero-top"><div class="hero-caption">Available wallet balance</div><div class="plan-badge"><i class="fa-solid fa-sparkles"></i><span id="homePlan">BASIC PLAN</span></div></div>
+            <div class="hero-amount"><span id="homeBalance">0.00</span></div><div class="hero-unit">PCX</div>
+            <div class="hero-foot"><div><div class="wallet-id-label">YOUR WALLET ID</div><div class="wallet-id-value" id="homeWalletId">-----</div></div><button class="copy-id" onclick="copyWalletId()"><i class="fa-regular fa-copy"></i> Copy ID</button></div>
+          </section>
+          <div class="quick-actions">
+            <button class="quick-action" onclick="navigateTo('send')"><span class="quick-icon"><i class="fa-solid fa-paper-plane"></i></span>Send PCX</button>
+            <button class="quick-action" onclick="openQRModal('send')"><span class="quick-icon"><i class="fa-solid fa-qrcode"></i></span>Scan to pay</button>
+            <button class="quick-action" onclick="openQRModal('receive')"><span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 19h16"/></svg></span>Receive</button>
+            <button class="quick-action" onclick="navigateTo('locker')"><span class="quick-icon"><i class="fa-solid fa-vault"></i></span>Locker</button>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card"><div class="stat-head"><span>In your locker</span><span class="stat-icon"><i class="fa-solid fa-vault"></i></span></div><div class="stat-value" id="homeLocker">0.00 PCX</div><div class="stat-sub">Moves in or out instantly</div></div>
+            <div class="stat-card"><div class="stat-head"><span>Your plan</span><span class="stat-icon"><i class="fa-solid fa-gauge-high"></i></span></div><div class="stat-value" id="homePlanStat">Basic</div><div class="stat-sub" id="homePlanHint">Standard transfer processing</div></div>
+          </div>
+          <section class="content-card"><div class="card-heading"><div><h2>Recent activity</h2><p>Saved locally on this device</p></div><button class="text-link" onclick="navigateTo('activity')">View all <i class="fa-solid fa-arrow-right"></i></button></div><div id="homeActivity" class="activity-list"></div></section>
+          <p class="footnote">Wallet actions depend on the connected Playcentrix database. PCX is an in-app unit; this interface is not a bank or payment institution.</p>
+        </section>
+
+        <section class="pane" id="pane-send">
+          <div class="page-head"><div><h1>Send PCX</h1></div><button class="icon-btn" aria-label="Scan QR code" onclick="openQRModal('send')"><i class="fa-solid fa-qrcode"></i></button></div>
+          <div class="content-card">
+            <div class="card-heading"><div><h2>Transfer details</h2><p>Your balance: <strong id="sendAvailable">0 PCX</strong></p></div><span class="tag" id="sendPlanTag">BASIC</span></div>
+            <form id="transferForm">
+              <div class="field"><label for="transferReceiverId">Receiver wallet ID</label><div class="input-wrap"><i class="fa-solid fa-wallet"></i><input class="input has-icon" id="transferReceiverId" autocomplete="off" inputmode="numeric" placeholder="5-digit wallet ID" maxlength="5" pattern="[0-9]{5}" required></div><div class="field-hint">You can find a receiver’s wallet ID in their profile or scan their PCX QR code.</div></div>
+              <div id="recipientPreview" class="transfer-preview hidden"><div class="recipient-avatar" id="recipientAvatar">?</div><div class="recipient-preview"><strong id="recipientName">Receiver</strong><small id="recipientMeta">Wallet ID</small></div><i class="fa-solid fa-circle-check" style="color:var(--mint)"></i></div>
+              <div class="field"><label for="transferAmount">Amount to send</label><div class="input-wrap"><i class="fa-solid fa-coins"></i><input class="input has-icon amount-input" id="transferAmount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00 PCX" required></div><div class="field-hint" id="transferLimitText">Enter an amount above zero.</div></div>
+              <div id="transferError" class="error-text" role="alert"></div>
+              <button type="submit" class="primary-btn btn-wide" id="transferContinue"><i class="fa-solid fa-lock"></i> Review & continue</button>
+            </form>
+            <button class="secondary-btn btn-wide" onclick="openQRModal('send')"><i class="fa-solid fa-qrcode"></i> Scan receiver QR instead</button>
+          </div>
+        </section>
+
+        <section class="pane" id="pane-locker">
+          <div class="page-head"><div><h1>Locker</h1></div><div class="locker-symbol"><i class="fa-solid fa-lock"></i></div></div>
+          <div class="locker-hero"><div><div class="eyebrow" style="color:#188765">LOCKER BALANCE</div><div class="big-number" id="lockerBalance">0.00 PCX</div></div><div style="text-align:right"><span class="tag" style="background:#dcf7eb;color:#13845f">INSTANT</span></div></div>
+          <div class="locker-actions">
+            <form class="locker-action" id="depositForm"><div class="mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16v12H4z"/><path d="m4 8 3-4h10l3 4"/><path d="M12 10v6"/><path d="m9 13 3 3 3-3"/></svg></div><h3>Add to locker</h3><p>Wallet → locker</p><div class="field"><label for="depositAmount">Amount to add</label><input class="input amount-input" id="depositAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00 PCX" required></div><div class="field-hint" id="depositHint">Available wallet: 0 PCX</div><div id="depositError" class="error-text" role="alert"></div><button class="primary-btn btn-wide" type="submit"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 20h16"/></svg> Add to locker</button></form>
+            <form class="locker-action withdraw" id="withdrawForm"><div class="mini-icon"><i class="fa-solid fa-arrow-up"></i></div><h3>Withdraw from locker</h3><p>Locker → wallet</p><div class="field"><label for="withdrawAmount">Amount to withdraw</label><input class="input amount-input" id="withdrawAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00 PCX" required></div><div class="field-hint" id="withdrawHint">Locker available: 0 PCX</div><div id="withdrawError" class="error-text" role="alert"></div><button class="secondary-btn btn-wide" type="submit"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Withdraw from locker</button></form>
+          </div>
+          <section class="content-card" style="margin-top:17px"><div class="card-heading"><div><h2>Locker capacity</h2><p>Usage against the standard 100,000 PCX locker cap</p></div><span class="tag">ALL PLANS</span></div><div class="limit-track"><span id="lockerTrack" style="width:0%"></span></div><div class="limit-copy"><span id="lockerUsed">0 PCX used</span><strong id="lockerLeft">100,000 PCX left</strong></div></section>
+        </section>
+
+        <section class="pane" id="pane-activity">
+          <div class="page-head"><div><div class="eyebrow">ON THIS DEVICE</div><h1>Your activity.</h1><p>Recent transfers and locker moves recorded locally by this browser.</p></div><button class="icon-btn" aria-label="Clear activity" onclick="confirmClearActivity()"><i class="fa-regular fa-trash-can"></i></button></div>
+          <section class="content-card"><div class="card-heading"><div><h2>Local activity log</h2><p>Not uploaded as transaction history</p></div><span class="tag">PRIVATE</span></div><div id="fullActivity" class="activity-list"></div><div class="inline-note"><i class="fa-solid fa-mobile-screen-button"></i>This history lives in this browser's local storage. It does not follow you to another device and clearing browser data can erase it.</div></section>
+        </section>
+
+        <section class="pane" id="pane-profile">
+          <div class="page-head"><div><h1>Profile & settings</h1></div></div>
+          <div class="profile-hero"><div class="profile-avatar" id="profileAvatar">P</div><div class="profile-copy"><h2 id="profileName">Wallet user</h2><p id="profileUsername">@username · Wallet -----</p></div><span class="tag" id="profilePlanBadge">BASIC</span></div>
+          <section class="content-card"><div class="card-heading"><div><h2>Account details</h2></div></div><div class="activity-row"><div class="activity-icon"><i class="fa-solid fa-wallet"></i></div><div class="activity-copy"><strong>Wallet ID</strong><small id="profileWalletId">-----</small></div><button class="secondary-btn btn-small" onclick="copyWalletId()">Copy</button></div><div class="activity-row"><div class="activity-icon"><i class="fa-regular fa-user"></i></div><div class="activity-copy"><strong>Username</strong><small id="profileUserValue">@username</small></div></div><div class="activity-row"><div class="activity-icon"><i class="fa-solid fa-circle-check"></i></div><div class="activity-copy"><strong>Account status</strong><small id="profileAccountStatus">Active</small></div></div><div class="field" style="margin-top:20px;margin-bottom:0"><label for="newDisplayName">Display name</label><input class="input" id="newDisplayName" maxlength="15" placeholder="New display name"><button class="primary-btn btn-wide" onclick="beginNameChange()"><i class="fa-regular fa-floppy-disk"></i> Save name</button></div></section>
+          <section class="content-card"><div class="card-heading"><div><h2>Password</h2></div></div><p class="form-help" style="margin-top:0">Enter your PIN to continue, then confirm your current password.</p><button class="secondary-btn btn-wide" onclick="beginPasswordChange()"><i class="fa-solid fa-key"></i> Change password</button></section>
+          <section class="content-card"><div class="card-heading"><div><h2>Account</h2></div></div><button class="secondary-btn btn-wide" onclick="askLogout()"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button><button class="danger-btn btn-wide" style="margin-top:10px" onclick="openDeleteModal()"><i class="fa-regular fa-trash-can"></i> Delete account</button></section>
+        </section>
+      </main>
+    </div>
+    <nav class="mobile-nav" aria-label="Mobile navigation"><button class="nav-btn active" data-pane="home" onclick="navigateTo('home')"><i class="fa-solid fa-house"></i><span>Home</span></button><button class="nav-btn" data-pane="send" onclick="navigateTo('send')"><i class="fa-solid fa-paper-plane"></i><span>Send</span></button><button class="nav-btn" data-pane="locker" onclick="navigateTo('locker')"><i class="fa-solid fa-vault"></i><span>Locker</span></button><button class="nav-btn" data-pane="activity" onclick="navigateTo('activity')"><i class="fa-solid fa-clock-rotate-left"></i><span>Activity</span></button><button class="nav-btn" data-pane="profile" onclick="navigateTo('profile')"><i class="fa-regular fa-user"></i><span>Profile</span></button></nav>
+  </div>
 </div>
+
+<div class="loader-overlay" id="loaderOverlay" aria-live="polite"><div class="loader-box"><span class="spinner"></span><span id="loaderText">Loading your wallet…</span></div></div>
+<div class="toast-area" id="toastArea" aria-live="polite" aria-atomic="true"></div>
+
+<div class="modal-backdrop" id="qrModal" role="dialog" aria-modal="true" aria-labelledby="qrModalTitle"><div class="modal"><div class="modal-head"><h2 id="qrModalTitle">Scan or receive PCX</h2><button class="modal-close" onclick="closeQRModal()" aria-label="Close QR dialog"><i class="fa-solid fa-xmark"></i></button></div><div class="qr-tabs"><button class="qr-tab active" id="qrTabSend" onclick="switchQRTab('send')">Scan to send</button><button class="qr-tab" id="qrTabReceive" onclick="switchQRTab('receive')">My receive code</button></div><div id="qrSendContent"><p>Point your camera at a Playcentrix QR code. You can also enter a wallet ID on the Send screen.</p><div id="qr-reader"></div><div class="field"><label for="manualQRId">Or enter wallet ID manually</label><input class="input" id="manualQRId" inputmode="numeric" maxlength="5" placeholder="5-digit wallet ID"></div><button class="primary-btn btn-wide" onclick="useManualQRId()">Use wallet ID</button></div><div id="qrReceiveContent" class="qr-receive hidden"><p>Let the sender scan this code to address a transfer to your wallet.</p><div id="qrcode-container"></div><div class="qr-wallet-id" id="myWalletIdDisplay">-----</div><button class="secondary-btn btn-wide" style="margin-top:17px" onclick="copyWalletId()"><i class="fa-regular fa-copy"></i> Copy wallet ID</button></div></div></div>
+
+<div class="modal-backdrop" id="deleteAuthModal" role="dialog" aria-modal="true" aria-labelledby="deleteAuthTitle"><div class="modal"><div class="modal-head"><h2 id="deleteAuthTitle">Verify your identity</h2><button class="modal-close" onclick="closeDeleteAuth()" aria-label="Close dialog"><i class="fa-solid fa-xmark"></i></button></div><p>For your protection, enter your current account password before continuing to the PIN check.</p><div class="field"><label for="deleteAuthPassword">Current password</label><input class="input" id="deleteAuthPassword" type="password" autocomplete="current-password" placeholder="Enter your password"></div><div id="deleteAuthError" class="error-text" role="alert"></div><div class="modal-actions"><button class="secondary-btn" onclick="closeDeleteAuth()">Cancel</button><button class="primary-btn" onclick="verifyDeletePassword()">Verify password</button></div></div></div>
+<div class="modal-backdrop" id="changePasswordModal" role="dialog" aria-modal="true" aria-labelledby="changePasswordTitle"><div class="modal"><div class="modal-head"><h2 id="changePasswordTitle">Change password</h2><button class="modal-close" type="button" onclick="closePasswordChangeModal()" aria-label="Close dialog"><i class="fa-solid fa-xmark"></i></button></div><form id="changePasswordForm"><div class="field"><label for="currentPasswordInput">Current password</label><input class="input" id="currentPasswordInput" type="password" autocomplete="current-password" placeholder="Current password" required></div><div class="field"><label for="newPasswordInput">New password</label><input class="input" id="newPasswordInput" type="password" autocomplete="new-password" minlength="8" placeholder="At least 8 characters" required></div><div class="field"><label for="confirmNewPasswordInput">Confirm new password</label><input class="input" id="confirmNewPasswordInput" type="password" autocomplete="new-password" minlength="8" placeholder="Enter it again" required></div><div id="changePasswordError" class="error-text" role="alert"></div><div class="modal-actions"><button class="secondary-btn" type="button" onclick="closePasswordChangeModal()">Cancel</button><button class="primary-btn" type="submit" id="saveNewPasswordBtn">Update password</button></div></form></div></div>
+<div class="modal-backdrop" id="confirmModal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle"><div class="modal"><div class="modal-head"><h2 id="confirmTitle">Are you sure?</h2><button class="modal-close" onclick="closeConfirm()" aria-label="Close dialog"><i class="fa-solid fa-xmark"></i></button></div><p id="confirmText">Please confirm this action.</p><div class="modal-actions"><button class="secondary-btn" onclick="closeConfirm()">Cancel</button><button class="primary-btn" id="confirmActionBtn" onclick="runConfirmAction()">Confirm</button></div></div></div>
 
 <script>
-
-/* =========================
-   CONFIG
-========================= */
-
-const API_URL = "https://wallet-database.playcentrix.workers.dev/db";
-
+'use strict';
+const API_URL = 'https://wallet-database.playcentrix.workers.dev/db';
+const WALLET_LIMIT = 5000;
+const LOCKER_LIMIT = 100000;
+const PLAN_NAMES = {BASIC:'Basic',PREMIUM:'Premium',ELITE:'Elite',ADMIN:'Admin'};
+let db = {};
 let users = [];
-let transactions = [];
-let redeemCodes = [];
-
-let enteredPin = "";
-let currentPinMode = "login"; 
-let pendingTransfer = null;
-let pendingSettingsAction = null; 
+let currentUser = null;
+let enteredPin = '';
+let pinMode = 'login';
+let pendingAction = null;
 let isVerifying = false;
+let isBusy = false;
+let qrScanner = null;
+let qrCode = null;
+let scannedReceiverId = '';
+let confirmAction = null;
+let refreshTimer = null;
 
-/* QR Variables */
-let html5QrcodeScanner = null;
-let scannedReceiverId = null;
-let qrcodeObj = null;
+const $ = id => document.getElementById(id);
+const num = value => Number.isFinite(Number(value)) ? Number(value) : 0;
+const money = value => num(value).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const normalizePlan = value => { const p=String(value||'BASIC').trim().toUpperCase(); return PLAN_NAMES[p] ? p : 'BASIC'; };
+const canonicalName = value => String(value || '').trim().slice(0,15);
+const localActivityKey = username => 'pcx_wallet_local_activity_v2_' + String(username || '').toLowerCase();
+const localSessionKey = 'activeUser';
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-/* =========================
-   TOAST NOTIFICATION
-========================= */
-function showToast(msg, isError = false) {
-    const toast = document.getElementById('toast');
-    toast.innerText = msg;
-    if (isError) {
-        toast.classList.add('error');
-    } else {
-        toast.classList.remove('error');
-    }
-    toast.classList.add('show');
-    
-    setTimeout(() => {
-        toast.classList.remove('show');
-    }, 3000);
+function normalizeUser(user){
+  if(!user || typeof user !== 'object') return user;
+  if(!Number.isFinite(Number(user.balance))) user.balance = 0;
+  if(!Number.isFinite(Number(user.lockerBalance))) user.lockerBalance = 0;
+  if(!Array.isArray(user.friends)) user.friends = [];
+  if(!user.Type) user.Type = 'PCX';
+  if(!user.plan) user.plan = 'BASIC';
+  return user;
 }
-
-
-/* =========================
-   BLOCKED CHECK
-========================= */
-function checkBlockedStatus(user) {
-    const overlay = document.getElementById('blockedOverlay');
-    if (user.isBlocked) {
-        overlay.classList.add('visible');
-        return true;
-    } else {
-        overlay.classList.remove('visible');
-        return false;
-    }
+function setConnection(online, text){
+  $('connectionLabel').textContent = text || (online ? 'Connected' : 'Offline');
+  $('connectionPill').style.background = online ? '#eef8f4' : '#fff0f1';
+  $('connectionPill').style.color = online ? '#168363' : '#c73647';
+  const dot = $('connectionPill').querySelector('i'); if(dot) dot.style.color = online ? '#20a77f' : '#dc4655';
 }
-
-
-/* =========================
-   DATABASE LOAD
-========================= */
-
-async function loadUsers(){
-    try{
-        const res = await fetch(API_URL);
-        const db = await res.json();
-
-        users = db.users || [];
-        transactions = db.transactions || [];
-        redeemCodes = db.redeemCodes || [];
-
-        init();
-    }
-    catch(err){
-        console.error("Database load error:", err);
-        showToast("Could not load database", true);
-    }
+function showLoader(show, text='Loading your wallet…'){$('loaderText').textContent=text;$('loaderOverlay').classList.toggle('visible',!!show)}
+function toast(message, type='success'){
+  const node=document.createElement('div'); node.className='toast'+(type==='error'?' error':'');
+  node.innerHTML=`<i class="fa-solid ${type==='error'?'fa-circle-exclamation':'fa-circle-check'}"></i><span>${escapeHTML(message)}</span>`;
+  $('toastArea').appendChild(node); setTimeout(()=>{node.style.opacity='0';node.style.transform='translateY(-6px)';setTimeout(()=>node.remove(),220)},3400);
 }
-
-
-/* =========================
-   DATABASE SAVE
-========================= */
-
+function openView(viewId){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(viewId).classList.add('active')}
+function navigateTo(pane){
+  if(!currentUser) return;
+  const id='pane-'+pane; if(!$ (id)) return;
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('active'));
+  $(id).classList.add('active');
+  document.querySelectorAll('[data-pane]').forEach(b=>b.classList.toggle('active',b.dataset.pane===pane));
+  if(pane==='home') renderHomeActivity();
+  window.scrollTo({top:0,behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+}
+function currentPlan(){return normalizePlan(currentUser?.plan)}
+function planCopy(plan=currentPlan()){
+  if(plan==='ADMIN') return {delay:0};
+  if(plan==='ELITE') return {delay:250};
+  if(plan==='PREMIUM') return {delay:1000+Math.floor(Math.random()*500)};
+  return {delay:3000+Math.floor(Math.random()*1000)};
+}
+function setUserFromDB(username){currentUser=users.find(u=>String(u.username||'').toLowerCase()===String(username||'').toLowerCase())||null;return currentUser}
+async function fetchDatabase(){
+  const response=await fetch(API_URL,{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
+  if(!response.ok) throw new Error(`Database returned ${response.status}`);
+  const data=await response.json();
+  if(!data || typeof data!=='object' || !Array.isArray(data.users)) throw new Error('The database response has no users array.');
+  db=data; users=data.users.map(normalizeUser); db.users=users; return db;
+}
 async function saveDatabase(){
-    const db = {
-        users,
-        transactions,
-        redeemCodes
-    };
+  db.users=users;
+  const response=await fetch(API_URL,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(db)});
+  if(!response.ok) throw new Error(`Database save failed (${response.status})`);
+  return true;
+}
+async function reloadDatabase(){await fetchDatabase();if(currentUser){setUserFromDB(currentUser.username);if(!currentUser){logout(true);return}if(checkBlocked(currentUser))return;renderWallet()}return true}
+async function boot(){
+  showLoader(true,'Connecting to Playcentrix…');
+  try{
+    await fetchDatabase();setConnection(true,'Connected');
+    const stored=localStorage.getItem(localSessionKey);
+    if(stored){const match=users.find(u=>String(u.username).toLowerCase()===stored.toLowerCase());if(match){currentUser=match;if(checkBlocked(match)){showLoader(false);return}buildKeypad();setPinMode('login');openView('pinView');}else{localStorage.removeItem(localSessionKey);openView('loginView')}}
+    else openView('loginView');
+    if(refreshTimer) clearInterval(refreshTimer);
+    refreshTimer=setInterval(silentRefresh,12000);
+  }catch(err){console.error(err);setConnection(false,'Connection issue');openView('loginView');$('loginError').textContent='Could not connect to the wallet database. Please try again.';}
+  finally{showLoader(false)}
+}
+$('loginForm').addEventListener('submit', async event=>{
+  event.preventDefault();if(isBusy)return;
+  const username=$('loginUsername').value.trim(),password=$('loginPassword').value;
+  $('loginError').textContent='';$('loginSubmit').disabled=true;showLoader(true,'Checking credentials…');
+  try{
+    await fetchDatabase();const user=users.find(u=>String(u.username||'').toLowerCase()===username.toLowerCase()&&String(u.password??'')===password);
+    if(!user){$('loginError').textContent='That username and password do not match.';$('loginPassword').value='';$('loginPassword').focus();return}
+    currentUser=user;localStorage.setItem(localSessionKey,user.username);if(checkBlocked(user))return;setPinMode('login');buildKeypad();openView('pinView');
+  }catch(err){console.error(err);$('loginError').textContent='Could not reach the wallet database. Check your connection and try again.';setConnection(false,'Connection issue')}
+  finally{$('loginSubmit').disabled=false;showLoader(false)}
+});
 
-    await fetch(API_URL,{
-        method:"PUT",
-        headers:{ "Content-Type":"application/json" },
-        body:JSON.stringify(db)
-    });
+function setPinMode(mode){pinMode=mode;enteredPin='';isVerifying=false;$('pinError').textContent='';$('pinDots').querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled'));
+  const cfg={login:['One last check','Enter your 4-digit wallet PIN to unlock your account.'],transfer:['Confirm transfer','Enter your wallet PIN to authorise this PCX transfer.'],deposit:['Confirm locker deposit','Enter your wallet PIN to move PCX into your locker.'],withdraw:['Confirm locker withdrawal','Enter your wallet PIN to move PCX back to your wallet.'],changeName:['Confirm profile update','Enter your wallet PIN to save your new display name.'],changePassword:['Change password','Enter your wallet PIN to continue.'],deleteAccount:['Verify account deletion','Enter your wallet PIN to continue with permanent deletion.']};
+  $('pinTitle').textContent=(cfg[mode]||cfg.login)[0];$('pinSubtitle').textContent=(cfg[mode]||cfg.login)[1];$('pinCancel').textContent=mode==='login'?'Sign out instead':'Cancel and go back';
+  if(currentUser && (mode==='transfer' || mode==='deposit' || mode==='withdraw')){$('pinSubtitle').textContent=`${mode==='transfer'?`Send ${money(pendingAction?.amount)} PCX to ${pendingAction?.receiverName||'the selected wallet'}`:mode==='deposit'?`Add ${money(pendingAction?.amount)} PCX to your locker instantly.`:`Withdraw ${money(pendingAction?.amount)} PCX instantly.`} Enter your wallet PIN to confirm.`}
+}
+function buildKeypad(){
+  const pad=$('pinKeypad');pad.innerHTML='';const digits=[1,2,3,4,5,6,7,8,9];
+  for(const n of digits){const b=document.createElement('button');b.type='button';b.className='key';b.textContent=n;b.setAttribute('aria-label','Digit '+n);b.onclick=()=>pinInput(String(n));pad.appendChild(b)}
+  const cancel=document.createElement('button');cancel.type='button';cancel.className='key utility';cancel.innerHTML='<i class="fa-solid fa-xmark"></i>';cancel.setAttribute('aria-label','Cancel');cancel.onclick=cancelPinFlow;pad.appendChild(cancel);
+  const zero=document.createElement('button');zero.type='button';zero.className='key';zero.textContent='0';zero.onclick=()=>pinInput('0');pad.appendChild(zero);
+  const back=document.createElement('button');back.type='button';back.className='key utility';back.innerHTML='<i class="fa-solid fa-delete-left"></i>';back.setAttribute('aria-label','Delete last digit');back.onclick=()=>{if(!isVerifying){enteredPin=enteredPin.slice(0,-1);updatePinDots()}};pad.appendChild(back);
+}
+function pinInput(digit){if(isVerifying||enteredPin.length>=4)return;enteredPin+=digit;updatePinDots();if(enteredPin.length===4)verifyPin()}
+function updatePinDots(){$('pinDots').querySelectorAll('.pin-dot').forEach((dot,i)=>dot.classList.toggle('filled',i<enteredPin.length))}
+async function verifyPin(){
+  if(isVerifying)return;isVerifying=true;$('pinError').textContent='';await wait(180);
+  const actual=users.find(u=>String(u.username||'').toLowerCase()===String(currentUser?.username||'').toLowerCase());
+  if(!actual||String(enteredPin)!==String(actual.pin??'')){
+    $('pinError').textContent='Incorrect PIN. Please try again.';enteredPin='';updatePinDots();isVerifying=false;
+    const card=document.querySelector('.pin-card');card.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:220});return;
+  }
+  currentUser=actual;
+  if(checkBlocked(actual)){isVerifying=false;return}
+  const mode=pinMode;isVerifying=false;enteredPin='';updatePinDots();
+  if(mode==='login'){renderWallet();openView('walletView');navigateTo('home');return}
+  if(mode==='transfer'){await startTransferProcessing();return}
+  if(mode==='deposit'||mode==='withdraw'){await executeLockerMove(mode);return}
+  if(mode==='changeName'){await executeNameChange();return}
+  if(mode==='changePassword'){openPasswordChangeModal();return}
+  if(mode==='deleteAccount'){openConfirm('Delete this account permanently?','Your wallet profile will be removed from the connected database. This action cannot be undone.',()=>deleteAccountNow(),'Delete forever','danger');return}
+}
+function cancelPinFlow(){enteredPin='';pendingAction=null;isVerifying=false;if(pinMode==='login'){logout(true);return}renderWallet();openView('walletView');navigateTo(pinMode==='deposit'||pinMode==='withdraw'?'locker':pinMode==='transfer'?'send':'profile')}
+function checkBlocked(user){if(user?.isBlocked){$('blockedScreen').classList.add('visible');return true}$('blockedScreen').classList.remove('visible');return false}
+function renderWallet(){if(!currentUser)return;currentUser=normalizeUser(currentUser);const name=canonicalName(currentUser.displayName)||currentUser.username||'there';
+  $('helloName').textContent=name;$('topAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('homePlan').textContent=(PLAN_NAMES[currentPlan()]||'Basic').toUpperCase()+' PLAN';$('homePlanStat').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('homeBalance').textContent=money(currentUser.balance);$('homeLocker').textContent=money(currentUser.lockerBalance)+' PCX';$('homeWalletId').textContent=currentUser.walletId||'-----';$('sendAvailable').textContent=money(currentUser.balance)+' PCX';$('sendPlanTag').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('transferLimitText').textContent=`Maximum wallet balance is ${WALLET_LIMIT.toLocaleString()} PCX per account.`;
+  $('homePlanHint').textContent='';$('profileAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('profileName').textContent=name;$('profileUsername').textContent='@'+(currentUser.username||'')+' · Wallet '+(currentUser.walletId||'-----');$('profilePlanBadge').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('profileWalletId').textContent=currentUser.walletId||'-----';$('profileUserValue').textContent='@'+(currentUser.username||'');$('profileAccountStatus').textContent=currentUser.isBlocked?'Blocked':'Active';$('profileAccountStatus').style.color=currentUser.isBlocked?'var(--red)':'var(--mint)';$('lockerBalance').textContent=money(currentUser.lockerBalance)+' PCX';$('depositHint').textContent='Available wallet: '+money(currentUser.balance)+' PCX';$('withdrawHint').textContent='Locker available: '+money(currentUser.lockerBalance)+' PCX';
+  const lock=num(currentUser.lockerBalance),pct=Math.max(0,Math.min(100,lock/LOCKER_LIMIT*100));$('lockerTrack').style.width=pct+'%';$('lockerUsed').textContent=money(lock)+' PCX used';$('lockerLeft').textContent=money(Math.max(0,LOCKER_LIMIT-lock))+' PCX left';renderHomeActivity();renderFullActivity();
+}
+function goHomeAndToast(message){renderWallet();openView('walletView');navigateTo('home');if(message)toast(message)}
+function activityItems(){try{const value=JSON.parse(localStorage.getItem(localActivityKey(currentUser?.username))||'[]');return Array.isArray(value)?value:[]}catch{return []}}
+function saveLocalActivity(item){if(!currentUser)return;const data=activityItems();data.unshift({id:Date.now()+'-'+Math.random().toString(16).slice(2),at:new Date().toISOString(),...item});localStorage.setItem(localActivityKey(currentUser.username),JSON.stringify(data.slice(0,100)));}
+function renderActivity(targetId,limit){const holder=$(targetId);if(!holder)return;const list=activityItems().slice(0,limit||100);holder.innerHTML='';if(!list.length){holder.innerHTML='<div class="empty-state"><i class="fa-solid fa-wand-magic-sparkles"></i><strong>No activity yet</strong><span>Your sends and locker moves will appear here on this device.</span></div>';return}
+  for(const item of list){const row=document.createElement('div');row.className='activity-row';const type=String(item.type||'Activity');const incoming=/received|deposit|withdrawal complete|added to locker/i.test(type)||item.direction==='in';const negative=/sent/i.test(type)||item.direction==='out';const icon=/locker|deposit|withdraw/i.test(type)?'fa-vault':negative?'fa-paper-plane':'fa-arrow-down-left';const amt=item.amount===undefined?'':`${negative?'−':incoming?'+':''}${money(item.amount)} PCX`;const date=item.at?new Date(item.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Just now';row.innerHTML=`<div class="activity-icon ${incoming?'in':negative?'out':''}"><i class="fa-solid ${icon}"></i></div><div class="activity-copy"><strong>${escapeHTML(type)}</strong><small>${escapeHTML(item.detail||'PCX wallet activity')} · ${escapeHTML(date)}</small></div><div class="activity-amount ${incoming?'amount-positive':negative?'amount-negative':''}">${escapeHTML(amt)}</div>`;holder.appendChild(row)}
+}
+function renderHomeActivity(){renderActivity('homeActivity',4)}function renderFullActivity(){renderActivity('fullActivity',100)}
+function openClearActivity(){openConfirm('Clear local activity?','This only removes activity stored in this browser. It does not change wallet balances.',()=>{localStorage.removeItem(localActivityKey(currentUser.username));renderWallet();toast('Local activity cleared')},'Clear history','danger')}
+function confirmClearActivity(){openClearActivity()}
+function copyWalletId(){if(!currentUser?.walletId)return;const val=String(currentUser.walletId);if(navigator.clipboard?.writeText){navigator.clipboard.writeText(val).then(()=>toast('Wallet ID copied')).catch(()=>fallbackCopy(val))}else fallbackCopy(val)}
+function fallbackCopy(text){const el=document.createElement('textarea');el.value=text;el.style.position='fixed';el.style.opacity='0';document.body.appendChild(el);el.select();try{document.execCommand('copy');toast('Wallet ID copied')}catch{toast('Wallet ID: '+text)}el.remove()}
+
+$('transferReceiverId').addEventListener('input',()=>{const value=$('transferReceiverId').value.replace(/\D/g,'').slice(0,5);$('transferReceiverId').value=value;updateRecipientPreview()});
+function updateRecipientPreview(){const id=$('transferReceiverId').value;const target=users.find(u=>String(u.walletId)===id);const area=$('recipientPreview');if(id.length===5&&target){$('recipientAvatar').textContent=(target.displayName||target.username||'?').charAt(0).toUpperCase();$('recipientName').textContent=target.displayName||target.username||'PCX user';$('recipientMeta').textContent='Wallet ID · '+target.walletId;area.classList.remove('hidden')}else area.classList.add('hidden')}
+$('transferForm').addEventListener('submit',event=>{event.preventDefault();prepareTransfer($('transferReceiverId').value.trim(),$('transferAmount').value)});
+function prepareTransfer(receiverId,amountValue){
+  $('transferError').textContent='';const amount=Number(amountValue);if(!/^\d{5}$/.test(receiverId)){ $('transferError').textContent='Enter a valid 5-digit receiver wallet ID.';return }
+  if(!Number.isFinite(amount)||amount<=0){$('transferError').textContent='Enter an amount greater than zero.';return}
+  const sender=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());const receiver=users.find(u=>String(u.walletId)===receiverId);
+  if(!sender){$('transferError').textContent='Could not find your wallet. Please sign in again.';return}
+  if(sender.isBlocked){checkBlocked(sender);return}
+  if(!receiver){$('transferError').textContent='No wallet was found with that ID.';return}
+  if(receiver.isBlocked){$('transferError').textContent='This user cannot currently receive PCX.';return}
+  if(String(sender.walletId)===String(receiver.walletId)){$('transferError').textContent='You cannot send PCX to your own wallet.';return}
+  if(num(sender.balance)<amount){$('transferError').textContent='Your available wallet balance is too low.';return}
+  if(num(receiver.balance)+amount>WALLET_LIMIT){$('transferError').textContent=`This transfer would exceed the receiver's ${WALLET_LIMIT.toLocaleString()} PCX wallet limit.`;return}
+  pendingAction={type:'transfer',receiverId,amount,receiverName:receiver.displayName||receiver.username||'PCX user'};setPinMode('transfer');buildKeypad();openView('pinView');
+}
+async function startTransferProcessing(){
+  if(!pendingAction||pendingAction.type!=='transfer')return;
+  const action={...pendingAction};const timing=planCopy(normalizePlan(currentUser?.plan));
+  const mark=$('processingMark');
+  mark.classList.remove('is-complete');
+  mark.innerHTML='<span class="transfer-spinner" aria-hidden="true"></span>';
+  $('processingTitle').textContent='Sending PCX';
+  $('processingAmount').textContent=money(action.amount)+' PCX';
+  $('processingDestination').textContent='To '+action.receiverName;
+  openView('processingView');
+  try{
+    await wait(timing.delay);
+    await commitTransfer(action);
+    mark.classList.add('is-complete');
+    mark.innerHTML='<span class="success-check" aria-label="Completed">✓</span>';
+    $('processingTitle').textContent='Transfer completed';
+    $('processingAmount').textContent=money(action.amount)+' PCX';
+    $('processingDestination').textContent='Sent to '+action.receiverName;
+    pendingAction=null;
+    renderWallet();
+    await wait(1000);
+    openView('walletView');navigateTo('home');
+  }catch(err){
+    console.error(err);pendingAction=null;
+    try{await fetchDatabase();setUserFromDB(localStorage.getItem(localSessionKey));if(currentUser)renderWallet()}catch{}
+    openView('walletView');navigateTo('send');toast(err.message||'Transfer could not be completed','error');
+  }
+}
+async function commitTransfer(action){
+  // Read fresh balances immediately before writing; the available Worker API exposes whole-database GET/PUT, not an atomic transfer endpoint.
+  await fetchDatabase();const sender=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());const receiver=users.find(u=>String(u.walletId)===String(action.receiverId));
+  if(!sender||!receiver)throw new Error('A wallet could not be found. No balance was changed.');if(sender.isBlocked||receiver.isBlocked)throw new Error('A wallet is blocked. The transfer was stopped.');if(sender.walletId===receiver.walletId)throw new Error('You cannot transfer to yourself.');
+  const amount=Number(action.amount);if(!Number.isFinite(amount)||amount<=0)throw new Error('Invalid transfer amount.');if(num(sender.balance)<amount)throw new Error('Your latest balance is no longer sufficient.');if(num(receiver.balance)+amount>WALLET_LIMIT)throw new Error('The receiver would exceed the wallet balance limit.');
+  sender.balance=Math.round((num(sender.balance)-amount)*100)/100;receiver.balance=Math.round((num(receiver.balance)+amount)*100)/100;users=users.map(normalizeUser);db.users=users;
+  try{await saveDatabase()}catch(err){throw new Error('Could not save the transfer to the database. Please refresh balances before trying again. '+(err.message||''))}
+  currentUser=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());saveLocalActivity({type:'Sent PCX',amount,direction:'out',detail:`To ${action.receiverName} · ${action.receiverId}`});
 }
 
-
-/* =========================
-   AUTO REFRESH
-========================= */
-
-async function autoRefreshUser(){
-    const active = localStorage.getItem("activeUser");
-    if(!active) return;
-
-    try{
-        const res = await fetch(API_URL);
-        const db = await res.json();
-        users = db.users;
-
-        const updatedUser = users.find(x => x.username === active);
-        if(!updatedUser) {
-            executeLogout();
-            return;
-        }
-
-        checkBlockedStatus(updatedUser);
-
-        document.getElementById('balance').innerText =
-        `${updatedUser.balance} ${updatedUser.Type}`;
-
-        document.getElementById('userPlan').innerText =
-        updatedUser.plan;
-        
-        document.getElementById('displayUser').innerText = updatedUser.displayName;
-
-    }catch(err){
-        console.log("Auto refresh failed:", err);
-    }
+$('depositForm').addEventListener('submit',event=>{event.preventDefault();prepareLockerMove('deposit',$('depositAmount').value)});
+$('withdrawForm').addEventListener('submit',event=>{event.preventDefault();prepareLockerMove('withdraw',$('withdrawAmount').value)});
+function prepareLockerMove(mode,value){const amount=Number(value);const err=$(mode==='deposit'?'depositError':'withdrawError');err.textContent='';if(!Number.isFinite(amount)||amount<=0){err.textContent='Enter an amount greater than zero.';return}
+  if(mode==='deposit'&&amount>num(currentUser.balance)){err.textContent='Your wallet balance is too low for that deposit.';return}
+  if(mode==='deposit'&&num(currentUser.lockerBalance)+amount>LOCKER_LIMIT){err.textContent='This would exceed the 100,000 PCX locker capacity.';return}
+  if(mode==='withdraw'&&amount>num(currentUser.lockerBalance)){err.textContent='Your locker does not have enough PCX.';return}
+  if(mode==='withdraw'&&num(currentUser.balance)+amount>WALLET_LIMIT){err.textContent=`This would exceed the wallet's ${WALLET_LIMIT.toLocaleString()} PCX cap.`;return}
+  pendingAction={type:mode,amount};setPinMode(mode);buildKeypad();openView('pinView');
+}
+async function executeLockerMove(mode){const action={...pendingAction};if(!action||!['deposit','withdraw'].includes(mode))return;showLoader(true,mode==='deposit'?'Moving PCX into your locker…':'Moving PCX to your wallet…');
+  try{
+    await fetchDatabase();const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!user)throw new Error('Your wallet could not be found.');if(user.isBlocked)throw new Error('Your account is blocked.');const amount=Number(action.amount);
+    if(mode==='deposit'){if(amount>num(user.balance))throw new Error('Your latest wallet balance is too low.');if(num(user.lockerBalance)+amount>LOCKER_LIMIT)throw new Error('Locker capacity exceeded.');user.balance=Math.round((num(user.balance)-amount)*100)/100;user.lockerBalance=Math.round((num(user.lockerBalance)+amount)*100)/100;}
+    else{if(amount>num(user.lockerBalance))throw new Error('Your latest locker balance is too low.');if(num(user.balance)+amount>WALLET_LIMIT)throw new Error('Wallet capacity exceeded.');user.lockerBalance=Math.round((num(user.lockerBalance)-amount)*100)/100;user.balance=Math.round((num(user.balance)+amount)*100)/100;}
+    db.users=users;await saveDatabase();currentUser=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());saveLocalActivity({type:mode==='deposit'?'Added to locker':'Withdrew from locker',amount,direction:mode==='deposit'?'out':'in',detail:mode==='deposit'?'Wallet → locker':'Locker → wallet'});pendingAction=null;$('depositAmount').value='';$('withdrawAmount').value='';showLoader(false);renderWallet();openView('walletView');navigateTo('locker');toast(mode==='deposit'?'PCX added to your locker instantly':'PCX withdrawn instantly');
+  }catch(err){console.error(err);showLoader(false);pendingAction=null;try{await fetchDatabase();setUserFromDB(localStorage.getItem(localSessionKey));if(currentUser)renderWallet()}catch{}openView('walletView');navigateTo('locker');toast(err.message||'Locker move failed','error')}
 }
 
-
-/* =========================
-   INIT
-========================= */
-
-function init(){
-    const active = localStorage.getItem("activeUser");
-
-    if(active){
-        setupPin("login");
-    }else{
-        navigate('loginScreen');
-    }
-
-    setInterval(autoRefreshUser, 4000);
+function beginNameChange(){const newName=canonicalName($('newDisplayName').value);if(newName.length<2){toast('Display name must be at least 2 characters','error');return}pendingAction={type:'changeName',newName};setPinMode('changeName');buildKeypad();openView('pinView')}
+async function executeNameChange(){if(!pendingAction?.newName)return;showLoader(true,'Saving your profile…');try{await fetchDatabase();const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!user)throw new Error('Account not found.');user.displayName=pendingAction.newName;db.users=users;await saveDatabase();currentUser=user;pendingAction=null;$('newDisplayName').value='';showLoader(false);renderWallet();openView('walletView');navigateTo('profile');toast('Display name updated')}catch(err){showLoader(false);pendingAction=null;openView('walletView');navigateTo('profile');toast(err.message||'Could not update name','error')}}
+function beginPasswordChange(){pendingAction={type:'changePassword'};setPinMode('changePassword');buildKeypad();openView('pinView')}
+function openPasswordChangeModal(){
+  $('changePasswordForm').reset();$('changePasswordError').textContent='';
+  openView('walletView');navigateTo('profile');$('changePasswordModal').classList.add('open');
+  setTimeout(()=>$('currentPasswordInput').focus(),80);
 }
-
-
-/* =========================
-   NAVIGATION & UI
-========================= */
-
-function navigate(screenId){
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-
-    setTimeout(() => {
-        document.getElementById(screenId).classList.add('active');
-    }, 50);
+function closePasswordChangeModal(){
+  $('changePasswordModal').classList.remove('open');$('changePasswordForm').reset();$('changePasswordError').textContent='';
+  if(pendingAction?.type==='changePassword')pendingAction=null;
 }
-
-function toggleLoader(show){
-    const l = document.getElementById('loader');
-    if(show) l.classList.add('visible');
-    else l.classList.remove('visible');
-}
-
-function shakeUI(elementId) {
-    const el = document.getElementById(elementId);
-    el.style.transform = "translateY(0) translateX(10px)";
-    setTimeout(() => el.style.transform = "translateY(0) translateX(-10px)", 100);
-    setTimeout(() => el.style.transform = "translateY(0) translateX(0)", 200);
-}
-
-
-/* =========================
-   LOGIN
-========================= */
-
-function attemptLogin(){
-    const u = document.getElementById('username').value;
-    const p = document.getElementById('password').value;
-    const err = document.getElementById('error-msg');
-
-    toggleLoader(true);
-    err.innerText = "";
-
-    setTimeout(() => {
-        const user = users.find(x =>
-        x.username.toLowerCase() === u.toLowerCase() &&
-        x.password === p);
-
-        if(user){
-            localStorage.setItem("activeUser", user.username);
-            toggleLoader(false);
-            setupPin("login");
-        }else{
-            toggleLoader(false);
-            err.innerText = "Invalid credentials";
-            shakeUI('loginScreen');
-        }
-    },700);
-}
-
-
-/* =========================
-   DASHBOARD
-========================= */
-
-function loadDashboard(user){
-    if(checkBlockedStatus(user)) {
-        navigate('dashScreen'); 
-        return;
-    }
-    
-    document.getElementById('displayUser').innerText = user.displayName;
-    document.getElementById('balance').innerText = `${user.balance} ${user.Type}`;
-    document.getElementById('cardHolder').innerText = user.walletId;
-    document.getElementById('userPlan').innerText = user.plan;
-
-    navigate('dashScreen');
-}
-
-
-/* =========================
-   SETTINGS & ACCOUNT LOGIC
-========================= */
-
-function openSettingsModal() {
-    document.getElementById('newDisplayName').value = "";
-    document.getElementById('settingsModal').classList.add('open');
-}
-
-function closeSettingsModal() {
-    document.getElementById('settingsModal').classList.remove('open');
-}
-
-function initiateNameChange() {
-    const newName = document.getElementById('newDisplayName').value.trim();
-    if(newName.length < 2) {
-        showToast("Name too short", true);
-        return;
-    }
-    closeSettingsModal();
-    pendingSettingsAction = { type: 'changeName', payload: newName };
-    setupPin('changeName');
-}
-
-function openDeletePasswordModal() {
-    closeSettingsModal();
-    document.getElementById('deleteAuthPassword').value = "";
-    document.getElementById('deletePasswordModal').classList.add('open');
-}
-
-function closeDeletePasswordModal() {
-    document.getElementById('deletePasswordModal').classList.remove('open');
-}
-
-function verifyPasswordForDelete() {
-    const pwd = document.getElementById('deleteAuthPassword').value;
-    const activeUsername = localStorage.getItem("activeUser");
-    const user = users.find(x => x.username === activeUsername);
-
-    if(user.password === pwd) {
-        closeDeletePasswordModal();
-        pendingSettingsAction = { type: 'deleteAccount' };
-        setupPin('deleteAccount');
-    } else {
-        showToast("Incorrect Password", true);
-        shakeUI('deletePasswordModal');
-    }
-}
-
-function cancelDelete() {
-    document.getElementById('deleteWarningModal').classList.remove('open');
-    const activeUsername = localStorage.getItem("activeUser");
-    resetPinAndLoad(users.find(x => x.username === activeUsername));
-}
-
-async function finalizeAccountDeletion() {
-    document.getElementById('deleteWarningModal').classList.remove('open');
-    toggleLoader(true);
-    const activeUsername = localStorage.getItem("activeUser");
-    
-    users = users.filter(u => u.username !== activeUsername);
-    await saveDatabase();
-    
-    showToast("Account Deleted", false);
-    
-    // Automatically logs out and reloads the screen back to login
-    setTimeout(() => {
-        executeLogout();
-    }, 1000);
-}
-
-
-/* =========================
-   QR SCAN & PAY LOGIC
-========================= */
-
-function openQRModal() {
-    document.getElementById('qrModal').classList.add('open');
-    switchQRTab('send');
-}
-
-function closeQRModal() {
-    document.getElementById('qrModal').classList.remove('open');
-    if(html5QrcodeScanner) {
-        html5QrcodeScanner.stop().catch(err => console.log(err));
-        html5QrcodeScanner = null;
-    }
-}
-
-function switchQRTab(tab) {
-    document.getElementById('tabSend').classList.remove('active');
-    document.getElementById('tabReceive').classList.remove('active');
-    document.getElementById('qrSendContent').style.display = 'none';
-    document.getElementById('qrReceiveContent').style.display = 'none';
-    
-    if(tab === 'send') {
-        document.getElementById('tabSend').classList.add('active');
-        document.getElementById('qrSendContent').style.display = 'block';
-        document.getElementById('qrAmountSection').style.display = 'none';
-        document.getElementById('qr-reader').style.display = 'block';
-        startQRScanner();
-    } else {
-        document.getElementById('tabReceive').classList.add('active');
-        document.getElementById('qrReceiveContent').style.display = 'block';
-        if(html5QrcodeScanner) {
-            html5QrcodeScanner.stop().catch(e => console.log(e));
-            html5QrcodeScanner = null;
-        }
-        generateMyQR();
-    }
-}
-
-function startQRScanner() {
-    if(html5QrcodeScanner) return;
-    
-    html5QrcodeScanner = new Html5Qrcode("qr-reader");
-    const config = { 
-        fps: 10, 
-        qrbox: { width: 250, height: 250 }, 
-        aspectRatio: 1.0, 
-        disableFlip: false 
-    };
-
-    html5QrcodeScanner.start(
-        { facingMode: "environment" },
-        config,
-        (decodedText) => {
-            let scanData = decodedText.trim();
-            
-            if (scanData.startsWith("Pcx_WalletID:")) {
-                let id = scanData.split(":")[1];
-                if (/^\d{5}$/.test(id)) {
-                    html5QrcodeScanner.stop().then(() => {
-                        html5QrcodeScanner = null;
-                        scannedReceiverId = id;
-                        
-                        const receiver = users.find(x => x.walletId === scannedReceiverId);
-                        const recName = receiver ? receiver.displayName : "Unknown";
-
-                        document.getElementById('qr-reader').style.display = 'none';
-                        document.getElementById('qrAmountSection').style.display = 'block';
-                        document.getElementById('qrScannedId').innerHTML = `<i class="fas fa-check-circle"></i> Paying to: ${recName} (${scannedReceiverId})`;
-                        document.getElementById('qrTransferAmount').value = "";
-                        document.getElementById('qr-transfer-error').innerText = "";
-                    });
-                    return;
-                }
-            }
-            showToast("Invalid QR Code (Not a PCX Format)", true);
-        },
-        (errorMessage) => {
-            // Ignore ongoing parsing errors
-        }
-    ).catch(err => {
-        console.log("Scanner start failed:", err);
-        document.getElementById('qr-reader').innerHTML = "<p style='padding:20px; text-align:center;'>Camera access denied or unavailable.</p>";
-    });
-}
-
-function generateMyQR() {
-    const activeUsername = localStorage.getItem("activeUser");
-    const user = users.find(x => x.username === activeUsername);
-    if(!user) return;
-    
-    document.getElementById('myWalletIdDisplay').innerText = user.walletId;
-    const container = document.getElementById("qrcode-container");
-    container.innerHTML = "";
-    
-    qrcodeObj = new QRCode(container, {
-        text: "Pcx_WalletID:" + user.walletId,
-        width: 160,
-        height: 160,
-        colorDark : "#0b0f19",
-        colorLight : "#ffffff",
-        correctLevel : QRCode.CorrectLevel.H
-    });
-}
-
-function proceedQRTransfer() {
-    const amount = parseFloat(document.getElementById('qrTransferAmount').value);
-    const errBox = document.getElementById('qr-transfer-error');
-    errBox.innerText = "";
-    
-    if (isNaN(amount) || amount <= 0) {
-        errBox.innerText = "Invalid amount";
-        shakeUI('qrModal');
-        return;
-    }
-
-    const activeUsername = localStorage.getItem("activeUser");
-    const sender = users.find(x => x.username === activeUsername);
-    const receiver = users.find(x => x.walletId === scannedReceiverId);
-
-    if (sender.isBlocked) {
-        errBox.innerText = "Action Denied: Your account is blocked.";
-        shakeUI('qrModal'); return;
-    }
-    if (!receiver) {
-        errBox.innerText = "Receiver not found";
-        shakeUI('qrModal'); return;
-    }
-    if (receiver.isBlocked) {
-        errBox.innerText = "This user is not accepting Credits Right now.";
-        shakeUI('qrModal'); return;
-    }
-    if (sender.walletId === receiver.walletId) {
-        errBox.innerText = "Cannot send to yourself";
-        shakeUI('qrModal'); return;
-    }
-    if (sender.balance < amount) {
-        errBox.innerText = "Insufficient balance";
-        shakeUI('qrModal'); return;
-    }
-
-    pendingTransfer = {
-        receiverId: scannedReceiverId,
-        amount: amount,
-        receiverName: receiver.displayName
-    };
-    
-    closeQRModal();
-    setupPin("transfer");
-}
-
-
-/* =========================
-   MANUAL TRANSFER
-========================= */
-
-function openTransferModal(){
-    document.getElementById('transferReceiverId').value = "";
-    document.getElementById('transferAmount').value = "";
-    document.getElementById('transfer-error').innerText = "";
-    document.getElementById('transferModal').classList.add('open');
-}
-
-function closeTransferModal(){
-    document.getElementById('transferModal').classList.remove('open');
-}
-
-function initiateTransfer(){
-    const receiverId = document.getElementById('transferReceiverId').value.trim();
-    const amount = parseFloat(document.getElementById('transferAmount').value);
-    const errBox = document.getElementById('transfer-error');
-    
-    errBox.innerText = "";
-
-    if (!/^\d{5}$/.test(receiverId)) {
-        errBox.innerText = "Wallet ID must be 5 digits";
-        shakeUI('transferModal');
-        return;
-    }
-
-    if (isNaN(amount) || amount <= 0) {
-        errBox.innerText = "Invalid amount";
-        shakeUI('transferModal');
-        return;
-    }
-
-    const activeUsername = localStorage.getItem("activeUser");
-    const sender = users.find(x => x.username === activeUsername);
-    const receiver = users.find(x => x.walletId === receiverId);
-
-    if (sender.isBlocked) {
-        errBox.innerText = "Action Denied: Your account is blocked.";
-        shakeUI('transferModal'); return;
-    }
-    if (!receiver) {
-        errBox.innerText = "Receiver not found";
-        shakeUI('transferModal'); return;
-    }
-    if (receiver.isBlocked) {
-        errBox.innerText = "This user is not accepting Credits Right now.";
-        shakeUI('transferModal'); return;
-    }
-    if (sender.walletId === receiver.walletId) {
-        errBox.innerText = "Cannot send to yourself";
-        shakeUI('transferModal'); return;
-    }
-    if (sender.balance < amount) {
-        errBox.innerText = "Insufficient balance";
-        shakeUI('transferModal'); return;
-    }
-
-    pendingTransfer = {
-        receiverId,
-        amount,
-        receiverName: receiver.displayName
-    };
-
-    closeTransferModal();
-    setupPin("transfer");
-}
-
-async function executeTransfer(){
-    const activeUsername = localStorage.getItem("activeUser");
-    const sender = users.find(x => x.username === activeUsername);
-    const receiver = users.find(x => x.walletId === pendingTransfer.receiverId);
-
-    if (sender.isBlocked || receiver.isBlocked || sender.balance < pendingTransfer.amount) {
-        showToast("Transfer failed due to security restrictions.", true);
-        resetPinAndLoad(sender);
-        return;
-    }
-
-    sender.balance -= pendingTransfer.amount;
-    receiver.balance += pendingTransfer.amount;
-
-    await saveDatabase();
-    resetPinAndLoad(sender);
-}
-
-function resetPinAndLoad(user){
-    toggleLoader(false);
-    pendingTransfer = null;
-    pendingSettingsAction = null;
-    enteredPin = "";
-    isVerifying = false;
-    loadDashboard(user);
-}
-
-
-/* =========================
-   PIN SYSTEM & KEYPAD
-========================= */
-
-function setupPin(mode){
-    currentPinMode = mode;
-    isVerifying = false;
-    navigate('pinScreen');
-
-    if (mode === "transfer") {
-        document.getElementById("pinTitle").innerText = "Confirm Transfer";
-        document.getElementById("pinSubtitle").innerText = `Send ${pendingTransfer.amount} PCX to ${pendingTransfer.receiverName}`;
-    } else if (mode === "changeName") {
-        document.getElementById("pinTitle").innerText = "Confirm Changes";
-        document.getElementById("pinSubtitle").innerText = `Enter PIN to change name`;
-    } else if (mode === "deleteAccount") {
-        document.getElementById("pinTitle").innerText = "Delete Account";
-        document.getElementById("pinSubtitle").innerText = `Enter PIN to finalize deletion`;
-    } else {
-        document.getElementById("pinTitle").innerText = "Security Check";
-        document.getElementById("pinSubtitle").innerText = "Enter your 4-digit PIN";
-    }
-
-    enteredPin = "";
-    updateDots();
-    scrambleKeypad();
-}
-
-function scrambleKeypad(){
-    const nums = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
-    const pad = document.getElementById('keypad');
-    pad.innerHTML = "";
-
-    nums.forEach(n => {
-        const btn = document.createElement('div');
-        btn.className = 'key';
-        btn.innerText = n;
-        btn.onclick = () => handlePinInput(n);
-        pad.appendChild(btn);
-    });
-
-    const actionBtn = document.createElement('div');
-    actionBtn.className = 'key key-action';
-    
-    if (currentPinMode !== "login") {
-        actionBtn.innerHTML = '<i class="fas fa-times"></i>'; 
-        actionBtn.onclick = () => {
-            pendingTransfer = null;
-            pendingSettingsAction = null;
-            isVerifying = false;
-            enteredPin = "";
-            const uName = localStorage.getItem("activeUser");
-            loadDashboard(users.find(x => x.username === uName));
-        };
-    } else {
-        actionBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>'; 
-        actionBtn.onclick = () => askLogout();
-    }
-    pad.appendChild(actionBtn);
-
-    const zeroBtn = document.createElement('div');
-    zeroBtn.className = 'key';
-    zeroBtn.innerText = '0';
-    zeroBtn.onclick = () => handlePinInput(0);
-    pad.appendChild(zeroBtn);
-
-    const backBtn = document.createElement('div');
-    backBtn.className = 'key';
-    backBtn.innerHTML = '<i class="fas fa-backspace" style="color:var(--text-muted)"></i>';
-    backBtn.onclick = () => {
-        if(enteredPin.length > 0 && !isVerifying) {
-            enteredPin = enteredPin.slice(0, -1);
-            updateDots();
-        }
-    };
-    pad.appendChild(backBtn);
-}
-
-function handlePinInput(n){
-    if(enteredPin.length < 4 && !isVerifying){
-        enteredPin += n;
-        updateDots();
-
-        if(enteredPin.length === 4){
-            verifyPin();
-        }
-    }
-}
-
-function updateDots(){
-    const dots = document.querySelectorAll('.dot');
-    dots.forEach((d, i) => {
-        if(i < enteredPin.length) d.classList.add('active');
-        else d.classList.remove('active');
-    });
-}
-
-function verifyPin(){
-    if (isVerifying) return;
-
-    isVerifying = true;
-    toggleLoader(true);
-
-    const uName = localStorage.getItem("activeUser");
-    const user = users.find(x => x.username === uName);
-
-    setTimeout(async () => {
-        if(user && enteredPin === user.pin){
-            if (currentPinMode === "transfer") {
-                await executeTransfer();
-            } else if (currentPinMode === "changeName") {
-                user.displayName = pendingSettingsAction.payload;
-                await saveDatabase();
-                showToast("Name Updated Successfully");
-                resetPinAndLoad(user);
-            } else if (currentPinMode === "deleteAccount") {
-                toggleLoader(false);
-                document.getElementById('deleteWarningModal').classList.add('open');
-            } else {
-                toggleLoader(false);
-                isVerifying = false;
-                loadDashboard(user);
-            }
-        } else {
-            toggleLoader(false);
-            showToast("Incorrect PIN", true);
-            shakeUI('pinScreen');
-
-            enteredPin = "";
-            isVerifying = false;
-            updateDots();
-            scrambleKeypad();
-        }
-    }, 500);
-}
-
-
-/* =========================
-   LOGOUT
-========================= */
-
-function askLogout(){
-    document.getElementById('confirmModal').classList.add('open');
-}
-
-function hideLogoutConfirm(){
-    document.getElementById('confirmModal').classList.remove('open');
-}
-
-function executeLogout(){
-    hideLogoutConfirm();
-    document.getElementById('blockedOverlay').classList.remove('visible');
-    toggleLoader(true);
-
-    setTimeout(() => {
-        localStorage.clear();
-        location.reload();
-    }, 600);
-}
-
-/* =========================
-   START APP
-========================= */
-
-loadUsers();
-
+$('changePasswordForm').addEventListener('submit',async event=>{
+  event.preventDefault();if($('saveNewPasswordBtn').disabled)return;
+  const currentPassword=$('currentPasswordInput').value;
+  const newPassword=$('newPasswordInput').value;
+  const confirmPassword=$('confirmNewPasswordInput').value;
+  const error=$('changePasswordError');error.textContent='';
+  if(newPassword.length<8){error.textContent='Use at least 8 characters for your new password.';return}
+  if(newPassword===currentPassword){error.textContent='Choose a password different from your current one.';return}
+  if(newPassword!==confirmPassword){error.textContent='The new passwords do not match.';$('confirmNewPasswordInput').focus();return}
+  $('saveNewPasswordBtn').disabled=true;showLoader(true,'Updating password…');
+  try{
+    const username=currentUser?.username;
+    if(!username)throw new Error('Please sign in again.');
+    await fetchDatabase();
+    const user=users.find(u=>String(u.username||'').toLowerCase()===String(username).toLowerCase());
+    if(!user)throw new Error('Account not found. Please sign in again.');
+    if(String(user.password??'')!==currentPassword){showLoader(false);error.textContent='Your current password is incorrect.';$('currentPasswordInput').value='';$('currentPasswordInput').focus();return}
+    user.password=newPassword;db.users=users;await saveDatabase();currentUser=user;
+    showLoader(false);closePasswordChangeModal();renderWallet();openView('walletView');navigateTo('profile');toast('Password updated');
+  }catch(err){showLoader(false);error.textContent=err.message||'Could not update your password.'}
+  finally{$('saveNewPasswordBtn').disabled=false}
+});
+
+function askLogout(){openConfirm('Sign out of Playcentrix Wallet?','You will need your account credentials again to sign in on this device.',()=>logout(false),'Sign out','primary')}
+function logout(silent=false){$('blockedScreen').classList.remove('visible');localStorage.removeItem(localSessionKey);currentUser=null;pendingAction=null;enteredPin='';isVerifying=false;openView('loginView');$('loginPassword').value='';$('loginError').textContent='';if(!silent)toast('You have been signed out');}
+function openDeleteModal(){$('deleteAuthPassword').value='';$('deleteAuthError').textContent='';$('deleteAuthModal').classList.add('open');setTimeout(()=>$('deleteAuthPassword').focus(),80)}
+function closeDeleteAuth(){$('deleteAuthModal').classList.remove('open');$('deleteAuthPassword').value='';$('deleteAuthError').textContent=''}
+function verifyDeletePassword(){const supplied=$('deleteAuthPassword').value;const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser?.username||'').toLowerCase());if(!user||String(user.password??'')!==supplied){$('deleteAuthError').textContent='The password is incorrect.';$('deleteAuthPassword').value='';$('deleteAuthPassword').focus();return}closeDeleteAuth();pendingAction={type:'deleteAccount'};setPinMode('deleteAccount');buildKeypad();openView('pinView')}
+async function deleteAccountNow(){showLoader(true,'Deleting wallet account…');try{await fetchDatabase();const username=String(currentUser.username).toLowerCase();users=users.filter(u=>String(u.username).toLowerCase()!==username);db.users=users;await saveDatabase();localStorage.removeItem(localActivityKey(currentUser.username));showLoader(false);logout(true);toast('Account deleted')}catch(err){showLoader(false);toast(err.message||'Account deletion failed','error');}}
+
+function openConfirm(title,message,action,label='Confirm',kind='primary'){$('confirmTitle').textContent=title;$('confirmText').textContent=message;$('confirmActionBtn').textContent=label;$('confirmActionBtn').className=(kind==='danger'?'danger-btn':'primary-btn');confirmAction=action;$('confirmModal').classList.add('open')}
+function closeConfirm(){$('confirmModal').classList.remove('open');confirmAction=null}
+function runConfirmAction(){const action=confirmAction;closeConfirm();if(typeof action==='function')action()}
+function refreshNow(){if(isBusy)return;showLoader(true,'Refreshing wallet balances…');reloadDatabase().then(()=>{showLoader(false);toast('Wallet refreshed')}).catch(err=>{showLoader(false);toast(err.message||'Refresh failed','error')})}
+async function silentRefresh(){if(!currentUser||isBusy||isVerifying||$('processingView').classList.contains('active')||$('pinView').classList.contains('active'))return;try{const oldBalance=num(currentUser.balance),oldLocker=num(currentUser.lockerBalance);await fetchDatabase();const uname=currentUser.username;currentUser=users.find(u=>String(u.username).toLowerCase()===String(uname).toLowerCase());if(!currentUser){logout(true);toast('This wallet no longer exists','error');return}if(checkBlocked(currentUser))return;renderWallet();if(oldBalance!==num(currentUser.balance)||oldLocker!==num(currentUser.lockerBalance))setConnection(true,'Synced');else setConnection(true,'Connected')}catch(err){setConnection(false,'Offline')}}
+
+function openQRModal(tab='send'){$('qrModal').classList.add('open');$('manualQRId').value='';switchQRTab(tab)}
+function closeQRModal(){$('qrModal').classList.remove('open');stopQRScanner()}
+async function stopQRScanner(){if(qrScanner){try{await qrScanner.stop();await qrScanner.clear()}catch(err){console.debug('QR scanner stop:',err)}qrScanner=null}}
+async function switchQRTab(tab){const send=tab==='send';$('qrTabSend').classList.toggle('active',send);$('qrTabReceive').classList.toggle('active',!send);$('qrSendContent').classList.toggle('hidden',!send);$('qrReceiveContent').classList.toggle('hidden',send);if(send){startQRScanner()}else{await stopQRScanner();generateReceiveQR()}}
+async function startQRScanner(){if(qrScanner)return;const reader=$('qr-reader');reader.innerHTML='';if(!window.Html5Qrcode){reader.innerHTML='<div style="padding:28px 15px;color:#e5e9f4;text-align:center;font-size:12px;line-height:1.6">Camera scanner library is unavailable. Enter a wallet ID below instead.</div>';return}
+  try{qrScanner=new Html5Qrcode('qr-reader');await qrScanner.start({facingMode:'environment'},{fps:10,qrbox:{width:220,height:220},aspectRatio:1.0},async decoded=>{let id='';const code=String(decoded||'').trim();if(code.startsWith('Pcx_WalletID:'))id=code.slice('Pcx_WalletID:'.length).trim();else if(/^\d{5}$/.test(code))id=code;if(!/^\d{5}$/.test(id)){toast('That is not a valid PCX wallet QR','error');return}scannedReceiverId=id;await stopQRScanner();closeQRModal();$('transferReceiverId').value=id;$('transferAmount').focus();updateRecipientPreview();navigateTo('send');toast('Receiver wallet scanned')},()=>{});
+  }catch(err){console.warn('Camera could not start:',err);qrScanner=null;reader.innerHTML='<div style="padding:28px 15px;color:#e5e9f4;text-align:center;font-size:12px;line-height:1.6">Camera permission was denied or no camera is available. Enter the receiver wallet ID below.</div>'}}
+function useManualQRId(){const id=$('manualQRId').value.trim();if(!/^\d{5}$/.test(id)){toast('Enter a valid 5-digit wallet ID','error');return}closeQRModal();$('transferReceiverId').value=id;updateRecipientPreview();navigateTo('send');$('transferAmount').focus()}
+function generateReceiveQR(){if(!currentUser)return;$('myWalletIdDisplay').textContent=currentUser.walletId||'-----';const container=$('qrcode-container');container.innerHTML='';if(!window.QRCode){container.textContent='QR generator unavailable';return}qrCode=new QRCode(container,{text:'Pcx_WalletID:'+currentUser.walletId,width:176,height:176,colorDark:'#17213a',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.H})}
+
+document.addEventListener('keydown',event=>{if($('pinView').classList.contains('active')){if(/^\d$/.test(event.key)){event.preventDefault();pinInput(event.key)}else if(event.key==='Backspace'&&!isVerifying){enteredPin=enteredPin.slice(0,-1);updatePinDots()}else if(event.key==='Escape')cancelPinFlow()}if(event.key==='Escape'){$('qrModal').classList.remove('open');$('confirmModal').classList.remove('open');$('deleteAuthModal').classList.remove('open');closePasswordChangeModal();stopQRScanner()}});
+$('qrModal').addEventListener('click',event=>{if(event.target===$('qrModal'))closeQRModal()});$('confirmModal').addEventListener('click',event=>{if(event.target===$('confirmModal'))closeConfirm()});$('changePasswordModal').addEventListener('click',event=>{if(event.target===$('changePasswordModal'))closePasswordChangeModal()});
+window.addEventListener('online',()=>setConnection(true,'Connected'));window.addEventListener('offline',()=>setConnection(false,'Offline'));
+boot();
 </script>
-
 </body>
 </html>

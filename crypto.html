@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="theme-color" content="#f4f6fb">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -25,6 +25,53 @@
 
 .transfer-spinner{display:block;width:34px;height:34px;border:3px solid #dce6ff;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}.processing-mark.is-complete{background:#e7f8f0;color:#168360}.processing-mark.is-complete:after{display:none}.success-check{font-size:35px;line-height:1;font-weight:800}.quick-icon svg,.mini-icon svg,.locker-action button svg{display:block;flex:0 0 auto}.mini-icon{display:grid;place-items:center}.processing-card .processing-destination{font-size:13px;margin-top:7px;margin-bottom:0}.processing-card .processing-amount{margin-top:23px;margin-bottom:0;font-size:30px}.processing-card h1{margin-top:0}.processing-card{min-width:min(100%,320px)}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* Final device-fit and zoom-lock refinements */
+html,body{width:100%;max-width:100%;overflow-x:clip;touch-action:pan-y;overscroll-behavior-x:none}
+body{min-width:0}
+button,a,[role="button"],.nav-btn,.quick-action,.icon-btn{touch-action:manipulation}
+img,canvas,video,svg{max-width:100%}
+@media(max-width:780px){
+  .topbar{padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));}
+  .layout{padding-left:clamp(12px,4vw,18px);padding-right:clamp(12px,4vw,18px);padding-bottom:calc(88px + var(--safe-bottom));}
+  .mobile-nav{left:max(8px,env(safe-area-inset-left,0px));right:max(8px,env(safe-area-inset-right,0px));bottom:calc(8px + var(--safe-bottom));min-height:64px;height:64px;gap:3px;padding:6px;border-radius:20px;}
+  .mobile-nav .nav-btn{flex:1 1 0;min-width:0;width:0;max-width:none;min-height:50px;height:50px;padding:5px 1px;gap:4px;border-radius:14px;font-size:clamp(8px,2.65vw,10px);line-height:1.05;letter-spacing:-.12px;white-space:nowrap;}
+  .mobile-nav .nav-btn i{width:auto;min-width:0;font-size:16px;line-height:1;}
+  .mobile-nav .nav-btn span{display:block;max-width:100%;overflow:hidden;text-overflow:clip;}
+  .mobile-nav .nav-btn.active{background:#e8efff;color:#2458dc;box-shadow:inset 0 0 0 1px rgba(53,108,246,.08);}
+  .mobile-nav .nav-btn:not(.active){background:transparent;}
+  input,select,textarea,.input,.select{font-size:16px!important;}
+  input[type="number"],input[type="password"],input[type="text"],input[type="email"]{font-size:16px!important;}
+  .page-head{gap:10px;}
+  .hero-foot{flex-wrap:wrap;}
+  .quick-actions{grid-template-columns:repeat(4,minmax(0,1fr));}
+  .quick-action{min-width:0;}
+  .primary-btn,.secondary-btn,.danger-btn{min-height:46px;}
+}
+@media(max-width:360px){
+  .mobile-nav{left:6px;right:6px;padding:5px;gap:2px;}
+  .mobile-nav .nav-btn{font-size:8px;gap:4px;border-radius:12px;}
+  .mobile-nav .nav-btn i{font-size:15px;}
+  .layout{padding-left:10px;padding-right:10px;}
+  .hero-foot{gap:8px;}
+  .wallet-id-value{font-size:13px;letter-spacing:1.5px;}
+}
+@media(max-height:520px) and (orientation:landscape) and (max-width:900px){
+  .topbar{position:relative;height:54px;}
+  .layout{padding-top:12px;padding-bottom:calc(80px + var(--safe-bottom));}
+  .mobile-nav{height:58px;min-height:58px;bottom:calc(5px + var(--safe-bottom));}
+  .mobile-nav .nav-btn{height:46px;min-height:46px;}
+  .auth-wrap{margin-top:10px;margin-bottom:16px;}
+  .pin-wrap{margin-top:8px;margin-bottom:14px;}
+  .pin-card{padding-top:16px;padding-bottom:12px;}
+  .keypad{gap:5px;}
+  .key{height:42px;}
+  .processing-wrap{min-height:auto;padding:15px;}
+  .processing-card{padding:19px;}
+  .modal-backdrop{align-items:center;}
+  .modal{max-height:calc(100dvh - 16px - var(--safe-top));}
+}
+
 </style>
 </head>
 <body>
@@ -155,6 +202,25 @@
 
 <script>
 'use strict';
+/* Prevent accidental page zoom gestures on touch devices; keep normal vertical scrolling. */
+(function lockAccidentalZoom(){
+  const stop = event => { if (event.cancelable) event.preventDefault(); };
+  ['gesturestart','gesturechange','gestureend'].forEach(type => document.addEventListener(type, stop, {passive:false}));
+  document.addEventListener('touchmove', event => {
+    if (event.touches && event.touches.length > 1 && event.cancelable) event.preventDefault();
+  }, {passive:false});
+  document.addEventListener('wheel', event => {
+    if (event.ctrlKey && event.cancelable) event.preventDefault();
+  }, {passive:false});
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', event => {
+    const target = event.target;
+    const interactive = target && target.closest && target.closest('button,a,input,select,textarea,label,[role="button"],[contenteditable="true"]');
+    const now = Date.now();
+    if (!interactive && now - lastTouchEnd < 320 && event.cancelable) event.preventDefault();
+    lastTouchEnd = now;
+  }, {passive:false});
+})();
 const API_URL = 'https://wallet-database.playcentrix.workers.dev/db';
 const WALLET_LIMIT = 5000;
 const LOCKER_LIMIT = 100000;

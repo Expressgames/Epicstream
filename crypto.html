@@ -24,6 +24,32 @@
 @media(max-width:380px){.layout{padding-left:12px;padding-right:12px}.topbar{padding:0 12px}.connection-pill{display:none}.hero-balance{padding:19px}.hero-amount{font-size:34px}.quick-actions{gap:7px}.quick-action{font-size:9px;min-height:82px}.stat-card{padding:14px}.stat-value{font-size:19px}.page-head h1{font-size:25px}.pin-card{padding-left:15px;padding-right:15px}.key{height:53px}}
 
 .transfer-spinner{display:block;width:34px;height:34px;border:3px solid #dce6ff;border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}.processing-mark.is-complete{background:#e7f8f0;color:#168360}.processing-mark.is-complete:after{display:none}.success-check{font-size:35px;line-height:1;font-weight:800}.quick-icon svg,.mini-icon svg,.locker-action button svg{display:block;flex:0 0 auto}.mini-icon{display:grid;place-items:center}.processing-card .processing-destination{font-size:13px;margin-top:7px;margin-bottom:0}.processing-card .processing-amount{margin-top:23px;margin-bottom:0;font-size:30px}.processing-card h1{margin-top:0}.processing-card{min-width:min(100%,320px)}
+
+/* Saved Accounts */
+.saved-add-row{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:12px}
+.saved-add-row .field{margin-bottom:0}
+.saved-search{margin-top:3px}
+.saved-accounts-list{display:flex;flex-direction:column;gap:10px}
+.saved-account-row{display:flex;align-items:center;gap:11px;padding:13px;border:1px solid #edf0f6;border-radius:17px;background:#fff;min-width:0;position:relative}
+.saved-avatar{width:43px;height:43px;flex:0 0 43px;border-radius:15px;display:grid;place-items:center;background:#eaf0ff;color:#315fdb;font-size:15px;font-weight:850}
+.saved-account-copy{flex:1;min-width:0}
+.saved-account-copy strong{display:block;font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--ink)}
+.saved-account-copy small{display:block;margin-top:4px;font-size:10px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.saved-account-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:7px}
+.saved-mini-badge{border-radius:7px;padding:4px 6px;background:#f1f4fa;color:#66718a;font-size:9px;font-weight:800}
+.saved-mini-badge.pinned{background:#fff3d8;color:#94660f}
+.saved-mini-badge.recent{background:#e7f8f0;color:#168360}
+.saved-account-actions{display:flex;align-items:center;gap:6px;flex:0 0 auto}
+.saved-pay-btn{min-height:38px;padding:0 12px;border-radius:11px;font-size:11px}
+.saved-more-wrap{position:relative}
+.saved-more-btn{height:38px;width:34px;padding:0;border:1px solid #e7eaf1;border-radius:11px;background:#fff;color:#6a7285;font-size:20px;line-height:1}
+.saved-menu{position:absolute;right:0;top:43px;z-index:20;min-width:178px;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:0 12px 30px rgba(23,34,69,.14);padding:5px}
+.saved-menu button{display:flex;width:100%;align-items:center;gap:9px;text-align:left;background:transparent;border:0;padding:11px;border-radius:9px;font-size:11px;font-weight:750;color:var(--ink)}
+.saved-menu button:hover{background:#f2f5fc}
+.saved-menu button.remove{color:#c73647}
+.saved-add-row .primary-btn{min-height:48px;white-space:nowrap}
+@media(max-width:520px){.saved-add-row{grid-template-columns:1fr}.saved-add-row .primary-btn{width:100%}.saved-account-row{padding:11px;gap:9px}.saved-avatar{width:38px;height:38px;flex-basis:38px;border-radius:13px}.saved-account-actions{gap:4px}.saved-pay-btn{min-height:36px;padding:0 9px}.saved-more-btn{height:36px;width:31px}.saved-account-badges{margin-top:5px}}
+
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
 
 /* Final device-fit and zoom-lock refinements */
@@ -72,6 +98,21 @@ img,canvas,video,svg{max-width:100%}
   .modal{max-height:calc(100dvh - 16px - var(--safe-top));}
 }
 
+
+/* Final dashboard polish: Saved Accounts is a home CTA, not a navigation destination. */
+.quick-actions{grid-template-columns:repeat(3,minmax(0,1fr))}
+.saved-access-card{width:100%;min-width:0;min-height:100%;display:flex;align-items:center;gap:12px;text-align:left;padding:18px 16px;border:1px solid #dfe7ff;border-radius:19px;background:linear-gradient(135deg,#f4f7ff,#fff);color:var(--ink);box-shadow:0 5px 15px rgba(53,108,246,.055);transition:background .18s,border-color .18s,transform .18s}
+.saved-access-card:hover{background:#edf3ff;border-color:#cbd9ff;transform:translateY(-1px)}
+.saved-access-card:focus-visible{outline:3px solid rgba(53,108,246,.3);outline-offset:3px}
+.saved-access-icon{width:43px;height:43px;flex:0 0 43px;border-radius:14px;display:grid;place-items:center;background:#e4ecff;color:#2f63e5;font-size:17px}
+.saved-access-copy{display:flex;flex-direction:column;min-width:0;gap:5px;flex:1}
+.saved-access-copy strong{font-size:13px;font-weight:800;letter-spacing:-.25px}
+.saved-access-copy small{font-size:10px;line-height:1.45;color:var(--muted)}
+.saved-access-arrow{color:var(--blue);font-size:13px}
+.saved-page-actions{display:flex;gap:8px;flex:0 0 auto}
+@media(max-width:780px){.quick-actions{grid-template-columns:repeat(3,minmax(0,1fr))}.saved-access-card{padding:15px 13px;gap:9px}.saved-access-icon{width:38px;height:38px;flex-basis:38px;border-radius:12px}.saved-access-copy strong{font-size:12px}.saved-access-copy small{font-size:9px}}
+@media(max-width:380px){.saved-access-card{gap:7px;padding:13px 10px}.saved-access-icon{width:34px;height:34px;flex-basis:34px}.saved-access-copy small{font-size:8.5px}}
+
 </style>
 </head>
 <body>
@@ -106,7 +147,7 @@ img,canvas,video,svg{max-width:100%}
     <div class="processing-wrap"><div class="processing-card" id="processingCard">
       <div class="processing-mark" id="processingMark"><span class="transfer-spinner" aria-hidden="true"></span></div>
       <h1 id="processingTitle">Sending PCX</h1>
-      <div class="processing-amount" id="processingAmount">0.00 PCX</div>
+      <div class="processing-amount" id="processingAmount">0 PCX</div>
       <div class="processing-destination" id="processingDestination">To wallet</div>
     </div></div>
   </div>
@@ -131,18 +172,21 @@ img,canvas,video,svg{max-width:100%}
           <div class="page-head"><div><h1>Hi, <span id="helloName">there</span></h1></div><button class="icon-btn" aria-label="Refresh balance" onclick="refreshNow()"><i class="fa-solid fa-arrows-rotate"></i></button></div>
           <section class="hero-balance" aria-label="Wallet balance">
             <div class="hero-top"><div class="hero-caption">Available wallet balance</div><div class="plan-badge"><i class="fa-solid fa-sparkles"></i><span id="homePlan">BASIC PLAN</span></div></div>
-            <div class="hero-amount"><span id="homeBalance">0.00</span></div><div class="hero-unit">PCX</div>
+            <div class="hero-amount"><span id="homeBalance">0</span></div><div class="hero-unit">PCX</div>
             <div class="hero-foot"><div><div class="wallet-id-label">YOUR WALLET ID</div><div class="wallet-id-value" id="homeWalletId">-----</div></div><button class="copy-id" onclick="copyWalletId()"><i class="fa-regular fa-copy"></i> Copy ID</button></div>
           </section>
           <div class="quick-actions">
             <button class="quick-action" onclick="navigateTo('send')"><span class="quick-icon"><i class="fa-solid fa-paper-plane"></i></span>Send PCX</button>
-            <button class="quick-action" onclick="openQRModal('send')"><span class="quick-icon"><i class="fa-solid fa-qrcode"></i></span>Scan to pay</button>
-            <button class="quick-action" onclick="openQRModal('receive')"><span class="quick-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 19h16"/></svg></span>Receive</button>
+            <button class="quick-action" onclick="openQRModal('send')"><span class="quick-icon"><i class="fa-solid fa-qrcode"></i></span>Scan / receive</button>
             <button class="quick-action" onclick="navigateTo('locker')"><span class="quick-icon"><i class="fa-solid fa-vault"></i></span>Locker</button>
           </div>
           <div class="stats-grid">
-            <div class="stat-card"><div class="stat-head"><span>In your locker</span><span class="stat-icon"><i class="fa-solid fa-vault"></i></span></div><div class="stat-value" id="homeLocker">0.00 PCX</div><div class="stat-sub">Moves in or out instantly</div></div>
-            <div class="stat-card"><div class="stat-head"><span>Your plan</span><span class="stat-icon"><i class="fa-solid fa-gauge-high"></i></span></div><div class="stat-value" id="homePlanStat">Basic</div><div class="stat-sub" id="homePlanHint">Standard transfer processing</div></div>
+            <div class="stat-card"><div class="stat-head"><span>Your plan</span><span class="stat-icon"><i class="fa-solid fa-gauge-high"></i></span></div><div class="stat-value" id="homePlanStat">Basic</div><div class="stat-sub" id="homePlanHint"></div></div>
+            <button class="saved-access-card" type="button" onclick="navigateTo('saved')" aria-label="Open Saved accounts">
+              <span class="saved-access-icon"><i class="fa-solid fa-address-book" aria-hidden="true"></i></span>
+              <span class="saved-access-copy"><strong>Saved accounts</strong><small>Manage wallets and pay faster</small></span>
+              <i class="fa-solid fa-arrow-right saved-access-arrow" aria-hidden="true"></i>
+            </button>
           </div>
           <section class="content-card"><div class="card-heading"><div><h2>Recent activity</h2><p>Saved locally on this device</p></div><button class="text-link" onclick="navigateTo('activity')">View all <i class="fa-solid fa-arrow-right"></i></button></div><div id="homeActivity" class="activity-list"></div></section>
           <p class="footnote">Wallet actions depend on the connected Playcentrix database. PCX is an in-app unit; this interface is not a bank or payment institution.</p>
@@ -155,7 +199,7 @@ img,canvas,video,svg{max-width:100%}
             <form id="transferForm">
               <div class="field"><label for="transferReceiverId">Receiver wallet ID</label><div class="input-wrap"><i class="fa-solid fa-wallet"></i><input class="input has-icon" id="transferReceiverId" autocomplete="off" inputmode="numeric" placeholder="5-digit wallet ID" maxlength="5" pattern="[0-9]{5}" required></div><div class="field-hint">You can find a receiver’s wallet ID in their profile or scan their PCX QR code.</div></div>
               <div id="recipientPreview" class="transfer-preview hidden"><div class="recipient-avatar" id="recipientAvatar">?</div><div class="recipient-preview"><strong id="recipientName">Receiver</strong><small id="recipientMeta">Wallet ID</small></div><i class="fa-solid fa-circle-check" style="color:var(--mint)"></i></div>
-              <div class="field"><label for="transferAmount">Amount to send</label><div class="input-wrap"><i class="fa-solid fa-coins"></i><input class="input has-icon amount-input" id="transferAmount" type="number" inputmode="decimal" min="0.01" step="0.01" placeholder="0.00 PCX" required></div><div class="field-hint" id="transferLimitText">Enter an amount above zero.</div></div>
+              <div class="field"><label for="transferAmount">Amount to send</label><div class="input-wrap"><i class="fa-solid fa-coins"></i><input class="input has-icon amount-input" id="transferAmount" type="number" inputmode="numeric" min="1" step="1" placeholder="PCX amount" required></div><div class="field-hint" id="transferLimitText">PCX amount.</div></div>
               <div id="transferError" class="error-text" role="alert"></div>
               <button type="submit" class="primary-btn btn-wide" id="transferContinue"><i class="fa-solid fa-lock"></i> Review & continue</button>
             </form>
@@ -163,12 +207,29 @@ img,canvas,video,svg{max-width:100%}
           </div>
         </section>
 
+        <section class="pane" id="pane-saved">
+          <div class="page-head"><div><h1>Saved accounts</h1><p>Save up to 20 wallets for quick payments.</p></div><div class="saved-page-actions"><button class="icon-btn" aria-label="Back to overview" onclick="navigateTo('home')"><i class="fa-solid fa-arrow-left"></i></button><button class="icon-btn" aria-label="Refresh saved accounts" onclick="refreshNow()"><i class="fa-solid fa-arrows-rotate"></i></button></div></div>
+          <section class="content-card">
+            <div class="card-heading"><div><h2>Add a wallet</h2><p>Enter the five-digit wallet ID. Payment still requires your PIN.</p></div><span class="tag" id="savedCountTag">0 / 20</span></div>
+            <form id="addSavedForm" class="saved-add-row">
+              <div class="field"><label for="savedWalletIdInput">Wallet ID</label><div class="input-wrap"><i class="fa-solid fa-wallet"></i><input class="input has-icon" id="savedWalletIdInput" inputmode="numeric" autocomplete="off" maxlength="5" pattern="[0-9]{5}" placeholder="5-digit ID" required></div></div>
+              <button type="submit" class="primary-btn" id="addSavedButton"><i class="fa-solid fa-plus"></i> Save account</button>
+            </form>
+            <div id="savedAddError" class="error-text" role="alert"></div>
+          </section>
+          <section class="content-card">
+            <div class="card-heading"><div><h2>Your saved wallets</h2><p>Pinned accounts first, followed by recent payees from the last 15 days.</p></div></div>
+            <div class="field saved-search"><label for="savedSearchInput">Search accounts</label><div class="input-wrap"><i class="fa-solid fa-magnifying-glass"></i><input class="input has-icon" id="savedSearchInput" type="search" placeholder="Name or wallet ID"></div></div>
+            <div id="savedAccountsList" class="saved-accounts-list"></div>
+          </section>
+        </section>
+
         <section class="pane" id="pane-locker">
           <div class="page-head"><div><h1>Locker</h1></div><div class="locker-symbol"><i class="fa-solid fa-lock"></i></div></div>
-          <div class="locker-hero"><div><div class="eyebrow" style="color:#188765">LOCKER BALANCE</div><div class="big-number" id="lockerBalance">0.00 PCX</div></div><div style="text-align:right"><span class="tag" style="background:#dcf7eb;color:#13845f">INSTANT</span></div></div>
+          <div class="locker-hero"><div><div class="eyebrow" style="color:#188765">LOCKER BALANCE</div><div class="big-number" id="lockerBalance">0 PCX</div></div><div style="text-align:right"><span class="tag" style="background:#dcf7eb;color:#13845f">INSTANT</span></div></div>
           <div class="locker-actions">
-            <form class="locker-action" id="depositForm"><div class="mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16v12H4z"/><path d="m4 8 3-4h10l3 4"/><path d="M12 10v6"/><path d="m9 13 3 3 3-3"/></svg></div><h3>Add to locker</h3><p>Wallet → locker</p><div class="field"><label for="depositAmount">Amount to add</label><input class="input amount-input" id="depositAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00 PCX" required></div><div class="field-hint" id="depositHint">Available wallet: 0 PCX</div><div id="depositError" class="error-text" role="alert"></div><button class="primary-btn btn-wide" type="submit"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 20h16"/></svg> Add to locker</button></form>
-            <form class="locker-action withdraw" id="withdrawForm"><div class="mini-icon"><i class="fa-solid fa-arrow-up"></i></div><h3>Withdraw from locker</h3><p>Locker → wallet</p><div class="field"><label for="withdrawAmount">Amount to withdraw</label><input class="input amount-input" id="withdrawAmount" type="number" min="0.01" step="0.01" inputmode="decimal" placeholder="0.00 PCX" required></div><div class="field-hint" id="withdrawHint">Locker available: 0 PCX</div><div id="withdrawError" class="error-text" role="alert"></div><button class="secondary-btn btn-wide" type="submit"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Withdraw from locker</button></form>
+            <form class="locker-action" id="depositForm"><div class="mini-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16v12H4z"/><path d="m4 8 3-4h10l3 4"/><path d="M12 10v6"/><path d="m9 13 3 3 3-3"/></svg></div><h3>Add to locker</h3><p>Wallet → locker</p><div class="field"><label for="depositAmount">Amount to add</label><input class="input amount-input" id="depositAmount" type="number" min="1" step="1" inputmode="numeric" placeholder="PCX amount" required></div><div class="field-hint" id="depositHint">Available wallet: 0 PCX</div><div id="depositError" class="error-text" role="alert"></div><button class="primary-btn btn-wide" type="submit"><svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 20h16"/></svg> Add to locker</button></form>
+            <form class="locker-action withdraw" id="withdrawForm"><div class="mini-icon"><i class="fa-solid fa-arrow-up"></i></div><h3>Withdraw from locker</h3><p>Locker → wallet</p><div class="field"><label for="withdrawAmount">Amount to withdraw</label><input class="input amount-input" id="withdrawAmount" type="number" min="1" step="1" inputmode="numeric" placeholder="PCX amount" required></div><div class="field-hint" id="withdrawHint">Locker available: 0 PCX</div><div id="withdrawError" class="error-text" role="alert"></div><button class="secondary-btn btn-wide" type="submit"><i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Withdraw from locker</button></form>
           </div>
           <section class="content-card" style="margin-top:17px"><div class="card-heading"><div><h2>Locker capacity</h2><p>Usage against the standard 100,000 PCX locker cap</p></div><span class="tag">ALL PLANS</span></div><div class="limit-track"><span id="lockerTrack" style="width:0%"></span></div><div class="limit-copy"><span id="lockerUsed">0 PCX used</span><strong id="lockerLeft">100,000 PCX left</strong></div></section>
         </section>
@@ -222,7 +283,7 @@ img,canvas,video,svg{max-width:100%}
   }, {passive:false});
 })();
 const API_URL = 'https://wallet-database.playcentrix.workers.dev/db';
-const WALLET_LIMIT = 5000;
+const WALLET_LIMIT = 25000;
 const LOCKER_LIMIT = 100000;
 const PLAN_NAMES = {BASIC:'Basic',PREMIUM:'Premium',ELITE:'Elite',ADMIN:'Admin'};
 let db = {};
@@ -241,12 +302,15 @@ let refreshTimer = null;
 
 const $ = id => document.getElementById(id);
 const num = value => Number.isFinite(Number(value)) ? Number(value) : 0;
-const money = value => num(value).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const money = value => Math.floor(Math.max(0,num(value))).toLocaleString('en-US',{maximumFractionDigits:0});
 const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 const normalizePlan = value => { const p=String(value||'BASIC').trim().toUpperCase(); return PLAN_NAMES[p] ? p : 'BASIC'; };
 const canonicalName = value => String(value || '').trim().slice(0,15);
 const localActivityKey = username => 'pcx_wallet_local_activity_v2_' + String(username || '').toLowerCase();
 const localSessionKey = 'activeUser';
+const LOCAL_USERS_CACHE_KEY = 'pcx_wallet_public_cache_v3';
+const localPinVerifierKey = username => 'pcx_wallet_pin_verifier_v1_' + String(username || '').toLowerCase();
+let offlineMode = false;
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 function normalizeUser(user){
@@ -254,6 +318,7 @@ function normalizeUser(user){
   if(!Number.isFinite(Number(user.balance))) user.balance = 0;
   if(!Number.isFinite(Number(user.lockerBalance))) user.lockerBalance = 0;
   if(!Array.isArray(user.friends)) user.friends = [];
+  user.friends = [...new Set(user.friends.map(f=>String(typeof f==='object'?(f?.walletId??f?.id??''):f).trim()).filter(id=>/^\d{5}$/.test(id)))].slice(0,20);
   if(!user.Type) user.Type = 'PCX';
   if(!user.plan) user.plan = 'BASIC';
   return user;
@@ -288,40 +353,58 @@ function planCopy(plan=currentPlan()){
   return {delay:3000+Math.floor(Math.random()*1000)};
 }
 function setUserFromDB(username){currentUser=users.find(u=>String(u.username||'').toLowerCase()===String(username||'').toLowerCase())||null;return currentUser}
+function publicCachedUser(user){return {walletId:String(user.walletId??''),plan:normalizePlan(user.plan),displayName:String(user.displayName??''),username:String(user.username??''),balance:num(user.balance),lockerBalance:num(user.lockerBalance),friends:Array.isArray(user.friends)?user.friends.slice(0,20):[],Type:String(user.Type||'PCX'),isBlocked:!!user.isBlocked}}
+function bytesToHex(bytes){return Array.from(bytes,b=>b.toString(16).padStart(2,'0')).join('')}
+async function digestPin(pin,salt){if(!window.crypto?.subtle||!window.TextEncoder)return null;const buf=new TextEncoder().encode(String(salt)+'|'+String(pin));return bytesToHex(new Uint8Array(await crypto.subtle.digest('SHA-256',buf)))}
+async function storeOfflinePinVerifier(username,pin){try{if(!window.crypto?.subtle||!window.crypto?.getRandomValues)return;const key=localPinVerifierKey(username);let saved=JSON.parse(localStorage.getItem(key)||'null');if(!saved?.salt){const bytes=crypto.getRandomValues(new Uint8Array(16));saved={salt:bytesToHex(bytes),hash:''}}const hash=await digestPin(pin,saved.salt);if(hash&&saved.hash!==hash){saved.hash=hash;localStorage.setItem(key,JSON.stringify(saved))}}catch(err){console.debug('Offline PIN verifier unavailable',err)}}
+async function verifyOfflinePin(username,pin){try{const saved=JSON.parse(localStorage.getItem(localPinVerifierKey(username))||'null');if(!saved?.salt||!saved?.hash)return false;const hash=await digestPin(pin,saved.salt);return !!hash&&hash===saved.hash}catch{return false}}
+async function cacheDatabaseSnapshot(){try{localStorage.setItem(LOCAL_USERS_CACHE_KEY,JSON.stringify(users.map(publicCachedUser)));const active=localStorage.getItem(localSessionKey);if(active){const user=users.find(u=>String(u.username||'').toLowerCase()===active.toLowerCase());if(user&&user.pin!==undefined&&user.pin!==null)await storeOfflinePinVerifier(user.username,user.pin)}}catch(err){console.debug('Could not cache wallet snapshot',err)}}
+function loadCachedUsers(){try{const saved=JSON.parse(localStorage.getItem(LOCAL_USERS_CACHE_KEY)||'[]');return Array.isArray(saved)?saved.map(normalizeUser):[]}catch{return []}}
+function restoreCachedSnapshot(){const cached=loadCachedUsers();if(!cached.length)return false;const username=currentUser?.username||localStorage.getItem(localSessionKey);users=cached;db={users};currentUser=users.find(u=>String(u.username||'').toLowerCase()===String(username||'').toLowerCase())||null;return !!currentUser}
+function requireInternet(){if(!navigator.onLine||offlineMode){setConnection(false,'No Internet');toast('No Internet connection. Nothing was changed.','error');return false}return true}
 async function fetchDatabase(){
-  const response=await fetch(API_URL,{method:'GET',cache:'no-store',headers:{'Accept':'application/json'}});
-  if(!response.ok) throw new Error(`Database returned ${response.status}`);
+  if(!navigator.onLine){offlineMode=true;setConnection(false,'No Internet');throw new Error('No Internet connection. Please reconnect and try again.');}
+  const controller=window.AbortController?new AbortController():null;const timer=controller?setTimeout(()=>controller.abort(),12000):null;
+  let response;
+  try{response=await fetch(API_URL,{method:'GET',cache:'no-store',headers:{'Accept':'application/json'},signal:controller?.signal})}catch(err){if(!navigator.onLine||err instanceof TypeError||err?.name==='AbortError'){offlineMode=true;setConnection(false,'No Internet')}throw err}finally{if(timer)clearTimeout(timer)}
+  if(!response.ok){if(response.status>=500){offlineMode=true;setConnection(false,'No Internet')}throw new Error(`Database returned ${response.status}`)}
   const data=await response.json();
   if(!data || typeof data!=='object' || !Array.isArray(data.users)) throw new Error('The database response has no users array.');
-  db=data; users=data.users.map(normalizeUser); db.users=users; return db;
+  db=data; users=data.users.map(normalizeUser); db.users=users; offlineMode=false;setConnection(true,'Connected');await cacheDatabaseSnapshot();return db;
 }
 async function saveDatabase(){
+  if(!navigator.onLine){offlineMode=true;setConnection(false,'No Internet');throw new Error('No Internet connection. Nothing was changed.');}
   db.users=users;
-  const response=await fetch(API_URL,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(db)});
-  if(!response.ok) throw new Error(`Database save failed (${response.status})`);
-  return true;
+  const controller=window.AbortController?new AbortController():null;const timer=controller?setTimeout(()=>controller.abort(),15000):null;
+  let response;try{response=await fetch(API_URL,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(db),signal:controller?.signal})}catch(err){if(!navigator.onLine||err instanceof TypeError||err?.name==='AbortError'){offlineMode=true;setConnection(false,'No Internet')}throw err}finally{if(timer)clearTimeout(timer)}
+  if(!response.ok){if(response.status>=500){offlineMode=true;setConnection(false,'No Internet')}throw new Error(`Database save failed (${response.status})`)}
+  const bodyText=await response.text();if(bodyText){try{const payload=JSON.parse(bodyText);if(payload&&payload.success===false)throw new Error(payload.message||payload.error||'Database rejected the update.')}catch(parseError){if(parseError instanceof SyntaxError){}else throw parseError}}
+  offlineMode=false;return true;
 }
-async function reloadDatabase(){await fetchDatabase();if(currentUser){setUserFromDB(currentUser.username);if(!currentUser){logout(true);return}if(checkBlocked(currentUser))return;renderWallet()}return true}
+async function reloadDatabase(){await fetchDatabase();offlineMode=false;if(currentUser){setUserFromDB(currentUser.username);if(!currentUser){logout(true);return}if(checkBlocked(currentUser))return;renderWallet()}return true}
 async function boot(){
   showLoader(true,'Connecting to Playcentrix…');
+  const stored=localStorage.getItem(localSessionKey);
   try{
     await fetchDatabase();setConnection(true,'Connected');
-    const stored=localStorage.getItem(localSessionKey);
     if(stored){const match=users.find(u=>String(u.username).toLowerCase()===stored.toLowerCase());if(match){currentUser=match;if(checkBlocked(match)){showLoader(false);return}buildKeypad();setPinMode('login');openView('pinView');}else{localStorage.removeItem(localSessionKey);openView('loginView')}}
     else openView('loginView');
-    if(refreshTimer) clearInterval(refreshTimer);
-    refreshTimer=setInterval(silentRefresh,12000);
-  }catch(err){console.error(err);setConnection(false,'Connection issue');openView('loginView');$('loginError').textContent='Could not connect to the wallet database. Please try again.';}
-  finally{showLoader(false)}
+  }catch(err){
+    console.error(err);offlineMode=true;setConnection(false,'No Internet');
+    const cached=loadCachedUsers();users=cached;db={users};const match=stored?users.find(u=>String(u.username).toLowerCase()===stored.toLowerCase()):null;
+    if(match){currentUser=match;if(checkBlocked(match)){showLoader(false);return}buildKeypad();setPinMode('login');openView('pinView');toast('Offline mode · showing last synced data','error')}
+    else{openView('loginView');$('loginError').textContent='No Internet connection. Sign in requires a connection unless a wallet session was already saved on this device.'}
+  }finally{showLoader(false);if(refreshTimer)clearInterval(refreshTimer);refreshTimer=setInterval(silentRefresh,10000)}
 }
 $('loginForm').addEventListener('submit', async event=>{
   event.preventDefault();if(isBusy)return;
+  if(!navigator.onLine||offlineMode){$('loginError').textContent='No Internet connection. Reconnect to sign in.';setConnection(false,'No Internet');return}
   const username=$('loginUsername').value.trim(),password=$('loginPassword').value;
   $('loginError').textContent='';$('loginSubmit').disabled=true;showLoader(true,'Checking credentials…');
   try{
     await fetchDatabase();const user=users.find(u=>String(u.username||'').toLowerCase()===username.toLowerCase()&&String(u.password??'')===password);
     if(!user){$('loginError').textContent='That username and password do not match.';$('loginPassword').value='';$('loginPassword').focus();return}
-    currentUser=user;localStorage.setItem(localSessionKey,user.username);if(checkBlocked(user))return;setPinMode('login');buildKeypad();openView('pinView');
+    currentUser=user;localStorage.setItem(localSessionKey,user.username);await storeOfflinePinVerifier(user.username,user.pin);await cacheDatabaseSnapshot();if(checkBlocked(user))return;setPinMode('login');buildKeypad();openView('pinView');
   }catch(err){console.error(err);$('loginError').textContent='Could not reach the wallet database. Check your connection and try again.';setConnection(false,'Connection issue')}
   finally{$('loginSubmit').disabled=false;showLoader(false)}
 });
@@ -343,14 +426,15 @@ function updatePinDots(){$('pinDots').querySelectorAll('.pin-dot').forEach((dot,
 async function verifyPin(){
   if(isVerifying)return;isVerifying=true;$('pinError').textContent='';await wait(180);
   const actual=users.find(u=>String(u.username||'').toLowerCase()===String(currentUser?.username||'').toLowerCase());
-  if(!actual||String(enteredPin)!==String(actual.pin??'')){
-    $('pinError').textContent='Incorrect PIN. Please try again.';enteredPin='';updatePinDots();isVerifying=false;
+  const pinValid=offlineMode?await verifyOfflinePin(currentUser?.username,enteredPin):!!actual&&String(enteredPin)===String(actual.pin??'');
+  if(!actual||!pinValid){
+    $('pinError').textContent=offlineMode?'Incorrect PIN, or offline unlock is unavailable on this device.':'Incorrect PIN. Please try again.';enteredPin='';updatePinDots();isVerifying=false;
     const card=document.querySelector('.pin-card');card.animate([{transform:'translateX(0)'},{transform:'translateX(-6px)'},{transform:'translateX(6px)'},{transform:'translateX(0)'}],{duration:220});return;
   }
   currentUser=actual;
   if(checkBlocked(actual)){isVerifying=false;return}
   const mode=pinMode;isVerifying=false;enteredPin='';updatePinDots();
-  if(mode==='login'){renderWallet();openView('walletView');navigateTo('home');return}
+  if(mode==='login'){renderWallet();openView('walletView');navigateTo('home');if(offlineMode)toast('No Internet · wallet is read-only until reconnected','error');return}
   if(mode==='transfer'){await startTransferProcessing();return}
   if(mode==='deposit'||mode==='withdraw'){await executeLockerMove(mode);return}
   if(mode==='changeName'){await executeNameChange();return}
@@ -360,9 +444,9 @@ async function verifyPin(){
 function cancelPinFlow(){enteredPin='';pendingAction=null;isVerifying=false;if(pinMode==='login'){logout(true);return}renderWallet();openView('walletView');navigateTo(pinMode==='deposit'||pinMode==='withdraw'?'locker':pinMode==='transfer'?'send':'profile')}
 function checkBlocked(user){if(user?.isBlocked){$('blockedScreen').classList.add('visible');return true}$('blockedScreen').classList.remove('visible');return false}
 function renderWallet(){if(!currentUser)return;currentUser=normalizeUser(currentUser);const name=canonicalName(currentUser.displayName)||currentUser.username||'there';
-  $('helloName').textContent=name;$('topAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('homePlan').textContent=(PLAN_NAMES[currentPlan()]||'Basic').toUpperCase()+' PLAN';$('homePlanStat').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('homeBalance').textContent=money(currentUser.balance);$('homeLocker').textContent=money(currentUser.lockerBalance)+' PCX';$('homeWalletId').textContent=currentUser.walletId||'-----';$('sendAvailable').textContent=money(currentUser.balance)+' PCX';$('sendPlanTag').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('transferLimitText').textContent=`Maximum wallet balance is ${WALLET_LIMIT.toLocaleString()} PCX per account.`;
-  $('homePlanHint').textContent='';$('profileAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('profileName').textContent=name;$('profileUsername').textContent='@'+(currentUser.username||'')+' · Wallet '+(currentUser.walletId||'-----');$('profilePlanBadge').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('profileWalletId').textContent=currentUser.walletId||'-----';$('profileUserValue').textContent='@'+(currentUser.username||'');$('profileAccountStatus').textContent=currentUser.isBlocked?'Blocked':'Active';$('profileAccountStatus').style.color=currentUser.isBlocked?'var(--red)':'var(--mint)';$('lockerBalance').textContent=money(currentUser.lockerBalance)+' PCX';$('depositHint').textContent='Available wallet: '+money(currentUser.balance)+' PCX';$('withdrawHint').textContent='Locker available: '+money(currentUser.lockerBalance)+' PCX';
-  const lock=num(currentUser.lockerBalance),pct=Math.max(0,Math.min(100,lock/LOCKER_LIMIT*100));$('lockerTrack').style.width=pct+'%';$('lockerUsed').textContent=money(lock)+' PCX used';$('lockerLeft').textContent=money(Math.max(0,LOCKER_LIMIT-lock))+' PCX left';renderHomeActivity();renderFullActivity();
+  $('helloName').textContent=name;$('topAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('homePlan').textContent=(PLAN_NAMES[currentPlan()]||'Basic').toUpperCase()+' PLAN';$('homePlanStat').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('homeBalance').textContent=money(currentUser.balance);$('homeWalletId').textContent=currentUser.walletId||'-----';$('sendAvailable').textContent=money(currentUser.balance)+' PCX';$('sendPlanTag').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('transferLimitText').textContent=`Maximum wallet balance: ${WALLET_LIMIT.toLocaleString()} PCX.`;
+  $('homePlanHint').textContent='';$('savedCountTag').textContent=`${(currentUser.friends||[]).length} / 20`;$('profileAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('profileName').textContent=name;$('profileUsername').textContent='@'+(currentUser.username||'')+' · Wallet '+(currentUser.walletId||'-----');$('profilePlanBadge').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('profileWalletId').textContent=currentUser.walletId||'-----';$('profileUserValue').textContent='@'+(currentUser.username||'');$('profileAccountStatus').textContent=currentUser.isBlocked?'Blocked':'Active';$('profileAccountStatus').style.color=currentUser.isBlocked?'var(--red)':'var(--mint)';$('lockerBalance').textContent=money(currentUser.lockerBalance)+' PCX';$('depositHint').textContent='Available wallet: '+money(currentUser.balance)+' PCX';$('withdrawHint').textContent='Locker available: '+money(currentUser.lockerBalance)+' PCX';
+  const lock=num(currentUser.lockerBalance),pct=Math.max(0,Math.min(100,lock/LOCKER_LIMIT*100));$('lockerTrack').style.width=pct+'%';$('lockerUsed').textContent=money(lock)+' PCX used';$('lockerLeft').textContent=money(Math.max(0,LOCKER_LIMIT-lock))+' PCX left';renderHomeActivity();renderFullActivity();renderSavedAccounts();
 }
 function goHomeAndToast(message){renderWallet();openView('walletView');navigateTo('home');if(message)toast(message)}
 function activityItems(){try{const value=JSON.parse(localStorage.getItem(localActivityKey(currentUser?.username))||'[]');return Array.isArray(value)?value:[]}catch{return []}}
@@ -371,6 +455,22 @@ function renderActivity(targetId,limit){const holder=$(targetId);if(!holder)retu
   for(const item of list){const row=document.createElement('div');row.className='activity-row';const type=String(item.type||'Activity');const incoming=/received|deposit|withdrawal complete|added to locker/i.test(type)||item.direction==='in';const negative=/sent/i.test(type)||item.direction==='out';const icon=/locker|deposit|withdraw/i.test(type)?'fa-vault':negative?'fa-paper-plane':'fa-arrow-down-left';const amt=item.amount===undefined?'':`${negative?'−':incoming?'+':''}${money(item.amount)} PCX`;const date=item.at?new Date(item.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'}):'Just now';row.innerHTML=`<div class="activity-icon ${incoming?'in':negative?'out':''}"><i class="fa-solid ${icon}"></i></div><div class="activity-copy"><strong>${escapeHTML(type)}</strong><small>${escapeHTML(item.detail||'PCX wallet activity')} · ${escapeHTML(date)}</small></div><div class="activity-amount ${incoming?'amount-positive':negative?'amount-negative':''}">${escapeHTML(amt)}</div>`;holder.appendChild(row)}
 }
 function renderHomeActivity(){renderActivity('homeActivity',4)}function renderFullActivity(){renderActivity('fullActivity',100)}
+function pinnedAccounts(){try{const v=JSON.parse(localStorage.getItem(pinnedAccountsKey())||'[]');return Array.isArray(v)?v.map(String):[]}catch{return []}}
+function pinnedAccountsKey(){return 'pcx_wallet_pinned_accounts_v1_'+String(currentUser?.username||'').toLowerCase()}
+function writePinnedAccounts(ids){localStorage.setItem(pinnedAccountsKey(),JSON.stringify([...new Set(ids.map(String))].slice(0,20)))}
+function activityRecipientId(item){if(item?.receiverId&&/^\d{5}$/.test(String(item.receiverId)))return String(item.receiverId);const match=String(item?.detail||'').match(/\b(\d{5})\b/);return match?match[1]:''}
+function recentPayeeStats(){const cutoff=Date.now()-15*24*60*60*1000;const stats={};for(const item of activityItems()){const when=Date.parse(item.at||'');if(!Number.isFinite(when)||when<cutoff||when>Date.now()+60000)continue;const id=activityRecipientId(item);if(!id)continue;if(!stats[id])stats[id]={count:0,last:0};stats[id].count++;stats[id].last=Math.max(stats[id].last,when)}return stats}
+function toggleSavedMenu(id){const menu=$('saved-menu-'+id);if(!menu)return;document.querySelectorAll('.saved-menu').forEach(m=>{if(m!==menu)m.classList.add('hidden')});menu.classList.toggle('hidden')}
+function renderSavedAccounts(){const holder=$('savedAccountsList');if(!holder||!currentUser)return;const ids=(Array.isArray(currentUser.friends)?currentUser.friends:[]).slice(0,20);const query=String($('savedSearchInput')?.value||'').trim().toLowerCase();const pinned=new Set(pinnedAccounts());const recent=recentPayeeStats();const saved=ids.map(id=>({id:String(id),user:users.find(u=>String(u.walletId)===String(id))||null})).sort((a,b)=>{const ap=pinned.has(a.id)?1:0,bp=pinned.has(b.id)?1:0;if(ap!==bp)return bp-ap;const ar=recent[a.id]?.last||0,br=recent[b.id]?.last||0;if(ar!==br)return br-ar;return String(a.user?.displayName||a.user?.username||a.id).localeCompare(String(b.user?.displayName||b.user?.username||b.id))});const list=saved.filter(({id,user})=>[id,user?.displayName,user?.username].some(x=>String(x||'').toLowerCase().includes(query)));holder.innerHTML='';$('savedCountTag').textContent=`${ids.length} / 20`;if(!list.length){holder.innerHTML=`<div class="empty-state"><i class="fa-solid fa-address-book"></i><strong>${ids.length?'No matches':'No saved accounts yet'}</strong><span>${ids.length?'Try a different name or wallet ID.':'Add a wallet ID above to make future payments easier.'}</span></div>`;return}for(const {id,user} of list){const name=String(user?.displayName||user?.username||'Wallet '+id);const isPinned=pinned.has(id);const recentInfo=recent[id];const row=document.createElement('div');row.className='saved-account-row';const safeName=escapeHTML(name);row.innerHTML=`<div class="saved-avatar">${escapeHTML(name.charAt(0).toUpperCase()||'P')}</div><div class="saved-account-copy"><strong>${safeName}</strong><small>Wallet ID · ${escapeHTML(id)}${user?.username?' · @'+escapeHTML(user.username):''}</small><div class="saved-account-badges">${isPinned?'<span class="saved-mini-badge pinned"><i class="fa-solid fa-thumbtack"></i> Pinned</span>':''}${recentInfo?`<span class="saved-mini-badge recent">Paid ${recentInfo.count}× in 15 days</span>`:''}${!user?'<span class="saved-mini-badge">Not found</span>':''}</div></div><div class="saved-account-actions"><button class="primary-btn saved-pay-btn" ${!user?'disabled':''} onclick="paySavedAccount('${id}')"><i class="fa-solid fa-paper-plane"></i> Pay</button><div class="saved-more-wrap"><button class="saved-more-btn" aria-label="More options for saved account ${id}" aria-expanded="false" onclick="toggleSavedMenu('${id}')">⋯</button><div class="saved-menu hidden" id="saved-menu-${id}"><button onclick="toggleSavedPin('${id}')"><i class="fa-solid fa-thumbtack"></i> ${isPinned?'Unpin account':'Pin account'}</button><button class="remove" onclick="removeSavedAccount('${id}')"><i class="fa-solid fa-trash"></i> Remove account</button></div></div></div>`;holder.appendChild(row)}}
+$('savedSearchInput').addEventListener('input',renderSavedAccounts);
+$('savedWalletIdInput').addEventListener('input',()=>{$('savedWalletIdInput').value=$('savedWalletIdInput').value.replace(/\D/g,'').slice(0,5);$('savedAddError').textContent=''});
+$('addSavedForm').addEventListener('submit',event=>{event.preventDefault();addSavedAccount()});
+async function addSavedAccount(){if(isBusy)return;const id=$('savedWalletIdInput').value.trim(),err=$('savedAddError');err.textContent='';if(!requireInternet()){err.textContent='No Internet connection. Saved accounts were not changed.';return}if(!/^\d{5}$/.test(id)){err.textContent='Enter a valid five-digit wallet ID.';return}if(String(id)===String(currentUser?.walletId)){err.textContent='You cannot save your own wallet.';return}if((currentUser?.friends||[]).length>=20){err.textContent='You can save up to 20 accounts.';return}if((currentUser?.friends||[]).map(String).includes(id)){err.textContent='This wallet is already saved.';return}isBusy=true;showLoader(true,'Saving account…');try{await fetchDatabase();const me=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());const target=users.find(u=>String(u.walletId)===id);if(!me)throw new Error('Your account could not be found.');if(!target)throw new Error('No account was found with that wallet ID.');if((me.friends||[]).length>=20)throw new Error('You can save up to 20 accounts.');if((me.friends||[]).map(String).includes(id))throw new Error('This wallet is already saved.');me.friends=[...(me.friends||[]),id].slice(0,20);db.users=users;await saveDatabase();await fetchDatabase();const persistedMe=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!persistedMe||(persistedMe.friends||[]).map(String).includes(id)===false)throw new Error('The database did not confirm the saved account.');currentUser=persistedMe;$('savedWalletIdInput').value='';showLoader(false);renderWallet();navigateTo('saved');toast('Account saved')}catch(e){showLoader(false);err.textContent=e.message||'Could not save account.';if(!navigator.onLine||/internet|network|fetch|failed to fetch|load failed|abort/i.test(String(e.message))) {offlineMode=true;setConnection(false,'No Internet');err.textContent='No Internet connection. Saved accounts were not changed.';if(restoreCachedSnapshot())renderWallet()}else{setUserFromDB(localStorage.getItem(localSessionKey));if(currentUser)renderWallet()}}finally{isBusy=false}}
+function toggleSavedPin(id){const pinned=pinnedAccounts();writePinnedAccounts(pinned.includes(String(id))?pinned.filter(x=>x!==String(id)):[...pinned,String(id)]);document.querySelectorAll('.saved-menu').forEach(m=>m.classList.add('hidden'));renderSavedAccounts();toast(pinned.includes(String(id))?'Account unpinned':'Account pinned')}
+function paySavedAccount(id){if(!requireInternet())return;const user=users.find(u=>String(u.walletId)===String(id));if(!user){toast('This saved wallet could not be found. Refresh and try again.','error');return}if(user.isBlocked||num(user.balance)>=WALLET_LIMIT){toast('This user cannot accept transactions right now.','error');return}$('transferReceiverId').value=String(id);$('transferAmount').value='';$('transferError').textContent='';updateRecipientPreview();document.querySelectorAll('.saved-menu').forEach(m=>m.classList.add('hidden'));navigateTo('send');setTimeout(()=>$('transferAmount').focus(),80)}
+function removeSavedAccount(id){document.querySelectorAll('.saved-menu').forEach(m=>m.classList.add('hidden'));if(!requireInternet())return;openConfirm('Remove saved account?','This removes the wallet from your saved list. It does not change either wallet balance.',()=>removeSavedAccountNow(String(id)),'Remove','danger')}
+async function removeSavedAccountNow(id){if(!requireInternet()||isBusy)return;isBusy=true;showLoader(true,'Removing saved account…');try{await fetchDatabase();const me=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!me)throw new Error('Your account could not be found.');me.friends=(me.friends||[]).filter(x=>String(x)!==id);db.users=users;await saveDatabase();await fetchDatabase();const persistedMe=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!persistedMe||(persistedMe.friends||[]).map(String).includes(id))throw new Error('The database did not confirm removing this account.');currentUser=persistedMe;writePinnedAccounts(pinnedAccounts().filter(x=>x!==id));showLoader(false);renderWallet();navigateTo('saved');toast('Saved account removed')}catch(e){showLoader(false);const netErr=!navigator.onLine||/internet|network|fetch|failed to fetch|load failed|abort/i.test(String(e.message));if(netErr){offlineMode=true;setConnection(false,'No Internet')}if(netErr&&restoreCachedSnapshot())renderWallet();else if(!netErr){setUserFromDB(localStorage.getItem(localSessionKey));if(currentUser)renderWallet()}toast(netErr?'No Internet connection. Nothing was changed.':(e.message||'Could not remove saved account.'),'error')}finally{isBusy=false}}
+
 function openClearActivity(){openConfirm('Clear local activity?','This only removes activity stored in this browser. It does not change wallet balances.',()=>{localStorage.removeItem(localActivityKey(currentUser.username));renderWallet();toast('Local activity cleared')},'Clear history','danger')}
 function confirmClearActivity(){openClearActivity()}
 function copyWalletId(){if(!currentUser?.walletId)return;const val=String(currentUser.walletId);if(navigator.clipboard?.writeText){navigator.clipboard.writeText(val).then(()=>toast('Wallet ID copied')).catch(()=>fallbackCopy(val))}else fallbackCopy(val)}
@@ -379,21 +479,22 @@ function fallbackCopy(text){const el=document.createElement('textarea');el.value
 $('transferReceiverId').addEventListener('input',()=>{const value=$('transferReceiverId').value.replace(/\D/g,'').slice(0,5);$('transferReceiverId').value=value;updateRecipientPreview()});
 function updateRecipientPreview(){const id=$('transferReceiverId').value;const target=users.find(u=>String(u.walletId)===id);const area=$('recipientPreview');if(id.length===5&&target){$('recipientAvatar').textContent=(target.displayName||target.username||'?').charAt(0).toUpperCase();$('recipientName').textContent=target.displayName||target.username||'PCX user';$('recipientMeta').textContent='Wallet ID · '+target.walletId;area.classList.remove('hidden')}else area.classList.add('hidden')}
 $('transferForm').addEventListener('submit',event=>{event.preventDefault();prepareTransfer($('transferReceiverId').value.trim(),$('transferAmount').value)});
+function parseWholeAmount(value){const raw=String(value??'').trim();if(!/^\d+$/.test(raw))return NaN;const amount=Number(raw);return Number.isSafeInteger(amount)&&amount>0?amount:NaN}
 function prepareTransfer(receiverId,amountValue){
-  $('transferError').textContent='';const amount=Number(amountValue);if(!/^\d{5}$/.test(receiverId)){ $('transferError').textContent='Enter a valid 5-digit receiver wallet ID.';return }
-  if(!Number.isFinite(amount)||amount<=0){$('transferError').textContent='Enter an amount greater than zero.';return}
+  $('transferError').textContent='';if(!requireInternet()){$('transferError').textContent='No Internet connection. Connect to send PCX.';return}const amount=parseWholeAmount(amountValue);if(!/^\d{5}$/.test(receiverId)){ $('transferError').textContent='Enter a valid 5-digit receiver wallet ID.';return }
+  if(!Number.isSafeInteger(amount)||amount<=0){$('transferError').textContent='Enter a valid PCX amount greater than zero.';return}
   const sender=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());const receiver=users.find(u=>String(u.walletId)===receiverId);
   if(!sender){$('transferError').textContent='Could not find your wallet. Please sign in again.';return}
   if(sender.isBlocked){checkBlocked(sender);return}
   if(!receiver){$('transferError').textContent='No wallet was found with that ID.';return}
-  if(receiver.isBlocked){$('transferError').textContent='This user cannot currently receive PCX.';return}
+  if(receiver.isBlocked||num(receiver.balance)>=WALLET_LIMIT||num(receiver.balance)+amount>WALLET_LIMIT){$('transferError').textContent='This user cannot accept transactions right now.';return}
   if(String(sender.walletId)===String(receiver.walletId)){$('transferError').textContent='You cannot send PCX to your own wallet.';return}
   if(num(sender.balance)<amount){$('transferError').textContent='Your available wallet balance is too low.';return}
-  if(num(receiver.balance)+amount>WALLET_LIMIT){$('transferError').textContent=`This transfer would exceed the receiver's ${WALLET_LIMIT.toLocaleString()} PCX wallet limit.`;return}
+  if(num(receiver.balance)+amount>WALLET_LIMIT){$('transferError').textContent='This user cannot accept transactions right now.';return}
   pendingAction={type:'transfer',receiverId,amount,receiverName:receiver.displayName||receiver.username||'PCX user'};setPinMode('transfer');buildKeypad();openView('pinView');
 }
 async function startTransferProcessing(){
-  if(!pendingAction||pendingAction.type!=='transfer')return;
+  if(!pendingAction||pendingAction.type!=='transfer')return;if(!requireInternet()){pendingAction=null;openView('walletView');navigateTo('send');return;}
   const action={...pendingAction};const timing=planCopy(normalizePlan(currentUser?.plan));
   const mark=$('processingMark');
   mark.classList.remove('is-complete');
@@ -416,41 +517,85 @@ async function startTransferProcessing(){
     openView('walletView');navigateTo('home');
   }catch(err){
     console.error(err);pendingAction=null;
-    try{await fetchDatabase();setUserFromDB(localStorage.getItem(localSessionKey));if(currentUser)renderWallet()}catch{}
-    openView('walletView');navigateTo('send');toast(err.message||'Transfer could not be completed','error');
+    try{await fetchDatabase();setUserFromDB(localStorage.getItem(localSessionKey));if(currentUser)renderWallet()}catch{offlineMode=true;setConnection(false,'No Internet');if(restoreCachedSnapshot())renderWallet()}
+    openView('walletView');navigateTo('send');toast(err.transferUnconfirmed?'Transfer not confirmed. Refresh balances before retrying.':(!navigator.onLine?'No Internet connection. Refresh before trying again.':(err.message||'Transfer could not be completed')),'error');
   }
 }
 async function commitTransfer(action){
-  // Read fresh balances immediately before writing; the available Worker API exposes whole-database GET/PUT, not an atomic transfer endpoint.
-  await fetchDatabase();const sender=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());const receiver=users.find(u=>String(u.walletId)===String(action.receiverId));
-  if(!sender||!receiver)throw new Error('A wallet could not be found. No balance was changed.');if(sender.isBlocked||receiver.isBlocked)throw new Error('A wallet is blocked. The transfer was stopped.');if(sender.walletId===receiver.walletId)throw new Error('You cannot transfer to yourself.');
-  const amount=Number(action.amount);if(!Number.isFinite(amount)||amount<=0)throw new Error('Invalid transfer amount.');if(num(sender.balance)<amount)throw new Error('Your latest balance is no longer sufficient.');if(num(receiver.balance)+amount>WALLET_LIMIT)throw new Error('The receiver would exceed the wallet balance limit.');
-  sender.balance=Math.round((num(sender.balance)-amount)*100)/100;receiver.balance=Math.round((num(receiver.balance)+amount)*100)/100;users=users.map(normalizeUser);db.users=users;
-  try{await saveDatabase()}catch(err){throw new Error('Could not save the transfer to the database. Please refresh balances before trying again. '+(err.message||''))}
-  currentUser=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());saveLocalActivity({type:'Sent PCX',amount,direction:'out',detail:`To ${action.receiverName} · ${action.receiverId}`});
+  // The available Worker API is whole-database GET/PUT, so re-read immediately before each write.
+  await fetchDatabase();
+  const username=String(currentUser.username).toLowerCase();
+  const sender=users.find(u=>String(u.username).toLowerCase()===username);
+  const receiver=users.find(u=>String(u.walletId)===String(action.receiverId));
+  if(!sender||!receiver)throw new Error('A wallet could not be found. No balance was changed.');
+  if(sender.isBlocked)throw new Error('Your account is blocked.');
+  if(sender.walletId===receiver.walletId)throw new Error('You cannot transfer to yourself.');
+  const amount=Number(action.amount);
+  if(!Number.isSafeInteger(amount)||amount<=0)throw new Error('Transfers must use integer PCX amounts.');
+  if(num(sender.balance)<amount)throw new Error('Your latest balance is no longer sufficient.');
+  if(receiver.isBlocked||num(receiver.balance)>=WALLET_LIMIT||num(receiver.balance)+amount>WALLET_LIMIT)throw new Error('This user cannot accept transactions right now.');
+  const beforeSender=num(sender.balance),beforeReceiver=num(receiver.balance);
+  const expectedSender=beforeSender-amount,expectedReceiver=beforeReceiver+amount;
+  sender.balance=expectedSender;receiver.balance=expectedReceiver;db.users=users;
+  let putError=null;
+  try{await saveDatabase()}catch(err){putError=err}
+  // Re-read the server state. A lost PUT response must not be treated as a failed transfer if it actually saved.
+  try{await fetchDatabase()}catch(err){offlineMode=true;setConnection(false,'No Internet');const uncertain=new Error('Transfer could not be confirmed. Refresh your balances before retrying; do not retry yet.');uncertain.transferUnconfirmed=true;throw uncertain}
+  const savedSender=users.find(u=>String(u.username).toLowerCase()===username);
+  const savedReceiver=users.find(u=>String(u.walletId)===String(action.receiverId));
+  if(savedSender&&savedReceiver&&num(savedSender.balance)===expectedSender&&num(savedReceiver.balance)===expectedReceiver){
+    currentUser=savedSender;
+    saveLocalActivity({type:'Sent PCX',amount,direction:'out',receiverId:String(action.receiverId),receiverName:String(action.receiverName||''),detail:`To ${action.receiverName} · ${action.receiverId}`});
+    return true;
+  }
+  if(savedSender&&savedReceiver&&num(savedSender.balance)===beforeSender&&num(savedReceiver.balance)===beforeReceiver){
+    throw new Error('Transfer was not saved. No balance changed. Please try again.');
+  }
+  const uncertain=new Error(putError?'Transfer was not confirmed by the database. Check the latest balances before retrying.':'The saved balances did not match this transfer. Refresh before retrying.');
+  uncertain.transferUnconfirmed=true;throw uncertain;
 }
 
 $('depositForm').addEventListener('submit',event=>{event.preventDefault();prepareLockerMove('deposit',$('depositAmount').value)});
 $('withdrawForm').addEventListener('submit',event=>{event.preventDefault();prepareLockerMove('withdraw',$('withdrawAmount').value)});
-function prepareLockerMove(mode,value){const amount=Number(value);const err=$(mode==='deposit'?'depositError':'withdrawError');err.textContent='';if(!Number.isFinite(amount)||amount<=0){err.textContent='Enter an amount greater than zero.';return}
+function prepareLockerMove(mode,value){const amount=parseWholeAmount(value);const err=$(mode==='deposit'?'depositError':'withdrawError');err.textContent='';if(!requireInternet()){err.textContent='No Internet connection. Connect before moving PCX.';return}if(!Number.isSafeInteger(amount)||amount<=0){err.textContent='Enter a valid PCX amount greater than zero.';return}
   if(mode==='deposit'&&amount>num(currentUser.balance)){err.textContent='Your wallet balance is too low for that deposit.';return}
   if(mode==='deposit'&&num(currentUser.lockerBalance)+amount>LOCKER_LIMIT){err.textContent='This would exceed the 100,000 PCX locker capacity.';return}
   if(mode==='withdraw'&&amount>num(currentUser.lockerBalance)){err.textContent='Your locker does not have enough PCX.';return}
   if(mode==='withdraw'&&num(currentUser.balance)+amount>WALLET_LIMIT){err.textContent=`This would exceed the wallet's ${WALLET_LIMIT.toLocaleString()} PCX cap.`;return}
   pendingAction={type:mode,amount};setPinMode(mode);buildKeypad();openView('pinView');
 }
-async function executeLockerMove(mode){const action={...pendingAction};if(!action||!['deposit','withdraw'].includes(mode))return;showLoader(true,mode==='deposit'?'Moving PCX into your locker…':'Moving PCX to your wallet…');
+async function executeLockerMove(mode){
+  const action={...pendingAction};if(!action||!['deposit','withdraw'].includes(mode))return;
+  if(!requireInternet()){pendingAction=null;openView('walletView');navigateTo('locker');return}
+  if(isBusy)return;isBusy=true;showLoader(true,mode==='deposit'?'Moving PCX into your locker…':'Moving PCX to your wallet…');
+  const username=String(currentUser.username).toLowerCase();let writeAttempted=false;
   try{
-    await fetchDatabase();const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!user)throw new Error('Your wallet could not be found.');if(user.isBlocked)throw new Error('Your account is blocked.');const amount=Number(action.amount);
-    if(mode==='deposit'){if(amount>num(user.balance))throw new Error('Your latest wallet balance is too low.');if(num(user.lockerBalance)+amount>LOCKER_LIMIT)throw new Error('Locker capacity exceeded.');user.balance=Math.round((num(user.balance)-amount)*100)/100;user.lockerBalance=Math.round((num(user.lockerBalance)+amount)*100)/100;}
-    else{if(amount>num(user.lockerBalance))throw new Error('Your latest locker balance is too low.');if(num(user.balance)+amount>WALLET_LIMIT)throw new Error('Wallet capacity exceeded.');user.lockerBalance=Math.round((num(user.lockerBalance)-amount)*100)/100;user.balance=Math.round((num(user.balance)+amount)*100)/100;}
-    db.users=users;await saveDatabase();currentUser=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());saveLocalActivity({type:mode==='deposit'?'Added to locker':'Withdrew from locker',amount,direction:mode==='deposit'?'out':'in',detail:mode==='deposit'?'Wallet → locker':'Locker → wallet'});pendingAction=null;$('depositAmount').value='';$('withdrawAmount').value='';showLoader(false);renderWallet();openView('walletView');navigateTo('locker');toast(mode==='deposit'?'PCX added to your locker instantly':'PCX withdrawn instantly');
-  }catch(err){console.error(err);showLoader(false);pendingAction=null;try{await fetchDatabase();setUserFromDB(localStorage.getItem(localSessionKey));if(currentUser)renderWallet()}catch{}openView('walletView');navigateTo('locker');toast(err.message||'Locker move failed','error')}
+    await fetchDatabase();const user=users.find(u=>String(u.username).toLowerCase()===username);if(!user)throw new Error('Your wallet could not be found.');if(user.isBlocked)throw new Error('Your account is blocked.');
+    const amount=Number(action.amount);if(!Number.isSafeInteger(amount)||amount<=0)throw new Error('Locker moves must use integer PCX amounts.');
+    const beforeWallet=num(user.balance),beforeLocker=num(user.lockerBalance);
+    if(mode==='deposit'){if(amount>beforeWallet)throw new Error('Your latest wallet balance is too low.');if(beforeLocker+amount>LOCKER_LIMIT)throw new Error('Locker capacity exceeded.');user.balance=beforeWallet-amount;user.lockerBalance=beforeLocker+amount;}
+    else{if(amount>beforeLocker)throw new Error('Your latest locker balance is too low.');if(beforeWallet+amount>WALLET_LIMIT)throw new Error('Wallet capacity exceeded.');user.lockerBalance=beforeLocker-amount;user.balance=beforeWallet+amount;}
+    const expectedWallet=num(user.balance),expectedLocker=num(user.lockerBalance);db.users=users;
+    writeAttempted=true;let putError=null;try{await saveDatabase()}catch(err){putError=err}
+    try{await fetchDatabase()}catch(err){offlineMode=true;setConnection(false,'No Internet');throw new Error('Locker move was submitted but could not be confirmed. Refresh before retrying; do not retry yet.')}
+    const savedUser=users.find(u=>String(u.username).toLowerCase()===username);
+    if(!savedUser||num(savedUser.balance)!==expectedWallet||num(savedUser.lockerBalance)!==expectedLocker){
+      if(savedUser&&num(savedUser.balance)===beforeWallet&&num(savedUser.lockerBalance)===beforeLocker)throw new Error(putError?'Locker move was not saved. No balance changed.':'Locker move was not saved. No balance changed.');
+      throw new Error('Locker move was not confirmed. Refresh before retrying; do not retry yet.');
+    }
+    currentUser=savedUser;saveLocalActivity({type:mode==='deposit'?'Added to locker':'Withdrew from locker',amount,direction:mode==='deposit'?'out':'in',detail:mode==='deposit'?'Wallet → locker':'Locker → wallet'});pendingAction=null;$('depositAmount').value='';$('withdrawAmount').value='';showLoader(false);renderWallet();openView('walletView');navigateTo('locker');toast(mode==='deposit'?'PCX added to your locker':'PCX withdrawn from your locker');
+  }catch(err){
+    console.error(err);pendingAction=null;showLoader(false);
+    if(!offlineMode){try{await fetchDatabase();setUserFromDB(username)}catch{offlineMode=true;setConnection(false,'No Internet')}}
+    if(offlineMode)restoreCachedSnapshot();
+    if(currentUser)renderWallet();openView('walletView');navigateTo('locker');
+    const message=(!navigator.onLine||offlineMode)?(writeAttempted?'Locker move not confirmed. Refresh balances before retrying.':'No Internet connection. Nothing was changed.'):(err.message||'Locker move failed');toast(message,'error');
+  }finally{isBusy=false}
 }
 
-function beginNameChange(){const newName=canonicalName($('newDisplayName').value);if(newName.length<2){toast('Display name must be at least 2 characters','error');return}pendingAction={type:'changeName',newName};setPinMode('changeName');buildKeypad();openView('pinView')}
-async function executeNameChange(){if(!pendingAction?.newName)return;showLoader(true,'Saving your profile…');try{await fetchDatabase();const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!user)throw new Error('Account not found.');user.displayName=pendingAction.newName;db.users=users;await saveDatabase();currentUser=user;pendingAction=null;$('newDisplayName').value='';showLoader(false);renderWallet();openView('walletView');navigateTo('profile');toast('Display name updated')}catch(err){showLoader(false);pendingAction=null;openView('walletView');navigateTo('profile');toast(err.message||'Could not update name','error')}}
-function beginPasswordChange(){pendingAction={type:'changePassword'};setPinMode('changePassword');buildKeypad();openView('pinView')}
+function beginNameChange(){if(!requireInternet())return;const newName=canonicalName($('newDisplayName').value);if(newName.length<2){toast('Display name must be at least 2 characters','error');return}pendingAction={type:'changeName',newName};setPinMode('changeName');buildKeypad();openView('pinView')}
+async function executeNameChange(){if(!pendingAction?.newName)return;if(!requireInternet())return;isBusy=true;showLoader(true,'Saving your profile…');try{await fetchDatabase();const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!user)throw new Error('Account not found.');user.displayName=pendingAction.newName;db.users=users;await saveDatabase();await fetchDatabase();const savedUser=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!savedUser||String(savedUser.displayName)!==String(pendingAction.newName))throw new Error('The database did not confirm the name change.');currentUser=savedUser;pendingAction=null;$('newDisplayName').value='';showLoader(false);renderWallet();openView('walletView');navigateTo('profile');toast('Display name updated')}catch(err){showLoader(false);pendingAction=null;openView('walletView');navigateTo('profile');const netErr=!navigator.onLine||/internet|network|fetch|failed to fetch|load failed|abort/i.test(String(err.message));if(netErr){offlineMode=true;setConnection(false,'No Internet');if(restoreCachedSnapshot())renderWallet()}toast(netErr?'No Internet connection. Nothing was changed.':(err.message||'Could not update name'),'error')}finally{isBusy=false}}
+function beginPasswordChange(){if(!requireInternet())return;pendingAction={type:'changePassword'};setPinMode('changePassword');buildKeypad();openView('pinView')}
 function openPasswordChangeModal(){
   $('changePasswordForm').reset();$('changePasswordError').textContent='';
   openView('walletView');navigateTo('profile');$('changePasswordModal').classList.add('open');
@@ -461,7 +606,7 @@ function closePasswordChangeModal(){
   if(pendingAction?.type==='changePassword')pendingAction=null;
 }
 $('changePasswordForm').addEventListener('submit',async event=>{
-  event.preventDefault();if($('saveNewPasswordBtn').disabled)return;
+  event.preventDefault();if($('saveNewPasswordBtn').disabled)return;if(!requireInternet()){$('changePasswordError').textContent='No Internet connection. Password was not changed.';return}
   const currentPassword=$('currentPasswordInput').value;
   const newPassword=$('newPasswordInput').value;
   const confirmPassword=$('confirmNewPasswordInput').value;
@@ -469,7 +614,7 @@ $('changePasswordForm').addEventListener('submit',async event=>{
   if(newPassword.length<8){error.textContent='Use at least 8 characters for your new password.';return}
   if(newPassword===currentPassword){error.textContent='Choose a password different from your current one.';return}
   if(newPassword!==confirmPassword){error.textContent='The new passwords do not match.';$('confirmNewPasswordInput').focus();return}
-  $('saveNewPasswordBtn').disabled=true;showLoader(true,'Updating password…');
+  $('saveNewPasswordBtn').disabled=true;if(isBusy){$('saveNewPasswordBtn').disabled=false;return}isBusy=true;showLoader(true,'Updating password…');
   try{
     const username=currentUser?.username;
     if(!username)throw new Error('Please sign in again.');
@@ -477,24 +622,24 @@ $('changePasswordForm').addEventListener('submit',async event=>{
     const user=users.find(u=>String(u.username||'').toLowerCase()===String(username).toLowerCase());
     if(!user)throw new Error('Account not found. Please sign in again.');
     if(String(user.password??'')!==currentPassword){showLoader(false);error.textContent='Your current password is incorrect.';$('currentPasswordInput').value='';$('currentPasswordInput').focus();return}
-    user.password=newPassword;db.users=users;await saveDatabase();currentUser=user;
+    user.password=newPassword;db.users=users;await saveDatabase();await fetchDatabase();const savedUser=users.find(u=>String(u.username).toLowerCase()===String(username).toLowerCase());if(!savedUser||String(savedUser.password??'')!==newPassword)throw new Error('The database did not confirm the password change.');currentUser=savedUser;
     showLoader(false);closePasswordChangeModal();renderWallet();openView('walletView');navigateTo('profile');toast('Password updated');
-  }catch(err){showLoader(false);error.textContent=err.message||'Could not update your password.'}
-  finally{$('saveNewPasswordBtn').disabled=false}
+  }catch(err){showLoader(false);const netErr=!navigator.onLine||/internet|network|fetch|failed to fetch|load failed|abort/i.test(String(err.message));error.textContent=netErr?'No Internet connection. Password was not confirmed.':(err.message||'Could not update your password.');if(netErr){offlineMode=true;setConnection(false,'No Internet');if(restoreCachedSnapshot())renderWallet()}}
+  finally{$('saveNewPasswordBtn').disabled=false;isBusy=false}
 });
 
 function askLogout(){openConfirm('Sign out of Playcentrix Wallet?','You will need your account credentials again to sign in on this device.',()=>logout(false),'Sign out','primary')}
 function logout(silent=false){$('blockedScreen').classList.remove('visible');localStorage.removeItem(localSessionKey);currentUser=null;pendingAction=null;enteredPin='';isVerifying=false;openView('loginView');$('loginPassword').value='';$('loginError').textContent='';if(!silent)toast('You have been signed out');}
-function openDeleteModal(){$('deleteAuthPassword').value='';$('deleteAuthError').textContent='';$('deleteAuthModal').classList.add('open');setTimeout(()=>$('deleteAuthPassword').focus(),80)}
+function openDeleteModal(){if(!requireInternet())return;$('deleteAuthPassword').value='';$('deleteAuthError').textContent='';$('deleteAuthModal').classList.add('open');setTimeout(()=>$('deleteAuthPassword').focus(),80)}
 function closeDeleteAuth(){$('deleteAuthModal').classList.remove('open');$('deleteAuthPassword').value='';$('deleteAuthError').textContent=''}
 function verifyDeletePassword(){const supplied=$('deleteAuthPassword').value;const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser?.username||'').toLowerCase());if(!user||String(user.password??'')!==supplied){$('deleteAuthError').textContent='The password is incorrect.';$('deleteAuthPassword').value='';$('deleteAuthPassword').focus();return}closeDeleteAuth();pendingAction={type:'deleteAccount'};setPinMode('deleteAccount');buildKeypad();openView('pinView')}
-async function deleteAccountNow(){showLoader(true,'Deleting wallet account…');try{await fetchDatabase();const username=String(currentUser.username).toLowerCase();users=users.filter(u=>String(u.username).toLowerCase()!==username);db.users=users;await saveDatabase();localStorage.removeItem(localActivityKey(currentUser.username));showLoader(false);logout(true);toast('Account deleted')}catch(err){showLoader(false);toast(err.message||'Account deletion failed','error');}}
+async function deleteAccountNow(){if(!requireInternet()||isBusy)return;isBusy=true;showLoader(true,'Deleting wallet account…');try{await fetchDatabase();const username=String(currentUser.username).toLowerCase();users=users.filter(u=>String(u.username).toLowerCase()!==username);db.users=users;await saveDatabase();await fetchDatabase();if(users.some(u=>String(u.username).toLowerCase()===username))throw new Error('The database did not confirm account deletion.');localStorage.removeItem(localActivityKey(currentUser.username));showLoader(false);logout(true);toast('Account deleted')}catch(err){showLoader(false);const netErr=!navigator.onLine||/internet|network|fetch|failed to fetch|load failed|abort/i.test(String(err.message));if(netErr){offlineMode=true;setConnection(false,'No Internet')}if(netErr&&restoreCachedSnapshot())renderWallet();toast(netErr?'No Internet connection. Account deletion was not confirmed.':(err.message||'Account deletion failed'),'error')}finally{isBusy=false}}
 
 function openConfirm(title,message,action,label='Confirm',kind='primary'){$('confirmTitle').textContent=title;$('confirmText').textContent=message;$('confirmActionBtn').textContent=label;$('confirmActionBtn').className=(kind==='danger'?'danger-btn':'primary-btn');confirmAction=action;$('confirmModal').classList.add('open')}
 function closeConfirm(){$('confirmModal').classList.remove('open');confirmAction=null}
 function runConfirmAction(){const action=confirmAction;closeConfirm();if(typeof action==='function')action()}
-function refreshNow(){if(isBusy)return;showLoader(true,'Refreshing wallet balances…');reloadDatabase().then(()=>{showLoader(false);toast('Wallet refreshed')}).catch(err=>{showLoader(false);toast(err.message||'Refresh failed','error')})}
-async function silentRefresh(){if(!currentUser||isBusy||isVerifying||$('processingView').classList.contains('active')||$('pinView').classList.contains('active'))return;try{const oldBalance=num(currentUser.balance),oldLocker=num(currentUser.lockerBalance);await fetchDatabase();const uname=currentUser.username;currentUser=users.find(u=>String(u.username).toLowerCase()===String(uname).toLowerCase());if(!currentUser){logout(true);toast('This wallet no longer exists','error');return}if(checkBlocked(currentUser))return;renderWallet();if(oldBalance!==num(currentUser.balance)||oldLocker!==num(currentUser.lockerBalance))setConnection(true,'Synced');else setConnection(true,'Connected')}catch(err){setConnection(false,'Offline')}}
+function refreshNow(){if(isBusy)return;showLoader(true,'Refreshing wallet balances…');reloadDatabase().then(()=>{offlineMode=false;showLoader(false);toast('Wallet refreshed')}).catch(err=>{offlineMode=true;setConnection(false,'No Internet');showLoader(false);toast('No Internet connection. Showing last synced data.','error')})}
+async function silentRefresh(){if(!currentUser||isBusy||isVerifying||$('processingView').classList.contains('active'))return;try{const uname=currentUser.username;const oldBalance=num(currentUser.balance),oldLocker=num(currentUser.lockerBalance);await fetchDatabase();currentUser=users.find(u=>String(u.username).toLowerCase()===String(uname).toLowerCase());if(!currentUser){logout(true);toast('This wallet no longer exists','error');return}offlineMode=false;if(checkBlocked(currentUser))return;renderWallet();setConnection(true,(oldBalance!==num(currentUser.balance)||oldLocker!==num(currentUser.lockerBalance))?'Synced':'Connected')}catch(err){offlineMode=true;setConnection(false,'No Internet')}}
 
 function openQRModal(tab='send'){$('qrModal').classList.add('open');$('manualQRId').value='';switchQRTab(tab)}
 function closeQRModal(){$('qrModal').classList.remove('open');stopQRScanner()}
@@ -508,7 +653,7 @@ function generateReceiveQR(){if(!currentUser)return;$('myWalletIdDisplay').textC
 
 document.addEventListener('keydown',event=>{if($('pinView').classList.contains('active')){if(/^\d$/.test(event.key)){event.preventDefault();pinInput(event.key)}else if(event.key==='Backspace'&&!isVerifying){enteredPin=enteredPin.slice(0,-1);updatePinDots()}else if(event.key==='Escape')cancelPinFlow()}if(event.key==='Escape'){$('qrModal').classList.remove('open');$('confirmModal').classList.remove('open');$('deleteAuthModal').classList.remove('open');closePasswordChangeModal();stopQRScanner()}});
 $('qrModal').addEventListener('click',event=>{if(event.target===$('qrModal'))closeQRModal()});$('confirmModal').addEventListener('click',event=>{if(event.target===$('confirmModal'))closeConfirm()});$('changePasswordModal').addEventListener('click',event=>{if(event.target===$('changePasswordModal'))closePasswordChangeModal()});
-window.addEventListener('online',()=>setConnection(true,'Connected'));window.addEventListener('offline',()=>setConnection(false,'Offline'));
+window.addEventListener('online',()=>{if(currentUser)silentRefresh();else fetchDatabase().then(()=>setConnection(true,'Connected')).catch(()=>{offlineMode=true;setConnection(false,'No Internet')})});window.addEventListener('offline',()=>{offlineMode=true;setConnection(false,'No Internet')});
 boot();
 </script>
 </body>

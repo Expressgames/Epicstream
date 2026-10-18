@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Playcentrix Wallet</title>
+<link rel="icon" type="image/png" sizes="32x32" href="https://i.ibb.co/FbTRW7gJ/IMG-2108.png">
+<link rel="icon" type="image/png" sizes="16x16" href="https://i.ibb.co/FbTRW7gJ/IMG-2108.png">
+<link rel="apple-touch-icon" sizes="180x180" href="https://i.ibb.co/FbTRW7gJ/IMG-2108.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+<style>
+    :root {
+        --primary: #ffffff; /* Sleek White Accent */
+        --bg: #0b0f19;      /* Deep Modern Slate */
+        --card-bg: rgba(20, 25, 35, 0.6);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text: #f8fafc;
+        --text-muted: #94a3b8;
+        --font-main: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: var(--font-main);
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+        height: 100vh;
+        width: 100vw;
+        background-color: var(--bg);
+        background-image: 
+            radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+            radial-gradient(circle at 85% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        color: var(--text);
+    }
+
+    .app-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 400px;
+        height: 100%;
+        max-height: 850px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .screen {
+        position: absolute;
+        width: 100%;
+        padding: 40px 30px;
+        background: var(--card-bg);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-radius: 32px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(40px) scale(0.95);
+        transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.6s;
+    }
+
+    .screen.active {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+        z-index: 10;
+    }
+
+    .brand {
+        text-align: center;
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 40px;
+        color: var(--primary);
+    }
+    
+    h2 { font-weight: 700; font-size: 22px; margin-bottom: 8px; }
+    p.subtitle { color: var(--text-muted); font-size: 14px; margin-bottom: 30px; }
+
+    .input-field {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .input-field i {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-muted);
+        transition: 0.3s;
+    }
+
+    input {
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid var(--glass-border);
+        padding: 18px 20px 18px 55px;
+        border-radius: 16px;
+        color: white;
+        font-size: 15px;
+        outline: none;
+        transition: all 0.3s ease;
+    }
+
+    input:focus {
+        border-color: var(--primary);
+        background: rgba(255, 255, 255, 0.05);
+    }
+    
+    input:focus + i { color: var(--primary); }
+
+    .btn-main {
+        width: 100%;
+        padding: 18px;
+        border-radius: 16px;
+        border: none;
+        background: var(--text);
+        color: #000;
+        font-weight: 700;
+        font-size: 15px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: 0.3s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,255,255,0.08); }
+    .btn-main:active { transform: scale(0.98); }
+
+    .btn-logout {
+        margin-top: 15px;
+        background: rgba(239, 68, 68, 0.05);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+    .btn-logout:hover { background: #ef4444; color: white; }
+
+    .plan-status-bar {
+        width: 100%;
+        padding: 16px;
+        border-radius: 14px;
+        border: 1px solid var(--glass-border);
+        background: rgba(255,255,255,0.02);
+        color: var(--text-muted);
+        font-weight: 600;
+        font-size: 14px;
+        text-align: center;
+        margin-top: 0;
+        pointer-events: none; 
+        cursor: default;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+    .plan-highlight {
+        color: var(--primary);
+        font-weight: 800;
+        margin-left: 8px;
+    }
+
+    .pin-dots {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 40px;
+    }
+    .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.15);
+        transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .dot.active {
+        background: var(--primary);
+        transform: scale(1.2);
+    }
+
+    .keypad {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        padding: 0 20px;
+    }
+    .key {
+        height: 65px;
+        width: 65px;
+        margin: 0 auto;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        font-weight: 500;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid transparent;
+        cursor: pointer;
+        transition: 0.2s;
+        user-select: none;
+    }
+    .key:hover { background: rgba(255,255,255,0.1); }
+    .key:active { background: var(--primary); color: #000; transform: scale(0.9); }
+
+    .key-action {
+        font-size: 18px;
+        font-weight: 600;
+        background: rgba(239, 68, 68, 0.05);
+        color: #ef4444;
+        border: 1px solid rgba(239, 68, 68, 0.1);
+    }
+    .key-action:hover { background: #ef4444; color: white; }
+
+    .card-container {
+        perspective: 1000px;
+        margin: 10px 0 25px 0;
+    }
+
+    .premium-card {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1.586;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        overflow: hidden;
+        border: 1px solid rgba(255,255,255,0.15);
+        box-shadow: 0 20px 40px -10px rgba(0,0,0,0.8);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        transition: transform 0.5s ease;
+    }
+
+    .premium-card:hover { transform: rotateX(4deg) rotateY(4deg); }
+
+    .premium-card::before {
+        content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+        background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05), transparent 60%);
+        pointer-events: none;
+    }
+
+    /* Card Shine Effect */
+    .premium-card::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(125deg, transparent 30%, rgba(255,255,255,0.1) 45%, transparent 50%);
+        background-size: 200% 200%;
+        animation: shine 6s infinite linear;
+        pointer-events: none;
+    }
+    @keyframes shine { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+    .card-top { display: flex; justify-content: space-between; align-items: flex-start; z-index: 2; }
+    
+    /* Golden Chip Restored */
+    .chip {
+        width: 45px; height: 32px;
+        background: linear-gradient(135deg, #fbbf24, #d97706);
+        border-radius: 6px; position: relative;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    
+    .contactless { font-size: 24px; color: rgba(255,255,255,0.6); transform: rotate(90deg); }
+
+    .balance-group { z-index: 2; margin-top: 10px; }
+    .balance-label { font-size: 10px; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; }
+    .balance-amount { font-size: 32px; font-weight: 700; color: #fff; }
+
+    .card-bottom { display: flex; justify-content: space-between; align-items: flex-end; z-index: 2; }
+    .card-holder { font-size: 15px; font-weight: 600; letter-spacing: 2px; color: rgba(255,255,255,0.9); }
+    .card-logo { font-size: 24px; font-weight: 800; font-style: italic; opacity: 0.9; letter-spacing: -1px; }
+
+    .loader {
+        position: fixed; top:0; left:0; width:100%; height:100%;
+        background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(10px);
+        z-index: 100; display: none; justify-content: center; align-items: center; transition: opacity 0.3s;
+    }
+    .loader.visible { display: flex; }
+    
+    .spinner {
+        width: 40px; height: 40px;
+        border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--primary);
+        border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    #error-msg { color: #ef4444; text-align: center; margin-top: 15px; font-size: 13px; min-height: 20px; }
+
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.7); backdrop-filter: blur(8px);
+        z-index: 200; display: flex; justify-content: center; align-items: center;
+        opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: auto; }
+
+    .modal-box {
+        background: #111827; border: 1px solid var(--glass-border); padding: 30px;
+        border-radius: 24px; width: 85%; max-width: 340px; text-align: center;
+        transform: scale(0.9) translateY(20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+    }
+    .modal-overlay.open .modal-box { transform: scale(1) translateY(0); }
+
+    .modal-actions { display: flex; gap: 10px; margin-top: 25px; }
+    .btn-modal {
+        flex: 1; padding: 14px; border-radius: 12px; border: none;
+        font-weight: 600; cursor: pointer; font-size: 14px; transition: 0.2s;
+    }
+    .btn-modal:active { transform: scale(0.95); }
+    .btn-cancel { background: rgba(255,255,255,0.08); color: white; }
+    .btn-confirm { background: #ef4444; color: white; }
+    .btn-primary-modal { background: var(--primary); color: #000; }
+
+    .toast {
+        position: fixed; top: 20px; right: 20px; padding: 16px 24px;
+        background: #1e293b; color: white; border-left: 4px solid var(--primary);
+        border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+        transform: translateX(150%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        z-index: 9999; font-weight: 600; font-size: 13px;
+    }
+    .toast.show { transform: translateX(0); }
+    .toast.error { border-left-color: #ef4444; }
+
+    .blocked-overlay {
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(11, 15, 25, 0.95); backdrop-filter: blur(20px);
+        z-index: 9000; display: none; flex-direction: column;
+        justify-content: center; align-items: center; text-align: center;
+    }
+    .blocked-overlay.visible { display: flex; }
+    
+    .qr-tabs { display: flex; background: rgba(255,255,255,0.04); border-radius: 12px; margin-bottom: 20px; padding: 5px; }
+    .qr-tab { flex: 1; padding: 12px; text-align: center; border-radius: 8px; cursor: pointer; font-size: 13px; font-weight: 600; color: var(--text-muted); transition: 0.3s; }
+    .qr-tab.active { background: var(--primary); color: #000; }
+    
+    #qr-reader { width: 100%; border-radius: 16px; overflow: hidden; margin-bottom: 15px; border: 1px solid var(--glass-border); background: #000; }
+    #qr-reader video { object-fit: cover; width: 100%; border-radius: 16px; } 
+    #qrcode-container img { margin: 0 auto; border-radius: 8px; }
+    
+    .settings-btn {
+        padding: 8px 16px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border);
+        border-radius: 12px; display: flex; align-items: center; gap: 8px; cursor: pointer; transition: 0.2s;
+    }
+    .settings-btn:hover { background: rgba(255,255,255,0.1); }
+    .settings-btn span { font-size: 12px; font-weight: 600; color: var(--text); }
+    .settings-btn i { font-size: 14px; color: var(--primary); }
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast"></div>
+
+<div class="blocked-overlay" id="blockedOverlay">
+    <div style="background: var(--card-bg); padding: 40px; border-radius: 24px; border: 1px solid rgba(239, 68, 68, 0.4); text-align: center; width: 85%; max-width: 320px;">
+        <i class="fas fa-ban" style="font-size: 48px; color: #ef4444; margin-bottom: 20px;"></i>
+        <h2 style="color: #ef4444; margin-bottom: 10px;">Account Blocked</h2>
+        <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 30px; line-height: 1.5;">This Account Has Been Blocked.<br>Please Contact Support.</p>
+        <button class="btn-main btn-logout" onclick="executeLogout()" style="margin-top: 0;">Log Out</button>
+    </div>
+</div>
+
+<div class="app-wrapper">
+    
+    <div class="loader" id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div class="modal-overlay" id="deleteWarningModal">
+        <div class="modal-box" style="border-color: #ef4444;">
+            <i class="fas fa-exclamation-triangle" style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
+            <h3>Critical Warning</h3>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 10px; line-height:1.5;">Your account and all associated PCX will be permanently deleted. This action is <b>NOT recoverable</b>.</p>
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="cancelDelete()">Cancel</button>
+                <button class="btn-modal btn-confirm" onclick="finalizeAccountDeletion()">Yes, Delete Forever</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="deletePasswordModal">
+        <div class="modal-box">
+            <i class="fas fa-user-times" style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
+            <h3>Delete Account</h3>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px; margin-bottom: 20px;">Enter your password to proceed.</p>
+            <div class="input-field">
+                <input type="password" id="deleteAuthPassword" placeholder="Current Password">
+                <i class="fas fa-key"></i>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="closeDeletePasswordModal()">Cancel</button>
+                <button class="btn-modal btn-confirm" onclick="verifyPasswordForDelete()">Proceed</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-box">
+            <i class="fas fa-cog" style="font-size: 30px; color: var(--primary); margin-bottom: 15px;"></i>
+            <h3>Preferences</h3>
+            
+            <div style="margin-top: 25px; text-align: left;">
+                <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; font-weight: 700;">Change Display Name</p>
+                <div class="input-field" style="margin-bottom: 10px;">
+                    <input type="text" id="newDisplayName" placeholder="New Name (Max 15)" maxlength="15" autocomplete="off">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <button class="btn-main" style="padding: 14px; font-size: 13px; margin-top: 0;" onclick="initiateNameChange()">Update Name</button>
+            </div>
+
+            <div style="margin-top: 30px; border-top: 1px solid var(--glass-border); padding-top: 20px;">
+                <button class="btn-main btn-logout" style="padding: 14px; font-size: 13px; margin-top: 0;" onclick="openDeletePasswordModal()">Delete Account</button>
+            </div>
+
+            <button class="btn-modal btn-cancel" style="width: 100%; margin-top: 20px;" onclick="closeSettingsModal()">Close</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal-box">
+            <i class="fas fa-sign-out-alt" style="font-size: 30px; color: #ef4444; margin-bottom: 15px;"></i>
+            <h3>Log Out?</h3>
+            <p style="color: var(--text-muted); font-size: 14px; margin-top: 5px;">Are you sure you want to end your session?</p>
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="hideLogoutConfirm()">Cancel</button>
+                <button class="btn-modal btn-confirm" onclick="executeLogout()">Yes, Logout</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="transferModal">
+        <div class="modal-box">
+            <i class="fas fa-paper-plane" style="font-size: 30px; color: var(--primary); margin-bottom: 15px;"></i>
+            <h3>Transfer Credits</h3>
+            <p style="color: var(--text-muted); font-size: 13px; margin-top: 5px; margin-bottom: 20px;">Send funds instantly and securely.</p>
+            
+            <div class="input-field">
+                <input type="text" id="transferReceiverId" placeholder="Receiver ID (5 Digits)" maxlength="5" autocomplete="off" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                <i class="fas fa-wallet"></i>
+            </div>
+
+            <div class="input-field" style="margin-bottom: 10px;">
+                <input type="number" id="transferAmount" placeholder="Amount" min="0" step="any" inputmode="decimal">
+                <i class="fas fa-coins"></i>
+            </div>
+            
+            <div id="transfer-error" style="color: #ef4444; font-size: 12px; min-height: 15px;"></div>
+
+            <div class="modal-actions">
+                <button class="btn-modal btn-cancel" onclick="closeTransferModal()">Cancel</button>
+                <button class="btn-modal btn-primary-modal" onclick="initiateTransfer()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="qrModal">
+        <div class="modal-box">
+            <div class="qr-tabs">
+                <div class="qr-tab active" id="tabSend" onclick="switchQRTab('send')">Send</div>
+                <div class="qr-tab" id="tabReceive" onclick="switchQRTab('receive')">Receive</div>
+            </div>
+            
+            <div id="qrSendContent">
+                <div id="qr-reader"></div>
+                <div id="qrAmountSection" style="display: none;">
+                    <p style="color: var(--primary); font-size: 14px; font-weight: 600; margin-bottom: 15px;" id="qrScannedId"></p>
+                    <div class="input-field" style="margin-bottom: 10px;">
+                        <input type="number" id="qrTransferAmount" placeholder="Enter Amount" min="0" step="any" inputmode="decimal">
+                        <i class="fas fa-coins"></i>
+                    </div>
+                    <div id="qr-transfer-error" style="color: #ef4444; font-size: 12px; min-height: 15px; margin-bottom:10px;"></div>
+                    <button class="btn-main" style="background: var(--primary); color: #000; margin-top: 0;" onclick="proceedQRTransfer()">Pay Now</button>
+                </div>
+            </div>
+
+            <div id="qrReceiveContent" style="display: none;">
+                <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 15px;">Scan this code to receive PCX.</p>
+                <div id="qrcode-container" style="background: white; padding: 15px; border-radius: 12px; display: inline-block;"></div>
+                <p style="font-size: 20px; font-weight: 800; margin-top: 15px; letter-spacing: 2px;" id="myWalletIdDisplay"></p>
+            </div>
+
+            <button class="btn-modal btn-cancel" style="width: 100%; margin-top: 15px;" onclick="closeQRModal()">Close</button>
+        </div>
+    </div>
+
+    <div class="screen active" id="loginScreen">
+        <div class="brand"><i class="fas fa-layer-group" style="margin-right:8px;"></i> Playcentrix Wallet</div>
+        <div style="text-align:center;">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Enter your credentials to access your vault.</p>
+        </div>
+
+        <div class="input-field">
+            <input type="text" id="username" placeholder="Username" autocomplete="off">
+            <i class="fas fa-user-circle"></i>
+        </div>
+
+        <div class="input-field">
+            <input type="password" id="password" placeholder="Password">
+            <i class="fas fa-lock"></i>
+        </div>
+
+        <button class="btn-main" onclick="attemptLogin()">Secure Sign In</button>
+        <div id="error-msg"></div>
+    </div>
+
+    <div class="screen" id="pinScreen">
+        <div style="text-align:center; margin-bottom:20px;">
+            <i class="fas fa-shield-alt" style="font-size:30px; color:var(--primary); margin-bottom:15px;"></i>
+            <h2 id="pinTitle">Security Check</h2>
+            <p class="subtitle" id="pinSubtitle">Enter your 4-digit PIN</p>
+        </div>
+
+        <div class="pin-dots" id="dots">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+
+        <div class="keypad" id="keypad"></div>
+    </div>
+
+    <div class="screen" id="dashScreen">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+            <div>
+                <p style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:1px;">Good Day,</p>
+                <h2 id="displayUser">User</h2>
+            </div>
+            
+            <div class="settings-btn" onclick="openSettingsModal()">
+                <span>Settings</span>
+                <i class="fas fa-cog"></i>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="premium-card">
+                <div class="card-top">
+                    <div class="chip"></div>
+                    <i class="fas fa-wifi contactless"></i>
+                </div>
+                
+                <div class="balance-group">
+                    <div class="balance-label">Current Balance</div>
+                    <div class="balance-amount"><span id="balance">0.00</span></div>
+                </div>
+
+                <div class="card-bottom">
+                    <div>
+                        <div class="balance-label" style="font-size:9px; margin-bottom:2px;">Card Number</div>
+                        <div class="card-holder" id="cardHolder">00000</div>
+                    </div>
+                    <div class="card-logo">PCX</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="plan-status-bar">
+            Current Plan: <span class="plan-highlight" id="userPlan">BASIC</span>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button class="btn-main" style="flex: 7; background: var(--primary); color: #000; margin-top: 0;" onclick="openTransferModal()">Send Credits</button>
+            <button class="btn-main" style="flex: 3; background: transparent; border: 1px solid var(--glass-border); color: var(--text); margin-top: 0; display: flex; align-items: center; justify-content: center;" onclick="openQRModal()"><i class="fas fa-qrcode" style="font-size: 20px;"></i></button>
+        </div>
+        
+        <button class="btn-main btn-logout" onclick="askLogout()">Log Out</button>
+    </div>
+
+</div>
+
+<script>
+
+/* =========================
+   CONFIG
+========================= */
+
+const API_URL = "https://wallet-database.playcentrix.workers.dev/db";
+
+let users = [];
+let transactions = [];
+let redeemCodes = [];
+
+let enteredPin = "";
+let currentPinMode = "login"; 
+let pendingTransfer = null;
+let pendingSettingsAction = null; 
+let isVerifying = false;
+
+/* QR Variables */
+let html5QrcodeScanner = null;
+let scannedReceiverId = null;
+let qrcodeObj = null;
+
+/* =========================
+   TOAST NOTIFICATION
+========================= */
+function showToast(msg, isError = false) {
+    const toast = document.getElementById('toast');
+    toast.innerText = msg;
+    if (isError) {
+        toast.classList.add('error');
+    } else {
+        toast.classList.remove('error');
+    }
+    toast.classList.add('show');
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
+
+/* =========================
+   BLOCKED CHECK
+========================= */
+function checkBlockedStatus(user) {
+    const overlay = document.getElementById('blockedOverlay');
+    if (user.isBlocked) {
+        overlay.classList.add('visible');
+        return true;
+    } else {
+        overlay.classList.remove('visible');
+        return false;
+    }
+}
+
+
+/* =========================
+   DATABASE LOAD
+========================= */
+
+async function loadUsers(){
+    try{
+        const res = await fetch(API_URL);
+        const db = await res.json();
+
+        users = db.users || [];
+        transactions = db.transactions || [];
+        redeemCodes = db.redeemCodes || [];
+
+        init();
+    }
+    catch(err){
+        console.error("Database load error:", err);
+        showToast("Could not load database", true);
+    }
+}
+
+
+/* =========================
+   DATABASE SAVE
+========================= */
+
+async function saveDatabase(){
+    const db = {
+        users,
+        transactions,
+        redeemCodes
+    };
+
+    await fetch(API_URL,{
+        method:"PUT",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify(db)
+    });
+}
+
+
+/* =========================
+   AUTO REFRESH
+========================= */
+
+async function autoRefreshUser(){
+    const active = localStorage.getItem("activeUser");
+    if(!active) return;
+
+    try{
+        const res = await fetch(API_URL);
+        const db = await res.json();
+        users = db.users;
+
+        const updatedUser = users.find(x => x.username === active);
+        if(!updatedUser) {
+            executeLogout();
+            return;
+        }
+
+        checkBlockedStatus(updatedUser);
+
+        document.getElementById('balance').innerText =
+        `${updatedUser.balance} ${updatedUser.Type}`;
+
+        document.getElementById('userPlan').innerText =
+        updatedUser.plan;
+        
+        document.getElementById('displayUser').innerText = updatedUser.displayName;
+
+    }catch(err){
+        console.log("Auto refresh failed:", err);
+    }
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+function init(){
+    const active = localStorage.getItem("activeUser");
+
+    if(active){
+        setupPin("login");
+    }else{
+        navigate('loginScreen');
+    }
+
+    setInterval(autoRefreshUser, 4000);
+}
+
+
+/* =========================
+   NAVIGATION & UI
+========================= */
+
+function navigate(screenId){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+    setTimeout(() => {
+        document.getElementById(screenId).classList.add('active');
+    }, 50);
+}
+
+function toggleLoader(show){
+    const l = document.getElementById('loader');
+    if(show) l.classList.add('visible');
+    else l.classList.remove('visible');
+}
+
+function shakeUI(elementId) {
+    const el = document.getElementById(elementId);
+    el.style.transform = "translateY(0) translateX(10px)";
+    setTimeout(() => el.style.transform = "translateY(0) translateX(-10px)", 100);
+    setTimeout(() => el.style.transform = "translateY(0) translateX(0)", 200);
+}
+
+
+/* =========================
+   LOGIN
+========================= */
+
+function attemptLogin(){
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const err = document.getElementById('error-msg');
+
+    toggleLoader(true);
+    err.innerText = "";
+
+    setTimeout(() => {
+        const user = users.find(x =>
+        x.username.toLowerCase() === u.toLowerCase() &&
+        x.password === p);
+
+        if(user){
+            localStorage.setItem("activeUser", user.username);
+            toggleLoader(false);
+            setupPin("login");
+        }else{
+            toggleLoader(false);
+            err.innerText = "Invalid credentials";
+            shakeUI('loginScreen');
+        }
+    },700);
+}
+
+
+/* =========================
+   DASHBOARD
+========================= */
+
+function loadDashboard(user){
+    if(checkBlockedStatus(user)) {
+        navigate('dashScreen'); 
+        return;
+    }
+    
+    document.getElementById('displayUser').innerText = user.displayName;
+    document.getElementById('balance').innerText = `${user.balance} ${user.Type}`;
+    document.getElementById('cardHolder').innerText = user.walletId;
+    document.getElementById('userPlan').innerText = user.plan;
+
+    navigate('dashScreen');
+}
+
+
+/* =========================
+   SETTINGS & ACCOUNT LOGIC
+========================= */
+
+function openSettingsModal() {
+    document.getElementById('newDisplayName').value = "";
+    document.getElementById('settingsModal').classList.add('open');
+}
+
+function closeSettingsModal() {
+    document.getElementById('settingsModal').classList.remove('open');
+}
+
+function initiateNameChange() {
+    const newName = document.getElementById('newDisplayName').value.trim();
+    if(newName.length < 2) {
+        showToast("Name too short", true);
+        return;
+    }
+    closeSettingsModal();
+    pendingSettingsAction = { type: 'changeName', payload: newName };
+    setupPin('changeName');
+}
+
+function openDeletePasswordModal() {
+    closeSettingsModal();
+    document.getElementById('deleteAuthPassword').value = "";
+    document.getElementById('deletePasswordModal').classList.add('open');
+}
+
+function closeDeletePasswordModal() {
+    document.getElementById('deletePasswordModal').classList.remove('open');
+}
+
+function verifyPasswordForDelete() {
+    const pwd = document.getElementById('deleteAuthPassword').value;
+    const activeUsername = localStorage.getItem("activeUser");
+    const user = users.find(x => x.username === activeUsername);
+
+    if(user.password === pwd) {
+        closeDeletePasswordModal();
+        pendingSettingsAction = { type: 'deleteAccount' };
+        setupPin('deleteAccount');
+    } else {
+        showToast("Incorrect Password", true);
+        shakeUI('deletePasswordModal');
+    }
+}
+
+function cancelDelete() {
+    document.getElementById('deleteWarningModal').classList.remove('open');
+    const activeUsername = localStorage.getItem("activeUser");
+    resetPinAndLoad(users.find(x => x.username === activeUsername));
+}
+
+async function finalizeAccountDeletion() {
+    document.getElementById('deleteWarningModal').classList.remove('open');
+    toggleLoader(true);
+    const activeUsername = localStorage.getItem("activeUser");
+    
+    users = users.filter(u => u.username !== activeUsername);
+    await saveDatabase();
+    
+    showToast("Account Deleted", false);
+    
+    // Automatically logs out and reloads the screen back to login
+    setTimeout(() => {
+        executeLogout();
+    }, 1000);
+}
+
+
+/* =========================
+   QR SCAN & PAY LOGIC
+========================= */
+
+function openQRModal() {
+    document.getElementById('qrModal').classList.add('open');
+    switchQRTab('send');
+}
+
+function closeQRModal() {
+    document.getElementById('qrModal').classList.remove('open');
+    if(html5QrcodeScanner) {
+        html5QrcodeScanner.stop().catch(err => console.log(err));
+        html5QrcodeScanner = null;
+    }
+}
+
+function switchQRTab(tab) {
+    document.getElementById('tabSend').classList.remove('active');
+    document.getElementById('tabReceive').classList.remove('active');
+    document.getElementById('qrSendContent').style.display = 'none';
+    document.getElementById('qrReceiveContent').style.display = 'none';
+    
+    if(tab === 'send') {
+        document.getElementById('tabSend').classList.add('active');
+        document.getElementById('qrSendContent').style.display = 'block';
+        document.getElementById('qrAmountSection').style.display = 'none';
+        document.getElementById('qr-reader').style.display = 'block';
+        startQRScanner();
+    } else {
+        document.getElementById('tabReceive').classList.add('active');
+        document.getElementById('qrReceiveContent').style.display = 'block';
+        if(html5QrcodeScanner) {
+            html5QrcodeScanner.stop().catch(e => console.log(e));
+            html5QrcodeScanner = null;
+        }
+        generateMyQR();
+    }
+}
+
+function startQRScanner() {
+    if(html5QrcodeScanner) return;
+    
+    html5QrcodeScanner = new Html5Qrcode("qr-reader");
+    const config = { 
+        fps: 10, 
+        qrbox: { width: 250, height: 250 }, 
+        aspectRatio: 1.0, 
+        disableFlip: false 
+    };
+
+    html5QrcodeScanner.start(
+        { facingMode: "environment" },
+        config,
+        (decodedText) => {
+            let scanData = decodedText.trim();
+            
+            if (scanData.startsWith("Pcx_WalletID:")) {
+                let id = scanData.split(":")[1];
+                if (/^\d{5}$/.test(id)) {
+                    html5QrcodeScanner.stop().then(() => {
+                        html5QrcodeScanner = null;
+                        scannedReceiverId = id;
+                        
+                        const receiver = users.find(x => x.walletId === scannedReceiverId);
+                        const recName = receiver ? receiver.displayName : "Unknown";
+
+                        document.getElementById('qr-reader').style.display = 'none';
+                        document.getElementById('qrAmountSection').style.display = 'block';
+                        document.getElementById('qrScannedId').innerHTML = `<i class="fas fa-check-circle"></i> Paying to: ${recName} (${scannedReceiverId})`;
+                        document.getElementById('qrTransferAmount').value = "";
+                        document.getElementById('qr-transfer-error').innerText = "";
+                    });
+                    return;
+                }
+            }
+            showToast("Invalid QR Code (Not a PCX Format)", true);
+        },
+        (errorMessage) => {
+            // Ignore ongoing parsing errors
+        }
+    ).catch(err => {
+        console.log("Scanner start failed:", err);
+        document.getElementById('qr-reader').innerHTML = "<p style='padding:20px; text-align:center;'>Camera access denied or unavailable.</p>";
+    });
+}
+
+function generateMyQR() {
+    const activeUsername = localStorage.getItem("activeUser");
+    const user = users.find(x => x.username === activeUsername);
+    if(!user) return;
+    
+    document.getElementById('myWalletIdDisplay').innerText = user.walletId;
+    const container = document.getElementById("qrcode-container");
+    container.innerHTML = "";
+    
+    qrcodeObj = new QRCode(container, {
+        text: "Pcx_WalletID:" + user.walletId,
+        width: 160,
+        height: 160,
+        colorDark : "#0b0f19",
+        colorLight : "#ffffff",
+        correctLevel : QRCode.CorrectLevel.H
+    });
+}
+
+function proceedQRTransfer() {
+    const amount = parseFloat(document.getElementById('qrTransferAmount').value);
+    const errBox = document.getElementById('qr-transfer-error');
+    errBox.innerText = "";
+    
+    if (isNaN(amount) || amount <= 0) {
+        errBox.innerText = "Invalid amount";
+        shakeUI('qrModal');
+        return;
+    }
+
+    const activeUsername = localStorage.getItem("activeUser");
+    const sender = users.find(x => x.username === activeUsername);
+    const receiver = users.find(x => x.walletId === scannedReceiverId);
+
+    if (sender.isBlocked) {
+        errBox.innerText = "Action Denied: Your account is blocked.";
+        shakeUI('qrModal'); return;
+    }
+    if (!receiver) {
+        errBox.innerText = "Receiver not found";
+        shakeUI('qrModal'); return;
+    }
+    if (receiver.isBlocked) {
+        errBox.innerText = "This user is not accepting Credits Right now.";
+        shakeUI('qrModal'); return;
+    }
+    if (sender.walletId === receiver.walletId) {
+        errBox.innerText = "Cannot send to yourself";
+        shakeUI('qrModal'); return;
+    }
+    if (sender.balance < amount) {
+        errBox.innerText = "Insufficient balance";
+        shakeUI('qrModal'); return;
+    }
+
+    pendingTransfer = {
+        receiverId: scannedReceiverId,
+        amount: amount,
+        receiverName: receiver.displayName
+    };
+    
+    closeQRModal();
+    setupPin("transfer");
+}
+
+
+/* =========================
+   MANUAL TRANSFER
+========================= */
+
+function openTransferModal(){
+    document.getElementById('transferReceiverId').value = "";
+    document.getElementById('transferAmount').value = "";
+    document.getElementById('transfer-error').innerText = "";
+    document.getElementById('transferModal').classList.add('open');
+}
+
+function closeTransferModal(){
+    document.getElementById('transferModal').classList.remove('open');
+}
+
+function initiateTransfer(){
+    const receiverId = document.getElementById('transferReceiverId').value.trim();
+    const amount = parseFloat(document.getElementById('transferAmount').value);
+    const errBox = document.getElementById('transfer-error');
+    
+    errBox.innerText = "";
+
+    if (!/^\d{5}$/.test(receiverId)) {
+        errBox.innerText = "Wallet ID must be 5 digits";
+        shakeUI('transferModal');
+        return;
+    }
+
+    if (isNaN(amount) || amount <= 0) {
+        errBox.innerText = "Invalid amount";
+        shakeUI('transferModal');
+        return;
+    }
+
+    const activeUsername = localStorage.getItem("activeUser");
+    const sender = users.find(x => x.username === activeUsername);
+    const receiver = users.find(x => x.walletId === receiverId);
+
+    if (sender.isBlocked) {
+        errBox.innerText = "Action Denied: Your account is blocked.";
+        shakeUI('transferModal'); return;
+    }
+    if (!receiver) {
+        errBox.innerText = "Receiver not found";
+        shakeUI('transferModal'); return;
+    }
+    if (receiver.isBlocked) {
+        errBox.innerText = "This user is not accepting Credits Right now.";
+        shakeUI('transferModal'); return;
+    }
+    if (sender.walletId === receiver.walletId) {
+        errBox.innerText = "Cannot send to yourself";
+        shakeUI('transferModal'); return;
+    }
+    if (sender.balance < amount) {
+        errBox.innerText = "Insufficient balance";
+        shakeUI('transferModal'); return;
+    }
+
+    pendingTransfer = {
+        receiverId,
+        amount,
+        receiverName: receiver.displayName
+    };
+
+    closeTransferModal();
+    setupPin("transfer");
+}
+
+async function executeTransfer(){
+    const activeUsername = localStorage.getItem("activeUser");
+    const sender = users.find(x => x.username === activeUsername);
+    const receiver = users.find(x => x.walletId === pendingTransfer.receiverId);
+
+    if (sender.isBlocked || receiver.isBlocked || sender.balance < pendingTransfer.amount) {
+        showToast("Transfer failed due to security restrictions.", true);
+        resetPinAndLoad(sender);
+        return;
+    }
+
+    sender.balance -= pendingTransfer.amount;
+    receiver.balance += pendingTransfer.amount;
+
+    await saveDatabase();
+    resetPinAndLoad(sender);
+}
+
+function resetPinAndLoad(user){
+    toggleLoader(false);
+    pendingTransfer = null;
+    pendingSettingsAction = null;
+    enteredPin = "";
+    isVerifying = false;
+    loadDashboard(user);
+}
+
+
+/* =========================
+   PIN SYSTEM & KEYPAD
+========================= */
+
+function setupPin(mode){
+    currentPinMode = mode;
+    isVerifying = false;
+    navigate('pinScreen');
+
+    if (mode === "transfer") {
+        document.getElementById("pinTitle").innerText = "Confirm Transfer";
+        document.getElementById("pinSubtitle").innerText = `Send ${pendingTransfer.amount} PCX to ${pendingTransfer.receiverName}`;
+    } else if (mode === "changeName") {
+        document.getElementById("pinTitle").innerText = "Confirm Changes";
+        document.getElementById("pinSubtitle").innerText = `Enter PIN to change name`;
+    } else if (mode === "deleteAccount") {
+        document.getElementById("pinTitle").innerText = "Delete Account";
+        document.getElementById("pinSubtitle").innerText = `Enter PIN to finalize deletion`;
+    } else {
+        document.getElementById("pinTitle").innerText = "Security Check";
+        document.getElementById("pinSubtitle").innerText = "Enter your 4-digit PIN";
+    }
+
+    enteredPin = "";
+    updateDots();
+    scrambleKeypad();
+}
+
+function scrambleKeypad(){
+    const nums = [1,2,3,4,5,6,7,8,9].sort(() => Math.random() - 0.5);
+    const pad = document.getElementById('keypad');
+    pad.innerHTML = "";
+
+    nums.forEach(n => {
+        const btn = document.createElement('div');
+        btn.className = 'key';
+        btn.innerText = n;
+        btn.onclick = () => handlePinInput(n);
+        pad.appendChild(btn);
+    });
+
+    const actionBtn = document.createElement('div');
+    actionBtn.className = 'key key-action';
+    
+    if (currentPinMode !== "login") {
+        actionBtn.innerHTML = '<i class="fas fa-times"></i>'; 
+        actionBtn.onclick = () => {
+            pendingTransfer = null;
+            pendingSettingsAction = null;
+            isVerifying = false;
+            enteredPin = "";
+            const uName = localStorage.getItem("activeUser");
+            loadDashboard(users.find(x => x.username === uName));
+        };
+    } else {
+        actionBtn.innerHTML = '<i class="fas fa-sign-out-alt"></i>'; 
+        actionBtn.onclick = () => askLogout();
+    }
+    pad.appendChild(actionBtn);
+
+    const zeroBtn = document.createElement('div');
+    zeroBtn.className = 'key';
+    zeroBtn.innerText = '0';
+    zeroBtn.onclick = () => handlePinInput(0);
+    pad.appendChild(zeroBtn);
+
+    const backBtn = document.createElement('div');
+    backBtn.className = 'key';
+    backBtn.innerHTML = '<i class="fas fa-backspace" style="color:var(--text-muted)"></i>';
+    backBtn.onclick = () => {
+        if(enteredPin.length > 0 && !isVerifying) {
+            enteredPin = enteredPin.slice(0, -1);
+            updateDots();
+        }
+    };
+    pad.appendChild(backBtn);
+}
+
+function handlePinInput(n){
+    if(enteredPin.length < 4 && !isVerifying){
+        enteredPin += n;
+        updateDots();
+
+        if(enteredPin.length === 4){
+            verifyPin();
+        }
+    }
+}
+
+function updateDots(){
+    const dots = document.querySelectorAll('.dot');
+    dots.forEach((d, i) => {
+        if(i < enteredPin.length) d.classList.add('active');
+        else d.classList.remove('active');
+    });
+}
+
+function verifyPin(){
+    if (isVerifying) return;
+
+    isVerifying = true;
+    toggleLoader(true);
+
+    const uName = localStorage.getItem("activeUser");
+    const user = users.find(x => x.username === uName);
+
+    setTimeout(async () => {
+        if(user && enteredPin === user.pin){
+            if (currentPinMode === "transfer") {
+                await executeTransfer();
+            } else if (currentPinMode === "changeName") {
+                user.displayName = pendingSettingsAction.payload;
+                await saveDatabase();
+                showToast("Name Updated Successfully");
+                resetPinAndLoad(user);
+            } else if (currentPinMode === "deleteAccount") {
+                toggleLoader(false);
+                document.getElementById('deleteWarningModal').classList.add('open');
+            } else {
+                toggleLoader(false);
+                isVerifying = false;
+                loadDashboard(user);
+            }
+        } else {
+            toggleLoader(false);
+            showToast("Incorrect PIN", true);
+            shakeUI('pinScreen');
+
+            enteredPin = "";
+            isVerifying = false;
+            updateDots();
+            scrambleKeypad();
+        }
+    }, 500);
+}
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function askLogout(){
+    document.getElementById('confirmModal').classList.add('open');
+}
+
+function hideLogoutConfirm(){
+    document.getElementById('confirmModal').classList.remove('open');
+}
+
+function executeLogout(){
+    hideLogoutConfirm();
+    document.getElementById('blockedOverlay').classList.remove('visible');
+    toggleLoader(true);
+
+    setTimeout(() => {
+        localStorage.clear();
+        location.reload();
+    }, 600);
+}
+
+/* =========================
+   START APP
+========================= */
+
+loadUsers();
+
+</script>
+
+</body>
+</html>

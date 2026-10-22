@@ -1,0 +1,358 @@
+🚀 Playcentrix AI API
+
+Integrate Playcentrix AI into your websites, applications, chatbots, and projects.
+
+Build AI-powered experiences using a simple HTTP API.
+
+* 🌐 API Endpoint: https://playcentrix-ai.playcentrix.workers.dev
+* ⚡ Method: POST
+* 📦 Request: JSON
+* 💬 Response: JSON
+* 🔑 Authentication: API key
+
+⸻
+
+1. Quick Start
+
+Every request requires a valid API key and a message.
+
+Request format
+
+{
+  "message": "Hello, Playcentrix AI!"
+}
+
+Expected response format
+
+{
+  "reply": "Hello! How can I help you today?"
+}
+
+The response shown is an example. Actual AI responses will vary.
+
+⸻
+
+2. HTML + JavaScript
+
+Create a simple AI-powered webpage using HTML and JavaScript.
+
+Save the following as index.html.
+
+Security warning: This example is for local testing or controlled demonstrations. Anyone who can access a deployed webpage containing your API key may be able to extract it. For production websites, use your own backend to protect the key.
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Playcentrix AI Demo</title>
+</head>
+<body>
+  <h1>Playcentrix AI</h1>
+  <input id="message" placeholder="Ask me anything..." />
+  <button id="send">Send</button>
+  <p id="status"></p>
+  <div id="reply"></div>
+  <script>
+    const API_URL =
+      "https://playcentrix-ai.playcentrix.workers.dev";
+    const API_KEY = "YOUR_API_KEY";
+    const input = document.getElementById("message");
+    const button = document.getElementById("send");
+    const reply = document.getElementById("reply");
+    const status = document.getElementById("status");
+    button.addEventListener("click", async () => {
+      const message = input.value.trim();
+      if (!message) return;
+      button.disabled = true;
+      status.textContent = "Thinking...";
+      reply.textContent = "";
+      try {
+        const response = await fetch(API_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-API-Key": API_KEY
+          },
+          body: JSON.stringify({ message })
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(
+            data.error || `HTTP ${response.status}`
+          );
+        }
+        reply.textContent =
+          data.reply || "No response received.";
+        status.textContent = "";
+      } catch (error) {
+        status.textContent = "Error: " + error.message;
+      } finally {
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
+
+Replace YOUR_API_KEY with a valid key for testing.
+
+For a public website, use the secure backend example below instead.
+
+⸻
+
+3. JavaScript — Fetch API
+
+Use this method in JavaScript applications that can safely access your API key.
+
+const API_URL =
+  "https://playcentrix-ai.playcentrix.workers.dev";
+async function askPlaycentrix(message, apiKey) {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-API-Key": apiKey
+    },
+    body: JSON.stringify({ message })
+  });
+  const data = await response.json();
+  if (!response.ok) {
+    throw new Error(data.error || `HTTP ${response.status}`);
+  }
+  return data.reply;
+}
+// Example
+askPlaycentrix("Explain artificial intelligence.", "YOUR_API_KEY")
+  .then(console.log)
+  .catch(console.error);
+
+⸻
+
+4. Node.js — Backend Integration
+
+Use a backend to keep your API key private.
+
+Install the required package:
+
+npm install express dotenv
+
+Create a .env file:
+
+PLAYCENTRIX_API_KEY=YOUR_API_KEY
+PORT=3000
+
+Add .env to .gitignore so you don’t accidentally upload your credentials to GitHub.
+
+Create server.js:
+
+require("dotenv").config();
+const express = require("express");
+const app = express();
+app.use(express.json());
+app.post("/api/ask", async (req, res) => {
+  try {
+    const { message } = req.body;
+    if (typeof message !== "string" || !message.trim()) {
+      return res.status(400).json({
+        error: "A valid message is required."
+      });
+    }
+    const response = await fetch(
+      "https://playcentrix-ai.playcentrix.workers.dev",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-API-Key": process.env.PLAYCENTRIX_API_KEY
+        },
+        body: JSON.stringify({ message })
+      }
+    );
+    const data = await response.json();
+    if (!response.ok) {
+      return res.status(response.status).json(data);
+    }
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "Unable to contact Playcentrix AI."
+    });
+  }
+});
+app.listen(process.env.PORT || 3000, () => {
+  console.log("Server started.");
+});
+
+Your frontend can now call your own /api/ask endpoint without containing the Playcentrix API key.
+
+Before deploying, add authentication, rate limiting, and request-size limits to your backend.
+
+⸻
+
+5. React Integration
+
+Use this example inside a React component.
+
+import { useState } from "react";
+export default function PlaycentrixChat() {
+  const [message, setMessage] = useState("");
+  const [reply, setReply] = useState("");
+  const [loading, setLoading] = useState(false);
+  async function sendMessage() {
+    if (!message.trim()) return;
+    setLoading(true);
+    setReply("");
+    try {
+      const response = await fetch("/api/ask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Request failed.");
+      }
+      setReply(data.reply || "No response received.");
+    } catch (error) {
+      setReply("Error: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <div>
+      <h2>Playcentrix AI</h2>
+      <input
+        value={message}
+        onChange={(event) => setMessage(event.target.value)}
+        placeholder="Ask something..."
+      />
+      <button onClick={sendMessage} disabled={loading}>
+        {loading ? "Thinking..." : "Send"}
+      </button>
+      <p>{reply}</p>
+    </div>
+  );
+}
+
+Note: This React example uses your own backend endpoint, /api/ask, as configured in the Node.js example.
+
+⸻
+
+6. Python Integration
+
+Install Requests:
+
+pip install requests
+
+Example:
+
+import os
+import requests
+API_URL = "https://playcentrix-ai.playcentrix.workers.dev"
+API_KEY = os.environ["PLAYCENTRIX_API_KEY"]
+response = requests.post(
+    API_URL,
+    headers={"X-API-Key": API_KEY},
+    json={"message": "Hello, Playcentrix AI!"},
+    timeout=60
+)
+response.raise_for_status()
+data = response.json()
+print(data.get("reply", "No response received."))
+
+Set PLAYCENTRIX_API_KEY as an environment variable before running the script.
+
+⸻
+
+7. cURL Integration
+
+Test the API directly from your terminal:
+
+curl -X POST \
+  "https://playcentrix-ai.playcentrix.workers.dev" \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: YOUR_API_KEY" \
+  -d '{"message":"Hello, Playcentrix AI!"}'
+
+⸻
+
+8. Using Your Own Data
+
+You can include reference information in your message to help the AI answer questions about a specific topic.
+
+const referenceData = `
+Product: Playcentrix Keyboard
+Price: ₹999
+Warranty: 1 year
+`;
+const question = "What is the warranty?";
+const message = `
+Answer using the reference information below.
+If the answer is missing, say that you don't know.
+REFERENCE:
+${referenceData}
+QUESTION:
+${question}
+`;
+
+Send the resulting message using any integration example above.
+
+Important: This supplies context for a request; it does not permanently train the AI or upload documents into a persistent knowledge base.
+
+For large datasets, consider building a retrieval system that searches your documents and sends only relevant information to the AI.
+
+Never include confidential information unless you are authorised to process it.
+
+⸻
+
+9. Authentication
+
+The API supports either of these authentication headers:
+
+Option A — API key header
+
+X-API-Key: YOUR_API_KEY
+
+Option B — Bearer authentication
+
+Authorization: Bearer YOUR_API_KEY
+
+Use a valid API key issued for the service. Access may be restricted by key status and usage limits.
+
+Never publish private API keys in GitHub repositories, public frontend code, or screenshots.
+
+⸻
+
+10. API Reference
+
+Property	Details
+Endpoint	https://playcentrix-ai.playcentrix.workers.dev
+Method	POST
+Content type	application/json
+Authentication	API key
+Request parameter	message
+Response parameter	reply
+
+Common problems
+
+* Authentication error: Check that your key is valid and active.
+* Usage limit reached: Check the limits associated with your key.
+* Network or CORS error: Check your browser’s network request and server configuration.
+* Provider error: The upstream AI service may be unavailable or misconfigured.
+
+Actual error messages and status codes may vary.
+
+⸻
+
+Build with Playcentrix AI 💙
+
+Use the API to power your own applications, assistants, chat interfaces, and AI-powered tools.
+
+Start here: https://playcentrix-ai.playcentrix.workers.dev
+
+Playcentrix AI — Built for creators and developers.

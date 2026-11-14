@@ -113,6 +113,9 @@ img,canvas,video,svg{max-width:100%}
 @media(max-width:780px){.quick-actions{grid-template-columns:repeat(3,minmax(0,1fr))}.saved-access-card{padding:15px 13px;gap:9px}.saved-access-icon{width:38px;height:38px;flex-basis:38px;border-radius:12px}.saved-access-copy strong{font-size:12px}.saved-access-copy small{font-size:9px}}
 @media(max-width:380px){.saved-access-card{gap:7px;padding:13px 10px}.saved-access-icon{width:34px;height:34px;flex-basis:34px}.saved-access-copy small{font-size:8.5px}}
 
+
+
+
 </style>
 </head>
 <body>
@@ -243,6 +246,7 @@ img,canvas,video,svg{max-width:100%}
           <div class="page-head"><div><h1>Profile & settings</h1></div></div>
           <div class="profile-hero"><div class="profile-avatar" id="profileAvatar">P</div><div class="profile-copy"><h2 id="profileName">Wallet user</h2><p id="profileUsername">@username · Wallet -----</p></div><span class="tag" id="profilePlanBadge">BASIC</span></div>
           <section class="content-card"><div class="card-heading"><div><h2>Account details</h2></div></div><div class="activity-row"><div class="activity-icon"><i class="fa-solid fa-wallet"></i></div><div class="activity-copy"><strong>Wallet ID</strong><small id="profileWalletId">-----</small></div><button class="secondary-btn btn-small" onclick="copyWalletId()">Copy</button></div><div class="activity-row"><div class="activity-icon"><i class="fa-regular fa-user"></i></div><div class="activity-copy"><strong>Username</strong><small id="profileUserValue">@username</small></div></div><div class="activity-row"><div class="activity-icon"><i class="fa-solid fa-circle-check"></i></div><div class="activity-copy"><strong>Account status</strong><small id="profileAccountStatus">Active</small></div></div><div class="field" style="margin-top:20px;margin-bottom:0"><label for="newDisplayName">Display name</label><input class="input" id="newDisplayName" maxlength="15" placeholder="New display name"><button class="primary-btn btn-wide" onclick="beginNameChange()"><i class="fa-regular fa-floppy-disk"></i> Save name</button></div></section>
+          <section class="content-card" id="biometricSettingsCard"><div class="card-heading"><div><h2><i class="fa-solid fa-fingerprint" style="color:var(--blue);margin-right:7px"></i>Biometric verification</h2><p>Use your device's Face ID, fingerprint, or supported screen-lock verification for eligible transfers, locker deposits and display-name changes.</p></div><span class="tag" style="background:#fff4df;color:#a66a0a">BETA</span></div><div class="activity-row"><div class="activity-icon"><i class="fa-solid fa-shield-halved"></i></div><div class="activity-copy"><strong id="biometricStatusTitle">Not enabled on this device</strong><small id="biometricStatusDescription">Wallet PIN will be required for every transfer.</small></div><span class="tag" id="biometricStatusTag">OFF</span></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:15px"><button class="primary-btn" id="enableBiometricBtn" onclick="enableBiometricPayments()"><i class="fa-solid fa-fingerprint"></i> Enable biometrics</button><button class="danger-btn hidden" id="disableBiometricBtn" onclick="disableBiometricPayments()"><i class="fa-solid fa-power-off"></i> Turn off</button></div><div class="field" style="margin-top:18px;margin-bottom:0"><label for="biometricLimitInput">Biometric transaction limit (PCX)</label><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><input class="input" id="biometricLimitInput" type="number" inputmode="numeric" min="1" max="10000" step="1" value="1000" style="flex:1;min-width:130px"><button class="secondary-btn" type="button" onclick="beginBiometricLimitChange()"><i class="fa-solid fa-lock"></i> Change limit</button></div><small class="form-help">Choose a limit from 1 to 10,000 PCX. Your wallet PIN is required to save a change. Default: 1,000 PCX.</small></div></section>
           <section class="content-card"><div class="card-heading"><div><h2>Password</h2></div></div><p class="form-help" style="margin-top:0">Enter your PIN to continue, then confirm your current password.</p><button class="secondary-btn btn-wide" onclick="beginPasswordChange()"><i class="fa-solid fa-key"></i> Change password</button></section>
           <section class="content-card"><div class="card-heading"><div><h2>Account</h2></div></div><button class="secondary-btn btn-wide" onclick="askLogout()"><i class="fa-solid fa-right-from-bracket"></i> Sign out</button><button class="danger-btn btn-wide" style="margin-top:10px" onclick="openDeleteModal()"><i class="fa-regular fa-trash-can"></i> Delete account</button></section>
         </section>
@@ -335,6 +339,66 @@ function toast(message, type='success'){
   node.innerHTML=`<i class="fa-solid ${type==='error'?'fa-circle-exclamation':'fa-circle-check'}"></i><span>${escapeHTML(message)}</span>`;
   $('toastArea').appendChild(node); setTimeout(()=>{node.style.opacity='0';node.style.transform='translateY(-6px)';setTimeout(()=>node.remove(),220)},3400);
 }
+// Frontend-only WebAuthn convenience gate. This deliberately does NOT claim server-side authentication.
+const DEFAULT_BIOMETRIC_MAX_AMOUNT = 1000;
+const biometricLimitStorageKey = username => 'pcx_wallet_local_biometric_limit_v1_' + location.hostname + '_' + String(username || '').toLowerCase();
+let pendingBiometricLimit = null;
+function getBiometricLimit(){if(!currentUser)return DEFAULT_BIOMETRIC_MAX_AMOUNT;const raw=Number(localStorage.getItem(biometricLimitStorageKey(currentUser.username)));return Number.isInteger(raw)&&raw>=1&&raw<=10000?raw:DEFAULT_BIOMETRIC_MAX_AMOUNT}
+function renderBiometricLimit(){if($('biometricLimitInput'))$('biometricLimitInput').value=String(getBiometricLimit())}
+function beginBiometricLimitChange(){if(!currentUser)return;const value=Number($('biometricLimitInput').value);if(!Number.isInteger(value)||value<1||value>10000){toast('Enter a whole-number limit between 1 and 10,000 PCX.','error');renderBiometricLimit();return}if(value===getBiometricLimit()){toast('Your biometric limit is already set to this amount.');return}pendingBiometricLimit=value;setPinMode('changeBiometricLimit');buildKeypad();openView('pinView')}
+function saveBiometricLimit(){if(!currentUser||!Number.isInteger(pendingBiometricLimit)||pendingBiometricLimit<1||pendingBiometricLimit>10000)return;localStorage.setItem(biometricLimitStorageKey(currentUser.username),String(pendingBiometricLimit));pendingBiometricLimit=null;renderBiometricLimit();toast('Biometric transaction limit updated.')}
+const biometricStorageKey = username => 'pcx_wallet_local_biometric_v1_' + location.hostname + '_' + String(username || '').toLowerCase();
+function biometricRecord(){try{return currentUser?JSON.parse(localStorage.getItem(biometricStorageKey(currentUser.username))||'null'):null}catch{return null}}
+function randomBytes(length){const bytes=new Uint8Array(length);crypto.getRandomValues(bytes);return bytes}
+function toBase64Url(bytes){let binary='';for(const b of bytes)binary+=String.fromCharCode(b);return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
+function fromBase64Url(value){const base=String(value).replace(/-/g,'+').replace(/_/g,'/');const padded=base+'='.repeat((4-base.length%4)%4);const binary=atob(padded);return Uint8Array.from(binary,c=>c.charCodeAt(0))}
+function renderBiometricSettings(){if(!$('biometricSettingsCard')||!currentUser)return;const record=biometricRecord();const enabled=!!record?.credentialId;const limit=getBiometricLimit();$('biometricStatusTag').textContent=enabled?'ENABLED':'OFF';$('biometricStatusTag').style.background=enabled?'#e7f8f0':'#f1f3f8';$('biometricStatusTag').style.color=enabled?'#168360':'#778096';$('biometricStatusTitle').textContent=enabled?'Enabled on this device':'Not enabled on this device';$('biometricStatusDescription').textContent=enabled?`Transfers and locker deposits up to ${money(limit)} PCX can request device verification. Display-name changes can also use device verification.`:'Wallet PIN will be required for every transfer.';$('enableBiometricBtn').classList.toggle('hidden',enabled);$('disableBiometricBtn').classList.toggle('hidden',!enabled);renderBiometricLimit()}
+async function enableBiometricPayments(){
+  if(!currentUser)return;
+  if(!window.isSecureContext||!navigator.credentials||!window.PublicKeyCredential){toast('Biometric passkeys require a supported browser on HTTPS.','error');return}
+  try{
+    const platformAvailable=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    if(!platformAvailable){toast('This browser or device does not offer a supported built-in authenticator.','error');return}
+    const userId=randomBytes(16);const challenge=randomBytes(32);
+    const credential=await navigator.credentials.create({publicKey:{challenge,rp:{name:'Playcentrix Wallet',id:location.hostname},user:{id:userId,name:String(currentUser.username),displayName:String(currentUser.displayName||currentUser.username)},pubKeyCredParams:[{type:'public-key',alg:-7},{type:'public-key',alg:-257}],authenticatorSelection:{authenticatorAttachment:'platform',residentKey:'preferred',userVerification:'required'},timeout:60000,attestation:'none'}});
+    if(!credential)throw new Error('The device did not create a passkey.');
+    const record={credentialId:toBase64Url(new Uint8Array(credential.rawId)),username:String(currentUser.username).toLowerCase(),rpId:location.hostname,createdAt:Date.now(),label:'This device'};
+    localStorage.setItem(biometricStorageKey(currentUser.username),JSON.stringify(record));renderBiometricSettings();toast('Biometric prompt enrolled on this device.');
+  }catch(err){console.warn('Biometric enrolment:',err);toast(err?.name==='NotAllowedError'?'Biometric enrolment was cancelled or not allowed.':(err.message||'Could not enable biometrics.'),'error')}
+}
+function disableBiometricPayments(){if(!currentUser)return;localStorage.removeItem(biometricStorageKey(currentUser.username));renderBiometricSettings();toast('Biometric payments turned off on this browser. The passkey may still remain in your device password manager.')}
+async function requestLocalBiometric(){
+  const record=biometricRecord();if(!record?.credentialId)throw new Error('No biometric enrolment is saved on this device.');
+  if(!window.isSecureContext||!navigator.credentials||!window.PublicKeyCredential)throw new Error('Biometric authentication is unavailable in this browser.');
+  const challenge=randomBytes(32);
+  const assertion=await navigator.credentials.get({publicKey:{challenge,rpId:location.hostname,allowCredentials:[{type:'public-key',id:fromBase64Url(record.credentialId)}],userVerification:'required',timeout:60000}});
+  if(!assertion)throw new Error('The device did not return an authentication result.');
+  // Local consistency checks only. Signature, challenge freshness, and origin are NOT verified by a trusted server.
+  if(toBase64Url(new Uint8Array(assertion.rawId))!==record.credentialId)throw new Error('The returned credential does not match this device record.');
+  const clientData=JSON.parse(new TextDecoder().decode(assertion.response.clientDataJSON));
+  if(clientData.type!=='webauthn.get'||clientData.origin!==location.origin||clientData.challenge!==toBase64Url(challenge))throw new Error('The local authentication response did not match this request.');
+  return true;
+}
+async function startBiometricTransfer(){
+  try{toast('Confirm using your device biometrics…');await requestLocalBiometric();await startTransferProcessing()}
+  catch(err){console.warn('Biometric transfer gate:',err);toast('Biometric check was cancelled or unavailable. Please use your wallet PIN.','error');setPinMode('transfer');buildKeypad();openView('pinView')}
+}
+async function startBiometricAction(mode){
+  const label=mode==='deposit'?'locker deposit':'display-name change';
+  try{
+    toast(`Confirm ${label} using your device biometrics…`);
+    await requestLocalBiometric();
+  }catch(err){
+    console.warn('Biometric action gate:',err);
+    toast('Biometric check was cancelled or unavailable. Please use your wallet PIN.','error');
+    setPinMode(mode);buildKeypad();openView('pinView');
+    return;
+  }
+  // Do not fall back to PIN if the actual operation fails after authentication;
+  // that avoids accidentally retrying a submitted operation.
+  if(mode==='deposit')await executeLockerMove('deposit');
+  else if(mode==='changeName')await executeNameChange();
+}
 function openView(viewId){document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));$(viewId).classList.add('active')}
 function navigateTo(pane){
   if(!currentUser) return;
@@ -410,7 +474,7 @@ $('loginForm').addEventListener('submit', async event=>{
 });
 
 function setPinMode(mode){pinMode=mode;enteredPin='';isVerifying=false;$('pinError').textContent='';$('pinDots').querySelectorAll('.pin-dot').forEach(d=>d.classList.remove('filled'));
-  const cfg={login:['One last check','Enter your 4-digit wallet PIN to unlock your account.'],transfer:['Confirm transfer','Enter your wallet PIN to authorise this PCX transfer.'],deposit:['Confirm locker deposit','Enter your wallet PIN to move PCX into your locker.'],withdraw:['Confirm locker withdrawal','Enter your wallet PIN to move PCX back to your wallet.'],changeName:['Confirm profile update','Enter your wallet PIN to save your new display name.'],changePassword:['Change password','Enter your wallet PIN to continue.'],deleteAccount:['Verify account deletion','Enter your wallet PIN to continue with permanent deletion.']};
+  const cfg={login:['One last check','Enter your 4-digit wallet PIN to unlock your account.'],transfer:['Confirm transfer','Enter your wallet PIN to authorise this PCX transfer.'],deposit:['Confirm locker deposit','Enter your wallet PIN to move PCX into your locker.'],withdraw:['Confirm locker withdrawal','Enter your wallet PIN to move PCX back to your wallet.'],changeName:['Confirm profile update','Enter your wallet PIN to save your new display name.'],changePassword:['Change password','Enter your wallet PIN to continue.'],deleteAccount:['Verify account deletion','Enter your wallet PIN to continue with permanent deletion.'],changeBiometricLimit:['Change biometric limit','Enter your wallet PIN to save the new biometric transaction limit.']};
   $('pinTitle').textContent=(cfg[mode]||cfg.login)[0];$('pinSubtitle').textContent=(cfg[mode]||cfg.login)[1];$('pinCancel').textContent=mode==='login'?'Sign out instead':'Cancel and go back';
   if(currentUser && (mode==='transfer' || mode==='deposit' || mode==='withdraw')){$('pinSubtitle').textContent=`${mode==='transfer'?`Send ${money(pendingAction?.amount)} PCX to ${pendingAction?.receiverName||'the selected wallet'}`:mode==='deposit'?`Add ${money(pendingAction?.amount)} PCX to your locker instantly.`:`Withdraw ${money(pendingAction?.amount)} PCX instantly.`} Enter your wallet PIN to confirm.`}
 }
@@ -438,15 +502,16 @@ async function verifyPin(){
   if(mode==='transfer'){await startTransferProcessing();return}
   if(mode==='deposit'||mode==='withdraw'){await executeLockerMove(mode);return}
   if(mode==='changeName'){await executeNameChange();return}
+  if(mode==='changeBiometricLimit'){saveBiometricLimit();return}
   if(mode==='changePassword'){openPasswordChangeModal();return}
   if(mode==='deleteAccount'){openConfirm('Delete this account permanently?','Your wallet profile will be removed from the connected database. This action cannot be undone.',()=>deleteAccountNow(),'Delete forever','danger');return}
 }
-function cancelPinFlow(){enteredPin='';pendingAction=null;isVerifying=false;if(pinMode==='login'){logout(true);return}renderWallet();openView('walletView');navigateTo(pinMode==='deposit'||pinMode==='withdraw'?'locker':pinMode==='transfer'?'send':'profile')}
+function cancelPinFlow(){enteredPin='';pendingAction=null;isVerifying=false;if(pinMode==='login'){logout(true);return}renderWallet();openView('walletView');navigateTo(pinMode==='deposit'||pinMode==='withdraw'?'locker':pinMode==='transfer'?'send':'profile');pendingBiometricLimit=null}
 function checkBlocked(user){if(user?.isBlocked){$('blockedScreen').classList.add('visible');return true}$('blockedScreen').classList.remove('visible');return false}
 function renderWallet(){if(!currentUser)return;currentUser=normalizeUser(currentUser);const name=canonicalName(currentUser.displayName)||currentUser.username||'there';
   $('helloName').textContent=name;$('topAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('homePlan').textContent=(PLAN_NAMES[currentPlan()]||'Basic').toUpperCase()+' PLAN';$('homePlanStat').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('homeBalance').textContent=money(currentUser.balance);$('homeWalletId').textContent=currentUser.walletId||'-----';$('sendAvailable').textContent=money(currentUser.balance)+' PCX';$('sendPlanTag').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('transferLimitText').textContent=`Maximum wallet balance: ${WALLET_LIMIT.toLocaleString()} PCX.`;
   $('homePlanHint').textContent='';$('savedCountTag').textContent=`${(currentUser.friends||[]).length} / 20`;$('profileAvatar').textContent=(name.charAt(0)||'P').toUpperCase();$('profileName').textContent=name;$('profileUsername').textContent='@'+(currentUser.username||'')+' · Wallet '+(currentUser.walletId||'-----');$('profilePlanBadge').textContent=PLAN_NAMES[currentPlan()]||'Basic';$('profileWalletId').textContent=currentUser.walletId||'-----';$('profileUserValue').textContent='@'+(currentUser.username||'');$('profileAccountStatus').textContent=currentUser.isBlocked?'Blocked':'Active';$('profileAccountStatus').style.color=currentUser.isBlocked?'var(--red)':'var(--mint)';$('lockerBalance').textContent=money(currentUser.lockerBalance)+' PCX';$('depositHint').textContent='Available wallet: '+money(currentUser.balance)+' PCX';$('withdrawHint').textContent='Locker available: '+money(currentUser.lockerBalance)+' PCX';
-  const lock=num(currentUser.lockerBalance),pct=Math.max(0,Math.min(100,lock/LOCKER_LIMIT*100));$('lockerTrack').style.width=pct+'%';$('lockerUsed').textContent=money(lock)+' PCX used';$('lockerLeft').textContent=money(Math.max(0,LOCKER_LIMIT-lock))+' PCX left';renderHomeActivity();renderFullActivity();renderSavedAccounts();
+  const lock=num(currentUser.lockerBalance),pct=Math.max(0,Math.min(100,lock/LOCKER_LIMIT*100));$('lockerTrack').style.width=pct+'%';$('lockerUsed').textContent=money(lock)+' PCX used';$('lockerLeft').textContent=money(Math.max(0,LOCKER_LIMIT-lock))+' PCX left';renderHomeActivity();renderFullActivity();renderSavedAccounts();renderBiometricSettings();
 }
 function goHomeAndToast(message){renderWallet();openView('walletView');navigateTo('home');if(message)toast(message)}
 function activityItems(){try{const value=JSON.parse(localStorage.getItem(localActivityKey(currentUser?.username))||'[]');return Array.isArray(value)?value:[]}catch{return []}}
@@ -491,7 +556,10 @@ function prepareTransfer(receiverId,amountValue){
   if(String(sender.walletId)===String(receiver.walletId)){$('transferError').textContent='You cannot send PCX to your own wallet.';return}
   if(num(sender.balance)<amount){$('transferError').textContent='Your available wallet balance is too low.';return}
   if(num(receiver.balance)+amount>WALLET_LIMIT){$('transferError').textContent='This user cannot accept transactions right now.';return}
-  pendingAction={type:'transfer',receiverId,amount,receiverName:receiver.displayName||receiver.username||'PCX user'};setPinMode('transfer');buildKeypad();openView('pinView');
+  pendingAction={type:'transfer',receiverId,amount,receiverName:receiver.displayName||receiver.username||'PCX user'};
+  const biometric=biometricRecord();
+  if(amount<=getBiometricLimit()&&biometric?.credentialId){startBiometricTransfer();return}
+  setPinMode('transfer');buildKeypad();openView('pinView');
 }
 async function startTransferProcessing(){
   if(!pendingAction||pendingAction.type!=='transfer')return;if(!requireInternet()){pendingAction=null;openView('walletView');navigateTo('send');return;}
@@ -562,7 +630,10 @@ function prepareLockerMove(mode,value){const amount=parseWholeAmount(value);cons
   if(mode==='deposit'&&num(currentUser.lockerBalance)+amount>LOCKER_LIMIT){err.textContent='This would exceed the 100,000 PCX locker capacity.';return}
   if(mode==='withdraw'&&amount>num(currentUser.lockerBalance)){err.textContent='Your locker does not have enough PCX.';return}
   if(mode==='withdraw'&&num(currentUser.balance)+amount>WALLET_LIMIT){err.textContent=`This would exceed the wallet's ${WALLET_LIMIT.toLocaleString()} PCX cap.`;return}
-  pendingAction={type:mode,amount};setPinMode(mode);buildKeypad();openView('pinView');
+  pendingAction={type:mode,amount};
+  if(mode==='deposit'&&amount<=getBiometricLimit()&&biometricRecord()?.credentialId){startBiometricAction('deposit');return}
+  // Withdrawals always require the wallet PIN, even when biometrics are enrolled.
+  setPinMode(mode);buildKeypad();openView('pinView');
 }
 async function executeLockerMove(mode){
   const action={...pendingAction};if(!action||!['deposit','withdraw'].includes(mode))return;
@@ -593,7 +664,7 @@ async function executeLockerMove(mode){
   }finally{isBusy=false}
 }
 
-function beginNameChange(){if(!requireInternet())return;const newName=canonicalName($('newDisplayName').value);if(newName.length<2){toast('Display name must be at least 2 characters','error');return}pendingAction={type:'changeName',newName};setPinMode('changeName');buildKeypad();openView('pinView')}
+function beginNameChange(){if(!requireInternet())return;const newName=canonicalName($('newDisplayName').value);if(newName.length<2){toast('Display name must be at least 2 characters','error');return}pendingAction={type:'changeName',newName};if(biometricRecord()?.credentialId){startBiometricAction('changeName');return}setPinMode('changeName');buildKeypad();openView('pinView')}
 async function executeNameChange(){if(!pendingAction?.newName)return;if(!requireInternet())return;isBusy=true;showLoader(true,'Saving your profile…');try{await fetchDatabase();const user=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!user)throw new Error('Account not found.');user.displayName=pendingAction.newName;db.users=users;await saveDatabase();await fetchDatabase();const savedUser=users.find(u=>String(u.username).toLowerCase()===String(currentUser.username).toLowerCase());if(!savedUser||String(savedUser.displayName)!==String(pendingAction.newName))throw new Error('The database did not confirm the name change.');currentUser=savedUser;pendingAction=null;$('newDisplayName').value='';showLoader(false);renderWallet();openView('walletView');navigateTo('profile');toast('Display name updated')}catch(err){showLoader(false);pendingAction=null;openView('walletView');navigateTo('profile');const netErr=!navigator.onLine||/internet|network|fetch|failed to fetch|load failed|abort/i.test(String(err.message));if(netErr){offlineMode=true;setConnection(false,'No Internet');if(restoreCachedSnapshot())renderWallet()}toast(netErr?'No Internet connection. Nothing was changed.':(err.message||'Could not update name'),'error')}finally{isBusy=false}}
 function beginPasswordChange(){if(!requireInternet())return;pendingAction={type:'changePassword'};setPinMode('changePassword');buildKeypad();openView('pinView')}
 function openPasswordChangeModal(){
